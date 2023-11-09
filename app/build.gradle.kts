@@ -18,6 +18,10 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
+
+        buildConfigField("Boolean", "DEBUG", "true")
+        buildConfigField("String", "URI", '"' + "https://trans-cosine-402215.et.r.appspot.com/" + '"' )
+
     }
 
     buildTypes {
@@ -38,6 +42,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.4.3"
