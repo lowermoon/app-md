@@ -1,2 +1,2 @@
-package com.jejetrue.skillshiftapp.view.login
+package com.jejetrue.skillshiftapp.view.login.newpass
 

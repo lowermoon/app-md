@@ -3,6 +3,7 @@ package com.jejetrue.skillshiftapp.components
 import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -30,6 +31,7 @@ import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
@@ -45,6 +47,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -57,11 +60,10 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.jejetrue.skillshiftapp.R
-import com.jejetrue.skillshiftapp.ui.theme.Black
 import com.jejetrue.skillshiftapp.ui.theme.Rose600
 
 
+//judul
 @Composable
 fun NormalTextComponent(value : String) {
     Text(
@@ -93,102 +95,12 @@ fun HeadingTextComponent(value : String) {
         , textAlign = TextAlign.Center
     )
 }
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun MyTextField(labelValue : String, painterResource : Painter) {
-    var textValue by remember {
-        mutableStateOf("")
-    }
-
-    OutlinedTextField(
-        modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(50),
-        value = textValue,
-        onValueChange = {textValue = it},
-        label = { Text(text = labelValue)},
-        keyboardOptions = KeyboardOptions.Default,
-        leadingIcon = { Icon(painter = painterResource, contentDescription = "")}
+//Judul
 
 
-        )
-}
+//Text Field untuk input data
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun PasswordTextField(labelValue : String, painterResource : Painter) {
-    var password by remember {
-        mutableStateOf("")
-    }
-    var passwordVisible by remember {
-        mutableStateOf(false)
-    }
-
-    OutlinedTextField(
-        modifier = Modifier.fillMaxWidth(),
-        value = password,
-        shape = RoundedCornerShape(50),
-        onValueChange = {password = it},
-        label = { Text(text = labelValue)},
-        keyboardOptions = KeyboardOptions(keyboardType =  KeyboardType.Password),
-        leadingIcon = { Icon(painter = painterResource, contentDescription = "")},
-        trailingIcon = {
-            val iconImage = if (passwordVisible){
-                Icons.Filled.Visibility
-
-            }else{
-                Icons.Filled.VisibilityOff
-            }
-
-            var description = if (passwordVisible){
-                "Hide password"
-            }else{
-                "Show password"
-            }
-            
-            IconButton(onClick = { passwordVisible = !passwordVisible }) {
-                Icon(imageVector = iconImage, contentDescription = description)
-                
-            }
-        },
-        visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation()
-
-
-
-    )
-}
-
-@Composable
-fun CheckboxComponent(value: String) {
-    Row (modifier = Modifier
-        .fillMaxWidth()
-        .heightIn(56.dp)
-        .padding(16.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ){
-        val checkedState by remember {
-            mutableStateOf(false)
-        }
-        Checkbox(checked = checkedState, onCheckedChange = {checkedState != checkedState})
-
-        Text(
-            text = value,
-            modifier = Modifier
-                .fillMaxWidth()
-                .heightIn(min = 40.dp),
-            style = TextStyle(
-                fontSize = 15.sp,
-                fontWeight = FontWeight.Light
-
-            )
-            , textAlign = TextAlign.Center
-        )
-
-    }
-
-    
-}
-
-
+//tambahan aksesoris garis pemisah
 @Composable
 fun DividerTextComponent() {
     Row(modifier = Modifier
@@ -214,6 +126,7 @@ fun DividerTextComponent() {
     }
     
 }
+//tambahan aksesoris garis pemisah
 
 @Composable
 fun ClickableLogin( tryingToLogin : Boolean = true, onTextSelected : (String) -> Unit) {
@@ -255,6 +168,18 @@ fun UnderlineTextComponent(value : String) {
         textDecoration = TextDecoration.Underline
     )
 }
+
+@Composable
+fun ForgotPassword() {
+    ClickableText(
+        text = AnnotatedString("Forgot your password?"),
+        onClick = { offset ->
+            Log.d("ClickableText", "$offset -th character is clicked.")
+        }
+    )
+    
+}
+
 
 
 

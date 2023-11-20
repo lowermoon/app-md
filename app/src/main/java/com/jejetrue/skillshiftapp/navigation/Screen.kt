@@ -1,4 +1,9 @@
 package com.jejetrue.skillshiftapp.navigation
 
-class Screen {
+sealed class Screen(val route:String) {
+    object LoginScreen : Screen("login")
+    object SignupScreen : Screen("signup")
+    object VerifyEmailScreen : Screen("verifyEmail")
+
+
 }

@@ -1,4 +1,4 @@
-package com.jejetrue.skillshiftapp.view.login
+package com.jejetrue.skillshiftapp.view.login.otp
 
 import androidx.compose.runtime.Composable
 

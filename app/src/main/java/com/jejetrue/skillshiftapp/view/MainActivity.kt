@@ -1,4 +1,4 @@
-package com.jejetrue.skillshiftapp
+package com.jejetrue.skillshiftapp.view
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -6,11 +6,9 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import com.jejetrue.skillshiftapp.view.LoginScreen
+import androidx.navigation.compose.rememberNavController
+import com.jejetrue.skillshiftapp.navigation.Nav
 import com.jejetrue.skillshiftapp.ui.theme.SkillShiftAppTheme
 
 class MainActivity : ComponentActivity() {
@@ -23,25 +21,11 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    LoginScreen()
+
+                    Nav()
                 }
             }
         }
     }
 }
 
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    SkillShiftAppTheme {
-        Greeting("Android")
-    }
-}
