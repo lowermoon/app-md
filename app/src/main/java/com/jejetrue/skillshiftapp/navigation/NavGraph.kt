@@ -5,7 +5,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.jejetrue.skillshiftapp.view.home.HomeScreen
+import com.jejetrue.skillshiftapp.view.login.emailverify.EmailVerify
 import com.jejetrue.skillshiftapp.view.login.login.LoginScreen
+import com.jejetrue.skillshiftapp.view.register.otp.VerifyAccount
 import com.jejetrue.skillshiftapp.view.register.signup.SignupScreen
 
 @Composable
@@ -22,6 +24,10 @@ fun Nav() {
 
         composable(route= "home"){
             HomeScreen(navController)
+        }
+
+        composable(route = "verifAccount") {
+            VerifyAccount()
         }
 
     }

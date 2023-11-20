@@ -2,6 +2,7 @@ package com.jejetrue.skillshiftapp.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -36,6 +37,7 @@ fun SideButtons(
                 text = leftButtonText,
             )
         }
+        Spacer(modifier = Modifier.width(12.dp))
         Button(
             onClick = rightButtonClick,
             modifier = Modifier
