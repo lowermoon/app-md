@@ -37,7 +37,7 @@ fun EmailVerify(navController: NavHostController, modifier: Modifier = Modifier)
     ) {
 
         Text(
-            text = "Enter your email and we'll send you a otp",
+            text = "Enter your email",
             modifier = Modifier,
             style = TextStyle(
                 fontSize = 18.sp,
@@ -48,9 +48,13 @@ fun EmailVerify(navController: NavHostController, modifier: Modifier = Modifier)
         Spacer(modifier = Modifier.height(20.dp))
         EmailTextField(labelValue = "Email", painterResource = painterResource(id = R.drawable.ic_email))
         Spacer(modifier = Modifier.height(20.dp))
-        FullWidthButton(text = "Send") {
+        FullWidthButton(
+            text = "Send",
+            onClick = {
+                navController.navigate("otpVerify")
+            }
+        )
 
-        }
 
     }
     

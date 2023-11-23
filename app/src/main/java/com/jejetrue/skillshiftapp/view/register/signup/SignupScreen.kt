@@ -84,7 +84,9 @@ fun SignupScreen(navController: NavHostController, modifier: Modifier = Modifier
         }, input = confirmPasswrod)
         Spacer(modifier = Modifier.height(30.dp))
 
-        SideButtons(leftButtonText = "User", rightButtonText = "Freelancer", leftButtonClick = {
+        SideButtons(leftButtonText = "User", rightButtonText = "Freelancer",
+            //button user
+            leftButtonClick = {
             val data = dataRegister("consumer", fullName, email, username, password, confirmPasswrod)
             GlobalScope.launch {
                 try {
@@ -94,7 +96,10 @@ fun SignupScreen(navController: NavHostController, modifier: Modifier = Modifier
                     Log.d("ZAW", "Error : " + e.message.toString())
                 }
             }
-        }, rightButtonClick = {
+        },
+
+            //button freelance
+            rightButtonClick = {
             val data = dataRegister("freelance", fullName, email, username, password, confirmPasswrod)
             GlobalScope.launch {
                 try {

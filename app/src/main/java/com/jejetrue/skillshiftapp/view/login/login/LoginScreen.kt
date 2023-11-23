@@ -1,7 +1,5 @@
 package com.jejetrue.skillshiftapp.view.login.login
 
-import android.util.Log
-import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -12,9 +10,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.jejetrue.skillshiftapp.R
@@ -26,12 +22,7 @@ import com.jejetrue.skillshiftapp.components.FullWidthButton
 import com.jejetrue.skillshiftapp.components.HeadingTextComponent
 import com.jejetrue.skillshiftapp.components.NormalTextComponent
 import com.jejetrue.skillshiftapp.components.PasswordTextField
-import com.jejetrue.skillshiftapp.data.response.LoginResponse
-import com.jejetrue.skillshiftapp.data.retrofit.ApiConfig
-import org.json.JSONObject
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+
 
 @Composable
 fun LoginScreen(navController: NavHostController, modifier: Modifier = Modifier,) {
@@ -51,8 +42,12 @@ fun LoginScreen(navController: NavHostController, modifier: Modifier = Modifier,
         Spacer(modifier = Modifier.height(30.dp))
         ForgotPassword(navController)
         Spacer(modifier = Modifier.height(30.dp))
-        FullWidthButton(text = "Login", onClick = {
-            navController.navigate("home")
+
+        //button
+        FullWidthButton(
+            text = "Login",
+            onClick = {
+                navController.navigate("home")
         })
 
 
