@@ -43,13 +43,18 @@ import com.jejetrue.skillshiftapp.ui.theme.Rose600
 //Text Field untuk input data
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun NormalTextField(labelValue : String, painterResource : Painter) {
+fun NormalTextField(
+    labelValue : String,
+    painterResource : Painter,
+    onValueChange: (String) -> Unit = {},
+    input: String = "") {
     var text by remember {
         mutableStateOf("")
     }
     OutlinedTextField(
-        value = text,
-        onValueChange = { text = it },
+        value = input,
+        //onValueChange = { text = it },
+        onValueChange = onValueChange,
         label = { Text(labelValue) },
         shape = RoundedCornerShape(35.dp),
         colors = OutlinedTextFieldDefaults.colors(
@@ -69,7 +74,12 @@ fun NormalTextField(labelValue : String, painterResource : Painter) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun EmailTextField(labelValue : String, painterResource : Painter) {
+fun EmailTextField(
+    labelValue : String,
+    painterResource : Painter,
+    onValueChange: (String) -> Unit = {},
+    input: String = ""
+){
     var email by remember {
         mutableStateOf("")
     }
@@ -81,8 +91,9 @@ fun EmailTextField(labelValue : String, painterResource : Painter) {
             unfocusedBorderColor = Color.Gray,
             unfocusedLabelColor = Color.Gray,
         ),
-        value = email,
-        onValueChange = {email = it},
+        value = input,
+        //onValueChange = {email = it},
+        onValueChange = onValueChange,
         label = { Text(text = labelValue) },
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
         leadingIcon = { Icon(painter = painterResource, contentDescription = "") }
@@ -94,7 +105,12 @@ fun EmailTextField(labelValue : String, painterResource : Painter) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PasswordTextField(labelValue : String, painterResource : Painter) {
+fun PasswordTextField(
+    labelValue : String,
+    painterResource : Painter,
+    onValueChange: (String) -> Unit = {},
+    input: String = ""
+) {
     var password by remember {
         mutableStateOf("")
     }
@@ -103,7 +119,7 @@ fun PasswordTextField(labelValue : String, painterResource : Painter) {
     }
 
     OutlinedTextField(
-        value = password,
+        value = input,
         shape = RoundedCornerShape(35.dp),
         colors = OutlinedTextFieldDefaults.colors(
             focusedBorderColor = Rose600,
@@ -111,7 +127,8 @@ fun PasswordTextField(labelValue : String, painterResource : Painter) {
             unfocusedBorderColor = Color.Gray,
             unfocusedLabelColor = Color.Gray,
         ),
-        onValueChange = {password = it},
+        //onValueChange = {password = it},
+        onValueChange = onValueChange,
         label = { Text(text = labelValue) },
         keyboardOptions = KeyboardOptions(keyboardType =  KeyboardType.Password),
         leadingIcon = { Icon(painter = painterResource, contentDescription = "") },
@@ -139,51 +156,5 @@ fun PasswordTextField(labelValue : String, painterResource : Painter) {
     )
 }
 
-@Composable
-fun OtpTextField() {
-    var otpCode by remember {
-        mutableStateOf("")
-    }
 
-    BasicTextField(
-        value = otpCode,
-        onValueChange = { newValue ->
-            otpCode = newValue
-        },
-        keyboardOptions = KeyboardOptions(
-            keyboardType = KeyboardType.NumberPassword
-        ),
-        decorationBox = {
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(10.dp)
-            ) {
-                repeat(6){index ->
-                    val number = when {
-                        index >= otpCode.length -> ""
-                        else -> otpCode[index].toString()
-                    }
-
-                    Column(
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.spacedBy(6.dp)
-                    ) {
-                        Text(
-                            text = number,
-                            style = MaterialTheme.typography.titleLarge,
-                        )
-
-                        Box(
-                            modifier = Modifier
-                                .width(40.dp)
-                                .height(2.dp)
-                                .background(Color.Black)
-                        )
-                    }
-                }
-
-            }
-        }
-    )
-
-}
 

@@ -20,7 +20,7 @@ android {
         }
 
         buildConfigField("Boolean", "DEBUG", "true")
-        buildConfigField("String", "URI", '"' + "https://trans-cosine-402215.et.r.appspot.com/" + '"' )
+        buildConfigField("String", "URI", '"' + "http://192.168.18.9:2345/" + '"' )
     }
 
     buildTypes {
@@ -77,4 +77,6 @@ dependencies {
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
     implementation("com.squareup.okhttp3:logging-interceptor:4.11.0")
     implementation ("androidx.navigation:navigation-compose:2.7.5")
+
+    implementation("androidx.datastore:datastore-preferences:1.0.0")
 }

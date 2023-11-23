@@ -18,13 +18,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import com.jejetrue.skillshiftapp.R
 import com.jejetrue.skillshiftapp.components.EmailTextField
 import com.jejetrue.skillshiftapp.components.FullWidthButton
 import com.jejetrue.skillshiftapp.ui.theme.SkillShiftAppTheme
 
 @Composable
-fun EmailVerify(modifier: Modifier = Modifier) {
+fun EmailVerify(navController: NavHostController, modifier: Modifier = Modifier) {
 
     Column(
         verticalArrangement = Arrangement.Center,
@@ -53,13 +54,4 @@ fun EmailVerify(modifier: Modifier = Modifier) {
 
     }
     
-}
-
-@Preview
-@Composable
-fun EmailVerifyPreview() {
-    SkillShiftAppTheme {
-        EmailVerify()
-    }
-
 }

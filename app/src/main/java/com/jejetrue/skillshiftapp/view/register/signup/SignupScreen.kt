@@ -1,5 +1,6 @@
 package com.jejetrue.skillshiftapp.view.register.signup
 
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -26,6 +27,16 @@ import com.jejetrue.skillshiftapp.components.NormalTextComponent
 import com.jejetrue.skillshiftapp.components.NormalTextField
 import com.jejetrue.skillshiftapp.components.PasswordTextField
 import com.jejetrue.skillshiftapp.components.SideButtons
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.mutableStateOf
+import com.jejetrue.skillshiftapp.data.payload.dataLogin
+import com.jejetrue.skillshiftapp.data.payload.dataRegister
+import com.jejetrue.skillshiftapp.data.response.register
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 
 @Composable
@@ -37,21 +48,64 @@ fun SignupScreen(navController: NavHostController, modifier: Modifier = Modifier
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
     ) {
+
+        var email by remember { mutableStateOf("") }
+        var password by remember { mutableStateOf("") }
+        var confirmPasswrod by remember { mutableStateOf("") }
+        var fullName by remember { mutableStateOf("") }
+        var username by remember { mutableStateOf("") }
+        var register by remember { mutableStateOf(false) }
+
         NormalTextComponent(value = "Hey there,")
         HeadingTextComponent(value = "Create an Account")
         Spacer(modifier = Modifier.height(20.dp))
 
-        //Text Feild Input
-        NormalTextField(labelValue = "Fullname", painterResource = painterResource(id = R.drawable.ic_profile))
+        //Fullname
+        NormalTextField(labelValue = "Fullname", painterResource = painterResource(id = R.drawable.ic_profile), onValueChange = {
+            fullName = it
+        }, input = fullName)
+
         Spacer(modifier = Modifier.height(10.dp))
-        NormalTextField(labelValue = "Username", painterResource = painterResource(id = R.drawable.ic_profile))
+
+        //Username
+        NormalTextField(labelValue = "Username", painterResource = painterResource(id = R.drawable.ic_profile), onValueChange = {
+            username = it
+        }, input = username)
         Spacer(modifier = Modifier.height(10.dp))
-        EmailTextField(labelValue = "Email", painterResource = painterResource(id = R.drawable.ic_email))
+
+        //Email
+        EmailTextField(labelValue = "Email", painterResource = painterResource(id = R.drawable.ic_email), onValueChange = {
+            email = it
+        }, input = email)
         Spacer(modifier = Modifier.height(10.dp))
-        PasswordTextField(labelValue = "Password", painterResource = painterResource(id = R.drawable.ic_lock))
+
+        PasswordTextField(labelValue = "Confirm Password", painterResource = painterResource(id = R.drawable.ic_lock), onValueChange = {
+            confirmPasswrod = it
+        }, input = confirmPasswrod)
         Spacer(modifier = Modifier.height(30.dp))
 
-        SideButtons(leftButtonText = "User", rightButtonText = "Freelancer", leftButtonClick = {}, rightButtonClick = {})
+        SideButtons(leftButtonText = "User", rightButtonText = "Freelancer", leftButtonClick = {
+            val data = dataRegister("consumer", fullName, email, username, password, confirmPasswrod)
+            GlobalScope.launch {
+                try {
+                    val token = register(data = data)
+                    register = true
+                }catch (e: Exception) {
+                    Log.d("ZAW", "Error : " + e.message.toString())
+                }
+            }
+        }, rightButtonClick = {
+            val data = dataRegister("freelance", fullName, email, username, password, confirmPasswrod)
+            GlobalScope.launch {
+                try {
+                    val token = register(data = data)
+                    register = true
+                }catch (e: Exception) {
+                    Log.d("ZAW", "Error : " + e.message.toString())
+                }
+            }
+
+        })
 
 
         Spacer(modifier = Modifier.height(20.dp))
@@ -60,6 +114,10 @@ fun SignupScreen(navController: NavHostController, modifier: Modifier = Modifier
             navController.navigate("login")
 
         })
+
+        if ( register ) {
+            navController.navigate("verifAccount")
+        }
 
 
 

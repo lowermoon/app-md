@@ -60,6 +60,7 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import com.jejetrue.skillshiftapp.ui.theme.Rose600
 
 
@@ -170,11 +171,11 @@ fun UnderlineTextComponent(value : String) {
 }
 
 @Composable
-fun ForgotPassword() {
+fun ForgotPassword(navController: NavHostController) {
     ClickableText(
         text = AnnotatedString("Forgot your password?"),
         onClick = { offset ->
-            Log.d("ClickableText", "$offset -th character is clicked.")
+            navController.navigate("emailVerify")
         }
     )
     

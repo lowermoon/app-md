@@ -49,10 +49,9 @@ fun LoginScreen(navController: NavHostController, modifier: Modifier = Modifier,
         Spacer(modifier = Modifier.height(10.dp))
         PasswordTextField(labelValue = "Password", painterResource = painterResource(id = R.drawable.ic_lock))
         Spacer(modifier = Modifier.height(30.dp))
-        ForgotPassword()
+        ForgotPassword(navController)
         Spacer(modifier = Modifier.height(30.dp))
         FullWidthButton(text = "Login", onClick = {
-            login("jeje","jeje")
             navController.navigate("home")
         })
 
@@ -66,23 +65,4 @@ fun LoginScreen(navController: NavHostController, modifier: Modifier = Modifier,
 
 }
 
-fun login(username: String, password: String) {
-    val dataLogin = JSONObject("{usernaem: '$username', password: '$password'}")
-    val client = ApiConfig.getApiService().login(dataLogin)
-    client.enqueue(object: Callback<LoginResponse> {
-        override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
-            val responseBody = response.body()
-            Log.d("ZAW", "Response : " + responseBody?.data.toString())
-        }
 
-        override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
-            Log.d("ZAW", "Error : " + t.message.toString())
-        }
-    })
-}
-
-@Preview
-@Composable
-fun LoginScreenPreview() {
-    
-}
