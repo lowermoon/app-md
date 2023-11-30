@@ -6,6 +6,7 @@ import androidx.navigation.NavHostController
 import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
 import com.jejetrue.skillshiftapp.data.payload.dataRegister
+import com.jejetrue.skillshiftapp.data.payload.dataVerif
 import com.jejetrue.skillshiftapp.data.retrofit.ApiConfig
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
@@ -40,7 +41,11 @@ fun register(data: dataRegister): String {
 	return token.toString()
 }
 
-fun verifAccount(kode: String) {
-
+fun verifAccount(data: dataVerif) {
+	val service = ApiConfig.getApiService()
+	val payload = Gson().toJson(data)
+	val requestBody = payload.toRequestBody("application/json".toMediaTypeOrNull())
+	val response = service.verif(requestBody).execute()
+	Log.d("ZAW", response.body().toString())
 }
 

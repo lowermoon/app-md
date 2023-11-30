@@ -20,7 +20,7 @@ android {
         }
 
         buildConfigField("Boolean", "DEBUG", "true")
-        buildConfigField("String", "URI", '"' + "http://192.168.18.9:2345/" + '"' )
+        buildConfigField("String", "URI", '"' + "https://core-api-mqxn4q5g2q-et.a.run.app/api/" + '"' )
     }
 
     buildTypes {

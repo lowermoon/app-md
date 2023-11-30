@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
@@ -13,6 +14,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
+import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -33,7 +35,12 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
+import com.jejetrue.skillshiftapp.data.payload.dataVerif
+import com.jejetrue.skillshiftapp.data.response.verifAccount
 import com.jejetrue.skillshiftapp.ui.theme.Rose600
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 //Text Field untuk input data
 @OptIn(ExperimentalMaterial3Api::class)
@@ -143,6 +150,7 @@ fun PasswordTextField(
     )
 }
 
+@OptIn(DelicateCoroutinesApi::class)
 @Composable
 fun OtpTextField() {
     var otpCode by remember {
@@ -186,8 +194,20 @@ fun OtpTextField() {
                 }
 
             }
-        }
+        },
+        modifier = Modifier
+            .padding(bottom = 12.dp)
     )
+
+    Button(onClick = {
+        GlobalScope.launch {
+            verifAccount(
+                dataVerif("", otpCode)
+            )
+        }
+    }) {
+        Text(text = "SUBMIT")
+    }
 
 }
 

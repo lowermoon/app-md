@@ -15,3 +15,8 @@ data class dataLogin(
     var options: String,
     var method: String
 )
+
+data class dataVerif(
+    var email: String,
+    var otp: String
+)
