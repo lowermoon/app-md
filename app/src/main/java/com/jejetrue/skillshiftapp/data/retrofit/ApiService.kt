@@ -2,7 +2,6 @@ package com.jejetrue.skillshiftapp.data.retrofit
 
 import com.jejetrue.skillshiftapp.data.response.LoginResponse
 import com.jejetrue.skillshiftapp.data.response.RegisterResponse
-import com.jejetrue.skillshiftapp.data.response.RegisterResponseData
 import com.jejetrue.skillshiftapp.data.response.VerifyResponse
 import okhttp3.RequestBody
 import retrofit2.Call
@@ -13,7 +12,7 @@ interface ApiService {
 
     @POST("login")
     fun login(
-        @Body dataLogin: String
+        @Body body: RequestBody
     ) : Call<LoginResponse>
 
     @POST("register")

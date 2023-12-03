@@ -10,10 +10,8 @@ data class dataRegister(
 )
 
 data class dataLogin(
-    var email: String,
-    var password: String,
-    var options: String,
-    var method: String
+    var username: String,
+    var password: String
 )
 
 data class dataVerif(
