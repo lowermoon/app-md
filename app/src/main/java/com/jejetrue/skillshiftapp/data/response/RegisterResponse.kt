@@ -41,11 +41,11 @@ fun register(data: dataRegister): String {
 	return token.toString()
 }
 
-fun verifAccount(data: dataVerif) {
+fun verifAccount(data: dataVerif): String {
 	val service = ApiConfig.getApiService()
 	val payload = Gson().toJson(data)
 	val requestBody = payload.toRequestBody("application/json".toMediaTypeOrNull())
-	val response = service.verif(requestBody).execute()
-	Log.d("ZAW", response.body().toString())
+	val response = service.verifyUser(requestBody).execute()
+	return response.body()?.status.toString()
 }
 

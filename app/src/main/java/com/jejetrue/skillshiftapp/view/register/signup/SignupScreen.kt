@@ -55,7 +55,7 @@ fun SignupScreen(
         HeadingTextComponent(value = "Create an Account")
         Spacer(modifier = Modifier.height(20.dp))
 
-        InputForm(navigateToVerif)
+        InputForm(navigateToVerif, navController)
 
         Spacer(modifier = Modifier.height(20.dp))
         DividerTextComponent()
@@ -68,7 +68,10 @@ fun SignupScreen(
 
 @OptIn(DelicateCoroutinesApi::class)
 @Composable
-fun InputForm(navigateToVerif: (String) -> Unit) {
+fun InputForm(
+    navigateToVerif: (String) -> Unit,
+    navController: NavHostController
+) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var confirmPasswrod by remember { mutableStateOf("") }
@@ -101,29 +104,33 @@ fun InputForm(navigateToVerif: (String) -> Unit) {
 
 
     // Action Button
+    var data: dataRegister
     SideButtons(leftButtonText = "User", rightButtonText = "Freelancer", leftButtonClick = {
-        val data = dataRegister("consumer", fullName, email, username, password, confirmPasswrod)
+        data = dataRegister("consumer", fullName, email, username, password, confirmPasswrod)
         GlobalScope.launch {
             try {
                 token = register(data = data)
                 register = true
+                Log.d("ZAW", "consumer")
             }catch (e: Exception) {
-                Log.d("ZAW", "Error : " + e.message.toString())
+                Log.e("ZAW", "Error : " + e.message.toString())
             }
         }
     }, rightButtonClick = {
-        val data = dataRegister("freelancer", fullName, email, username, password, confirmPasswrod)
+        data = dataRegister("freelancer", fullName, email, username, password, confirmPasswrod)
         GlobalScope.launch {
             try {
                 token = register(data = data)
                 register = true
+                Log.d("ZAW", "freelancer")
             }catch (e: Exception) {
-                Log.d("ZAW", "Error : " + e.message.toString())
+                Log.e("ZAW", "Error : " + e.message.toString())
             }
         }
     })
 
-    if ( register ) {
+    if (register) {
         navigateToVerif(email)
     }
+
 }

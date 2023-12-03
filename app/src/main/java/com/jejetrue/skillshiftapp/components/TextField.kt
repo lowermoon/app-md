@@ -1,5 +1,6 @@
 package com.jejetrue.skillshiftapp.components
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -35,12 +36,14 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.jejetrue.skillshiftapp.data.payload.dataVerif
 import com.jejetrue.skillshiftapp.data.response.verifAccount
 import com.jejetrue.skillshiftapp.ui.theme.Rose600
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import java.sql.ClientInfoStatus
 
 //Text Field untuk input data
 @OptIn(ExperimentalMaterial3Api::class)
@@ -152,7 +155,10 @@ fun PasswordTextField(
 
 @OptIn(DelicateCoroutinesApi::class)
 @Composable
-fun OtpTextField() {
+fun OtpTextField(
+    email: String,
+    navigateToLogin: () -> Unit
+) {
     var otpCode by remember {
         mutableStateOf("")
     }
@@ -169,7 +175,7 @@ fun OtpTextField() {
             Row(
                 horizontalArrangement = Arrangement.spacedBy(10.dp)
             ) {
-                repeat(6){index ->
+                repeat(5){index ->
                     val number = when {
                         index >= otpCode.length -> ""
                         else -> otpCode[index].toString()
@@ -201,13 +207,23 @@ fun OtpTextField() {
 
     Button(onClick = {
         GlobalScope.launch {
-            verifAccount(
-                dataVerif("", otpCode)
-            )
+            try {
+                val status = verifAccount(
+                    dataVerif(email, otpCode)
+                )
+                VeryAccountAction(status, navigateToLogin)
+            }catch ( e: Exception ){
+                Log.d("ZAW", e.message.toString())
+            }
         }
     }) {
         Text(text = "SUBMIT")
     }
+}
 
+fun VeryAccountAction(status: String, navigateToLogin: () -> Unit) {
+    if ( status == "sucess" ) {
+        navigateToLogin
+    }
 }
 

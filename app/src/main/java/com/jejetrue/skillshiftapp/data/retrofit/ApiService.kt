@@ -21,7 +21,7 @@ interface ApiService {
     ) : Call<RegisterResponse>
 
     @POST("verifyUser")
-    fun verif(
+    fun verifyUser(
         @Body body: RequestBody
     ): Call<VerifyResponse>
 }

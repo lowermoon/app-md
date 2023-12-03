@@ -39,7 +39,7 @@ fun SideButtons(
         }
         Spacer(modifier = Modifier.width(12.dp))
         Button(
-            onClick = { rightButtonClick },
+            onClick = rightButtonClick,
             modifier = Modifier
                 .width(120.dp)
                 .height(50.dp),

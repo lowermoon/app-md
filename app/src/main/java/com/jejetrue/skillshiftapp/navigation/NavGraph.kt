@@ -1,6 +1,5 @@
 package com.jejetrue.skillshiftapp.navigation
 
-import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -32,7 +31,9 @@ fun Nav(destination: String = "login") {
             })
         ) {
             val email = it.arguments?.getString("email") ?: ""
-            VerifyAccount(email)
+            VerifyAccount(email = email, navigateToLogin = {
+                navController.navigate(Screen.LoginScreen.route)
+            })
         }
 
         composable(route= "home"){
