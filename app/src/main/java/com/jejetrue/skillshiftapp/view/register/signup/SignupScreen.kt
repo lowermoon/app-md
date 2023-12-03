@@ -42,7 +42,7 @@ import kotlinx.coroutines.launch
 fun SignupScreen(
     navController: NavHostController,
     modifier: Modifier = Modifier,
-    navigateToVerif: (String) -> Unit
+    navigateToVerif: (String, String) -> Unit
 ) {
     Column(
         verticalArrangement = Arrangement.Center,
@@ -69,7 +69,7 @@ fun SignupScreen(
 @OptIn(DelicateCoroutinesApi::class)
 @Composable
 fun InputForm(
-    navigateToVerif: (String) -> Unit,
+    navigateToVerif: (String, String) -> Unit,
     navController: NavHostController
 ) {
     var email by remember { mutableStateOf("") }
@@ -111,7 +111,7 @@ fun InputForm(
             try {
                 token = register(data = data)
                 register = true
-                Log.d("ZAW", "consumer")
+                Log.d("ZAW", "$token")
             }catch (e: Exception) {
                 Log.e("ZAW", "Error : " + e.message.toString())
             }
@@ -122,7 +122,7 @@ fun InputForm(
             try {
                 token = register(data = data)
                 register = true
-                Log.d("ZAW", "freelancer")
+                Log.d("ZAW", "$token")
             }catch (e: Exception) {
                 Log.e("ZAW", "Error : " + e.message.toString())
             }
@@ -130,7 +130,7 @@ fun InputForm(
     })
 
     if (register) {
-        navigateToVerif(email)
+        navigateToVerif(email, token)
     }
 
 }

@@ -157,11 +157,13 @@ fun PasswordTextField(
 @Composable
 fun OtpTextField(
     email: String,
-    navigateToLogin: () -> Unit
+    token: String,
+    navController: NavController
 ) {
     var otpCode by remember {
         mutableStateOf("")
     }
+    var status by remember { mutableStateOf("") }
 
     BasicTextField(
         value = otpCode,
@@ -208,10 +210,9 @@ fun OtpTextField(
     Button(onClick = {
         GlobalScope.launch {
             try {
-                val status = verifAccount(
-                    dataVerif(email, otpCode)
+                status = verifAccount(
+                    dataVerif(email, token, otpCode)
                 )
-                VeryAccountAction(status, navigateToLogin)
             }catch ( e: Exception ){
                 Log.d("ZAW", e.message.toString())
             }
@@ -219,11 +220,9 @@ fun OtpTextField(
     }) {
         Text(text = "SUBMIT")
     }
-}
 
-fun VeryAccountAction(status: String, navigateToLogin: () -> Unit) {
-    if ( status == "sucess" ) {
-        navigateToLogin
+
+    if ( status == "success" ) {
+        navController.navigate("login")
     }
 }
-

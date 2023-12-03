@@ -20,8 +20,8 @@ fun Nav(destination: String = "login") {
         }
 
         composable(route= "register"){
-            SignupScreen(navController, navigateToVerif = {
-                navController.navigate(Screen.VerifyEmailScreen.createRoute(it))
+            SignupScreen(navController, navigateToVerif = { email, token ->
+                navController.navigate(Screen.VerifyEmailScreen.createRoute(email, token))
             })
         }
         composable(
@@ -31,9 +31,8 @@ fun Nav(destination: String = "login") {
             })
         ) {
             val email = it.arguments?.getString("email") ?: ""
-            VerifyAccount(email = email, navigateToLogin = {
-                navController.navigate(Screen.LoginScreen.route)
-            })
+            val token = it.arguments?.getString("tokenRegis") ?: ""
+            VerifyAccount(email = email, tokenRegis = token, navController = navController)
         }
 
         composable(route= "home"){

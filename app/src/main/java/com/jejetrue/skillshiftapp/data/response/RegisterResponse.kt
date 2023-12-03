@@ -14,7 +14,8 @@ import kotlinx.coroutines.launch
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody.Companion.toRequestBody
 
-data class RegisterResponse(
+
+data class RegisterResponseData(
 
 	@field:SerializedName("code")
 	val code: Int? = null,
@@ -32,12 +33,24 @@ data class RegisterResponse(
 	val token: String? = null
 )
 
+
+data class RegisterResponse(
+	@field:SerializedName("status")
+	var status: String,
+
+	@field:SerializedName("message")
+	var message: String,
+
+	@field:SerializedName("data")
+	var data: RegisterResponseData
+)
+
 fun register(data: dataRegister): String {
 	val service = ApiConfig.getApiService()
 	val payload = Gson().toJson(data)
 	val requestBody = payload.toRequestBody("application/json".toMediaTypeOrNull())
 	val response = service.register(requestBody).execute()
-	val token = response.body()?.token
+	val token = response.body()?.data?.token
 	return token.toString()
 }
 

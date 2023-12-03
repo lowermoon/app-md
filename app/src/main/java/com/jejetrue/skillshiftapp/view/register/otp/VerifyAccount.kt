@@ -17,8 +17,9 @@ import com.jejetrue.skillshiftapp.ui.theme.SkillShiftAppTheme
 @Composable
 fun VerifyAccount(
     email: String,
+    tokenRegis: String,
     modifier: Modifier = Modifier,
-    navigateToLogin: () -> Unit
+    navController: NavController
 ) {
     Column(
         verticalArrangement = Arrangement.Center,
@@ -30,7 +31,7 @@ fun VerifyAccount(
             text = "Enter Verification Code Here",
             fontWeight = FontWeight.Bold,
         )
-        OtpTextField(email, navigateToLogin = navigateToLogin)
+        OtpTextField(email = email, token = tokenRegis, navController = navController)
     }
 }
 

@@ -18,5 +18,6 @@ data class dataLogin(
 
 data class dataVerif(
     var email: String,
+    var saveData: String,
     var userVerificationCode: String
 )
