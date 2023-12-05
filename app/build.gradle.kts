@@ -20,7 +20,7 @@ android {
         }
 
         buildConfigField("Boolean", "DEBUG", "true")
-        buildConfigField("String", "URI", '"' + "https://core-api-dummy-mqxn4q5g2q-et.a.run.app/api/" + '"' )
+        buildConfigField("String", "URI", '"' + "https://core-api-n2fwioi52q-as.a.run.app/api/" + '"' )
     }
 
     buildTypes {

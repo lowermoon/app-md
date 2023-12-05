@@ -211,7 +211,8 @@ fun OtpTextField(
         GlobalScope.launch {
             try {
                 status = VerifAccount(
-                    dataVerif(email, token, otpCode)
+                    data = dataVerif(email, token, otpCode),
+                    token = token
                 )
             }catch ( e: Exception ){
                 Log.d("ZAW", e.message.toString())
