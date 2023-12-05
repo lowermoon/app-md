@@ -90,8 +90,10 @@ fun LoginScreen(
         })
     }
 
-    if ( tokenText.value !== "" || tokenText.value !== "null" ) {
-        navController.navigate("home")
+    if ( tokenText.value !== "") {
+        if ( tokenText.value !== "null" ) {
+            navController.navigate("home")
+        }
     }
 
 }
