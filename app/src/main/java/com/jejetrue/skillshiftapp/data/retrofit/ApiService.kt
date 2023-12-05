@@ -1,11 +1,17 @@
 package com.jejetrue.skillshiftapp.data.retrofit
 
+import android.util.Log
 import com.jejetrue.skillshiftapp.data.response.LoginResponse
+import com.jejetrue.skillshiftapp.data.response.ProfileResponse
 import com.jejetrue.skillshiftapp.data.response.RegisterResponse
 import com.jejetrue.skillshiftapp.data.response.VerifyResponse
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.http.Body
+import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
 
@@ -26,4 +32,24 @@ interface ApiService {
         @Header("Cookie") token: String,
         @Body body: RequestBody
     ): Call<VerifyResponse>
+
+    @GET("profile")
+    fun getProfile(
+        @Header("Cookie") token: String
+    ): Call<ProfileResponse>
+
+    // TODO : Update Profile
+}
+
+@OptIn(DelicateCoroutinesApi::class)
+fun ExecApi(
+    action: () -> Unit
+) {
+    GlobalScope.launch {
+        try {
+            action()
+        }catch (e: Exception){
+            Log.d("ZAW", "Error : ${e.message}")
+        }
+    }
 }
