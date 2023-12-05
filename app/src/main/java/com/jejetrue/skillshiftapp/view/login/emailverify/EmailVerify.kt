@@ -25,7 +25,7 @@ import com.jejetrue.skillshiftapp.components.FullWidthButton
 import com.jejetrue.skillshiftapp.ui.theme.SkillShiftAppTheme
 
 @Composable
-fun EmailVerify(navController: NavHostController, modifier: Modifier = Modifier) {
+fun EmailVerify(onClick: () -> Unit, ) {
 
     Column(
         verticalArrangement = Arrangement.Center,
@@ -51,7 +51,7 @@ fun EmailVerify(navController: NavHostController, modifier: Modifier = Modifier)
         FullWidthButton(
             text = "Send",
             onClick = {
-                navController.navigate("otpVerify")
+                onClick()
             }
         )
 

@@ -8,7 +8,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
-import com.jejetrue.skillshiftapp.navigation.Nav
+import com.jejetrue.skillshiftapp.navigation.RootNavigationGraph
 import com.jejetrue.skillshiftapp.ui.theme.SkillShiftAppTheme
 
 class MainActivity : ComponentActivity() {
@@ -16,14 +16,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             SkillShiftAppTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-
-                    Nav()
-                }
+                RootNavigationGraph(navController = rememberNavController())
             }
         }
     }

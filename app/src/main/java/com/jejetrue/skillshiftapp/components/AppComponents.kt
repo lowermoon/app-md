@@ -170,16 +170,7 @@ fun UnderlineTextComponent(value : String) {
     )
 }
 
-@Composable
-fun ForgotPassword(navController: NavHostController) {
-    ClickableText(
-        text = AnnotatedString("Forgot your password?"),
-        onClick = { offset ->
-            navController.navigate("emailVerify")
-        }
-    )
-    
-}
+
 
 
 

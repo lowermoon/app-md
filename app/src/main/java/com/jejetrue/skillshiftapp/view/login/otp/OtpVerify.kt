@@ -20,32 +20,27 @@ import com.jejetrue.skillshiftapp.components.FullWidthButton
 import com.jejetrue.skillshiftapp.components.NormalTextField
 
 @Composable
-fun OtpVerify(navController: NavHostController) {
+fun OtpVerify(onClick: () -> Unit, ) {
     Column(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier.fillMaxSize()
     ){
 
+        Text(text = "Code sent to email")
         Text(
-            text = "Enter your Code",
-            modifier = Modifier,
-            style = TextStyle(
-                fontSize = 18.sp,
-                fontWeight = FontWeight.Normal
-
-            )
+            text = "Enter Verification Code Here",
+            fontWeight = FontWeight.Bold,
         )
         Spacer(modifier = Modifier.height(20.dp))
 
-        NormalTextField(labelValue = "Masukkan Kode", painterResource = painterResource(id = R.drawable.ic_code))
 
         Spacer(modifier = Modifier.height(20.dp))
 
         FullWidthButton(
             text = "Submit",
             onClick = {
-                navController.navigate("newPassword")
+                onClick()
             }
         )
 

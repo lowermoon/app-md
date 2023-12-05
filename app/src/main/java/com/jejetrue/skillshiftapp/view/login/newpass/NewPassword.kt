@@ -21,7 +21,7 @@ import com.jejetrue.skillshiftapp.components.NormalTextField
 import com.jejetrue.skillshiftapp.components.PasswordTextField
 
 @Composable
-fun NewPassword(navController: NavHostController) {
+fun NewPassword(onClick: () -> Unit, ) {
     Column(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -45,7 +45,7 @@ fun NewPassword(navController: NavHostController) {
         FullWidthButton(
             text = "Submit",
             onClick = {
-                navController.navigate("login")
+                onClick()
             }
         )
 

@@ -1,5 +1,6 @@
 package com.jejetrue.skillshiftapp.components
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -8,6 +9,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
@@ -15,6 +17,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
+import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -38,7 +41,12 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
+import com.jejetrue.skillshiftapp.data.payload.dataVerif
+import com.jejetrue.skillshiftapp.data.response.verifAccount
 import com.jejetrue.skillshiftapp.ui.theme.Rose600
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 //Text Field untuk input data
 @OptIn(ExperimentalMaterial3Api::class)
@@ -154,6 +162,80 @@ fun PasswordTextField(
         visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation()
 
     )
+}
+
+@OptIn(DelicateCoroutinesApi::class)
+@Composable
+fun OtpTextField(
+    email: String,
+    token: String,
+    navigation: () -> Unit,
+) {
+    var otpCode by remember {
+        mutableStateOf("")
+    }
+    var status by remember { mutableStateOf("") }
+
+    BasicTextField(
+        value = otpCode,
+        onValueChange = { newValue ->
+            otpCode = newValue
+        },
+        keyboardOptions = KeyboardOptions(
+            keyboardType = KeyboardType.NumberPassword
+        ),
+        decorationBox = {
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(10.dp)
+            ) {
+                repeat(5){index ->
+                    val number = when {
+                        index >= otpCode.length -> ""
+                        else -> otpCode[index].toString()
+                    }
+
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.spacedBy(6.dp)
+                    ) {
+                        Text(
+                            text = number,
+                            style = MaterialTheme.typography.titleLarge,
+                        )
+
+                        Box(
+                            modifier = Modifier
+                                .width(40.dp)
+                                .height(2.dp)
+                                .background(Color.Black)
+                        )
+                    }
+                }
+
+            }
+        },
+        modifier = Modifier
+            .padding(bottom = 12.dp)
+    )
+
+    Button(onClick = {
+        GlobalScope.launch {
+            try {
+                status = verifAccount(
+                    dataVerif(email, token, otpCode)
+                )
+            }catch ( e: Exception ){
+                Log.d("ZAW", e.message.toString())
+            }
+        }
+    }) {
+        Text(text = "SUBMIT")
+    }
+
+
+    if ( status == "success" ) {
+        navigation()
+    }
 }
 
 
