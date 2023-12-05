@@ -38,7 +38,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.jejetrue.skillshiftapp.data.payload.dataVerif
-import com.jejetrue.skillshiftapp.data.response.verifAccount
+import com.jejetrue.skillshiftapp.data.response.VerifAccount
 import com.jejetrue.skillshiftapp.ui.theme.Rose600
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
@@ -210,7 +210,7 @@ fun OtpTextField(
     Button(onClick = {
         GlobalScope.launch {
             try {
-                status = verifAccount(
+                status = VerifAccount(
                     dataVerif(email, token, otpCode)
                 )
             }catch ( e: Exception ){

@@ -54,11 +54,10 @@ fun register(data: dataRegister): String {
 	return token.toString()
 }
 
-fun verifAccount(data: dataVerif): String {
+fun VerifAccount(data: dataVerif): String {
 	val service = ApiConfig.getApiService()
 	val payload = Gson().toJson(data)
 	val requestBody = payload.toRequestBody("application/json".toMediaTypeOrNull())
 	val response = service.verifyUser(requestBody).execute()
 	return response.body()?.status.toString()
 }
-
