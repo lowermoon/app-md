@@ -24,10 +24,10 @@ import androidx.compose.ui.unit.dp
 import com.jejetrue.skillshiftapp.R
 import com.jejetrue.skillshiftapp.components.ClickableLogin
 import com.jejetrue.skillshiftapp.components.DividerTextComponent
-import com.jejetrue.skillshiftapp.components.EmailTextField
 import com.jejetrue.skillshiftapp.components.FullWidthButton
 import com.jejetrue.skillshiftapp.components.HeadingTextComponent
 import com.jejetrue.skillshiftapp.components.NormalTextComponent
+import com.jejetrue.skillshiftapp.components.NormalTextField
 import com.jejetrue.skillshiftapp.components.PasswordTextField
 import com.jejetrue.skillshiftapp.data.datastore.UserStore
 import com.jejetrue.skillshiftapp.data.payload.dataLogin
@@ -61,9 +61,13 @@ fun LoginScreen(
         NormalTextComponent(value = "Hey there,")
         HeadingTextComponent(value = "Welcome Back")
         Spacer(modifier = Modifier.height(20.dp))
-        EmailTextField(labelValue = "Email", painterResource = painterResource(id = R.drawable.ic_email))
+        NormalTextField(labelValue = "Username", painterResource = painterResource(id = R.drawable.ic_profile), onValueChange = {
+            username = it
+        }, input = username)
         Spacer(modifier = Modifier.height(10.dp))
-        PasswordTextField(labelValue = "Password", painterResource = painterResource(id = R.drawable.ic_lock))
+        PasswordTextField(labelValue = "Password", painterResource = painterResource(id = R.drawable.ic_lock), onValueChange = {
+            password = it
+        }, input = password)
         Spacer(modifier = Modifier.height(30.dp))
         //forgot password
         ClickableText(
@@ -88,10 +92,11 @@ fun LoginScreen(
                 }
         })
 
-        if ( tokenText.value !== "" || tokenText.value !== "null" ) {
-            onLoginClick()
+        if ( tokenText.value !== "" ) {
+            if ( tokenText.value !== "null" ) {
+                onLoginClick()
+            }
         }
-
 
         Spacer(modifier = Modifier.height(20.dp))
         DividerTextComponent()
