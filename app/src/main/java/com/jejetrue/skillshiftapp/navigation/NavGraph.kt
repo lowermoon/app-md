@@ -8,6 +8,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.jejetrue.skillshiftapp.view.home.HomeScreen
 import com.jejetrue.skillshiftapp.view.login.login.LoginScreen
+import com.jejetrue.skillshiftapp.view.profile.ProfileScreen
 import com.jejetrue.skillshiftapp.view.register.otp.VerifyAccount
 import com.jejetrue.skillshiftapp.view.register.signup.SignupScreen
 
@@ -37,6 +38,14 @@ fun Nav(destination: String = "login") {
 
         composable(route= "home"){
             HomeScreen(navController)
+        }
+
+        composable(
+            route = Screen.Profile.route
+        ) {
+            ProfileScreen(
+                navController = navController
+            )
         }
 
     }

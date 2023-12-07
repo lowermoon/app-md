@@ -6,6 +6,6 @@ sealed class Screen(val route:String) {
     object VerifyEmailScreen : Screen("verif/{email}/{tokenRegis}"){
         fun createRoute(email: String, tokenRegis: String) = "verif/$email/$tokenRegis"
     }
-
+    object Profile: Screen("profile")
 
 }
