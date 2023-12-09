@@ -1,11 +1,14 @@
 package com.jejetrue.skillshiftapp.navigation
 
+import android.util.Log
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.jejetrue.skillshiftapp.data.datastore.UserStore
 import com.jejetrue.skillshiftapp.view.SkillShiftApp
-import com.jejetrue.skillshiftapp.view.main.home.HomeScreen
 
 @Composable
 fun RootNavigationGraph(navController: NavHostController) {
@@ -18,7 +21,14 @@ fun RootNavigationGraph(navController: NavHostController) {
         composable(route = Graph.HOME) {
             SkillShiftApp()
         }
+    }
 
+    val context = LocalContext.current
+    val store = UserStore(context)
+    val tokenText = store.getAccessToken.collectAsState(initial = "user_token")
+    if ( tokenText.value == "null" ) {
+        Log.d("ZAW", (tokenText.value == "null").toString())
+        navController.navigate(AuthScreen.Login.route)
     }
 
 }
