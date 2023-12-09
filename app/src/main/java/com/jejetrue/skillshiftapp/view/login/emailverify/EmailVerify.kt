@@ -18,13 +18,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import com.jejetrue.skillshiftapp.R
 import com.jejetrue.skillshiftapp.components.EmailTextField
 import com.jejetrue.skillshiftapp.components.FullWidthButton
 import com.jejetrue.skillshiftapp.ui.theme.SkillShiftAppTheme
 
 @Composable
-fun EmailVerify(modifier: Modifier = Modifier) {
+fun EmailVerify(onClick: () -> Unit, ) {
 
     Column(
         verticalArrangement = Arrangement.Center,
@@ -36,7 +37,7 @@ fun EmailVerify(modifier: Modifier = Modifier) {
     ) {
 
         Text(
-            text = "Enter your email and we'll send you a otp",
+            text = "Enter your email",
             modifier = Modifier,
             style = TextStyle(
                 fontSize = 18.sp,
@@ -47,19 +48,14 @@ fun EmailVerify(modifier: Modifier = Modifier) {
         Spacer(modifier = Modifier.height(20.dp))
         EmailTextField(labelValue = "Email", painterResource = painterResource(id = R.drawable.ic_email))
         Spacer(modifier = Modifier.height(20.dp))
-        FullWidthButton(text = "Send") {
+        FullWidthButton(
+            text = "Send",
+            onClick = {
+                onClick()
+            }
+        )
 
-        }
 
     }
     
-}
-
-@Preview
-@Composable
-fun EmailVerifyPreview() {
-    SkillShiftAppTheme {
-        EmailVerify()
-    }
-
 }

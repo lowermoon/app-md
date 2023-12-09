@@ -3,6 +3,7 @@ package com.jejetrue.skillshiftapp.data.repository
 import com.jejetrue.skillshiftapp.model.User
 
 class UserRepository {
+
     private var user: User = User("")
 
     companion object {

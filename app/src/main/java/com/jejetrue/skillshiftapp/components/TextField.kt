@@ -6,6 +6,8 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -24,6 +26,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -32,18 +35,18 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import com.jejetrue.skillshiftapp.data.payload.dataVerif
-import com.jejetrue.skillshiftapp.data.response.VerifAccount
+import com.jejetrue.skillshiftapp.data.response.verifAccount
 import com.jejetrue.skillshiftapp.ui.theme.Rose600
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import java.sql.ClientInfoStatus
 
 //Text Field untuk input data
 @OptIn(ExperimentalMaterial3Api::class)
@@ -52,8 +55,10 @@ fun NormalTextField(
     labelValue : String,
     painterResource : Painter,
     onValueChange: (String) -> Unit = {},
-    input: String = ""
-) {
+    input: String = "") {
+    var text by remember {
+        mutableStateOf("")
+    }
     OutlinedTextField(
         value = input,
         //onValueChange = { text = it },
@@ -82,7 +87,10 @@ fun EmailTextField(
     painterResource : Painter,
     onValueChange: (String) -> Unit = {},
     input: String = ""
-) {
+){
+    var email by remember {
+        mutableStateOf("")
+    }
     OutlinedTextField(
         shape = RoundedCornerShape(50),
         colors = OutlinedTextFieldDefaults.colors(
@@ -111,6 +119,9 @@ fun PasswordTextField(
     onValueChange: (String) -> Unit = {},
     input: String = ""
 ) {
+    var password by remember {
+        mutableStateOf("")
+    }
     var passwordVisible by remember {
         mutableStateOf(false)
     }
@@ -158,7 +169,7 @@ fun PasswordTextField(
 fun OtpTextField(
     email: String,
     token: String,
-    navController: NavController
+    navigation: () -> Unit,
 ) {
     var otpCode by remember {
         mutableStateOf("")
@@ -210,9 +221,8 @@ fun OtpTextField(
     Button(onClick = {
         GlobalScope.launch {
             try {
-                status = VerifAccount(
-                    data = dataVerif(email, token, otpCode),
-                    token = token
+                status = verifAccount(
+                    dataVerif(email, token, otpCode)
                 )
             }catch ( e: Exception ){
                 Log.d("ZAW", e.message.toString())
@@ -224,6 +234,9 @@ fun OtpTextField(
 
 
     if ( status == "success" ) {
-        navController.navigate("login")
+        navigation()
     }
 }
+
+
+

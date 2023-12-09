@@ -1,7 +1,6 @@
 package com.jejetrue.skillshiftapp.view.register.signup
 
 import android.util.Log
-import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -10,15 +9,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavHostController
 import com.jejetrue.skillshiftapp.R
 import com.jejetrue.skillshiftapp.components.ClickableLogin
 import com.jejetrue.skillshiftapp.components.DividerTextComponent
@@ -28,6 +22,10 @@ import com.jejetrue.skillshiftapp.components.NormalTextComponent
 import com.jejetrue.skillshiftapp.components.NormalTextField
 import com.jejetrue.skillshiftapp.components.PasswordTextField
 import com.jejetrue.skillshiftapp.components.SideButtons
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.mutableStateOf
 import com.jejetrue.skillshiftapp.data.payload.dataRegister
 import com.jejetrue.skillshiftapp.data.response.register
 import kotlinx.coroutines.DelicateCoroutinesApi
@@ -37,10 +35,11 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun SignupScreen(
-    navController: NavHostController,
-    modifier: Modifier = Modifier,
-    navigateToVerif: (String, String) -> Unit
-) {
+    onSignUpClick: (String,String)  -> Unit,
+    onLoginClick: () -> Unit,
+
+)
+{
     Column(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -48,26 +47,26 @@ fun SignupScreen(
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
     ) {
+
         NormalTextComponent(value = "Hey there,")
         HeadingTextComponent(value = "Create an Account")
         Spacer(modifier = Modifier.height(20.dp))
 
-        InputForm(navigateToVerif, navController)
+       InputForm(onSignUpClick)
 
         Spacer(modifier = Modifier.height(20.dp))
         DividerTextComponent()
         ClickableLogin(tryingToLogin = true,onTextSelected = {
-            navController.navigate("login")
+            onLoginClick()
+
         })
     }
-
 }
 
 @OptIn(DelicateCoroutinesApi::class)
 @Composable
 fun InputForm(
-    navigateToVerif: (String, String) -> Unit,
-    navController: NavHostController
+    onSignUpClick: (String,String)  -> Unit,
 ) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
@@ -127,7 +126,7 @@ fun InputForm(
     })
 
     if (register) {
-        navigateToVerif(email, token)
+        onSignUpClick(email, token)
     }
 
 }
