@@ -10,6 +10,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -32,9 +33,8 @@ import com.jejetrue.skillshiftapp.components.PasswordTextField
 import com.jejetrue.skillshiftapp.data.datastore.UserStore
 import com.jejetrue.skillshiftapp.data.payload.dataLogin
 import com.jejetrue.skillshiftapp.data.response.signin
+import com.jejetrue.skillshiftapp.data.retrofit.ExecApi
 import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 
 
 @OptIn(DelicateCoroutinesApi::class)
@@ -46,10 +46,9 @@ fun LoginScreen(
 ) {
     val context = LocalContext.current
     val store = UserStore(context)
+    val tokenText = store.getAccessToken.collectAsState(initial = "user_token")
     var username by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
-    val tokenText = store.getAccessToken.collectAsState(initial = "")
-
 
     Column(
         verticalArrangement = Arrangement.Center,
@@ -78,22 +77,27 @@ fun LoginScreen(
         )
         Spacer(modifier = Modifier.height(30.dp))
 
-        //button
+        //button login
+        var fetchLogin by remember { mutableStateOf(false) }
         FullWidthButton(
             text = "Login",
             onClick = {
-                GlobalScope.launch {
-                    try {
-                        val tokenLogin = signin(dataLogin(username, password))
-                        store.saveToken(tokenLogin)
-                    }catch (e: Exception) {
-                        Log.d("ZAW", e.message.toString())
-                    }
-                }
+                fetchLogin = true
         })
-
-        if ( tokenText.value !== "" ) {
-            if ( tokenText.value !== "null" ) {
+        if (fetchLogin) {
+            var tokenLogin: String? = null
+            ExecApi {
+                tokenLogin = signin(dataLogin(username, password))
+            }
+            LaunchedEffect(tokenLogin) {
+                if (tokenLogin !== null) {
+                    store.saveToken(token = tokenLogin.toString())
+                }
+                Log.d("ZAW", tokenLogin.toString())
+            }
+        }
+        if ( tokenText.value !== "null" ) {
+            if ( tokenText.value !== "" ) {
                 onLoginClick()
             }
         }

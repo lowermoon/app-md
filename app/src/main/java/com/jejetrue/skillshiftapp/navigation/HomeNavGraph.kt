@@ -5,8 +5,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.jejetrue.skillshiftapp.view.main.BottomBarScreen
-import com.jejetrue.skillshiftapp.view.main.home.HomeScreen
 import com.jejetrue.skillshiftapp.view.main.ProjectScreen
+import com.jejetrue.skillshiftapp.view.main.home.HomeScreen
 import com.jejetrue.skillshiftapp.view.main.profile.ProfileScreen
 
 @Composable
