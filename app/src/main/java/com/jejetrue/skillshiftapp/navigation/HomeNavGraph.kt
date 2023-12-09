@@ -18,8 +18,6 @@ fun HomeNavGraph(navController: NavHostController){
     ){
         composable(route = BottomBarScreen.Home.route){
             HomeScreen(
-                name = BottomBarScreen.Home.route,
-                onClick = {}
             )
         }
 
@@ -32,7 +30,6 @@ fun HomeNavGraph(navController: NavHostController){
 
         composable(route = BottomBarScreen.Profile.route) {
             ProfileScreen(
-                onClick = { }
             )
         }
 
