@@ -1,17 +1,26 @@
 package com.jejetrue.skillshiftapp.data.retrofit
 
+import android.util.Log
 import com.jejetrue.skillshiftapp.data.response.LoginResponse
+import com.jejetrue.skillshiftapp.data.response.ProfileResponse
 import com.jejetrue.skillshiftapp.data.response.RegisterResponse
 import com.jejetrue.skillshiftapp.data.response.VerifyResponse
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import okhttp3.MultipartBody
 import okhttp3.RequestBody
-import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.http.Body
+import retrofit2.http.GET
+import retrofit2.http.Header
+import retrofit2.http.Multipart
 import retrofit2.http.POST
+import retrofit2.http.Part
 
 interface ApiService {
 
-    @POST("login")
+    @POST("loginFreelancer")
     fun login(
         @Body body: RequestBody
     ) : Call<LoginResponse>
@@ -23,6 +32,32 @@ interface ApiService {
 
     @POST("verifyUser")
     fun verifyUser(
+        @Header("Cookie") token: String,
         @Body body: RequestBody
     ): Call<VerifyResponse>
+
+    @GET("profile")
+    fun getProfile(
+        @Header("Cookie") token: String
+    ): Call<ProfileResponse>
+
+    @POST("profile/uploadphoto")
+    @Multipart
+    fun chengeProfileImage(
+        @Header("Cookie") token: String,
+        @Part image: MultipartBody.Part
+    ): Call<ProfileResponse>
+}
+
+@OptIn(DelicateCoroutinesApi::class)
+fun ExecApi(
+    action: () -> Unit
+) {
+    GlobalScope.launch {
+        try {
+            action()
+        }catch (e: Exception){
+            Log.d("ZAW", "Error : ${e.message}")
+        }
+    }
 }
