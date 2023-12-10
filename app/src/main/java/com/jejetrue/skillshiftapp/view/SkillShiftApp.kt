@@ -9,23 +9,28 @@ import androidx.compose.material.LocalContentColor
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.jejetrue.skillshiftapp.data.datastore.UserStore
 import com.jejetrue.skillshiftapp.navigation.HomeNavGraph
 import com.jejetrue.skillshiftapp.view.main.BottomBarScreen
 
 @Composable
 fun SkillShiftApp(navController: NavHostController = rememberNavController()) {
+    val context = LocalContext.current
+    val store = UserStore(context)
+    val tokenText = store.getAccessToken.collectAsState(initial = "user_token")
     Scaffold(
         bottomBar = { BottomBar(navController = navController) }
     ) {it
         HomeNavGraph(navController = navController)
-
     }
 }
 

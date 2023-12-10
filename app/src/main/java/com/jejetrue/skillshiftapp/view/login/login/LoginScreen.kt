@@ -96,6 +96,7 @@ fun LoginScreen(
                 Log.d("ZAW", tokenLogin.toString())
             }
         }
+
         if ( tokenText.value !== "null" ) {
             if ( tokenText.value !== "" ) {
                 onLoginClick()
