@@ -7,6 +7,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.SearchBar
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -26,7 +27,7 @@ fun HomeScreen() {
         var text by remember { mutableStateOf("") }
         var active by remember { mutableStateOf(false) }
 
-        androidx.compose.material3.SearchBar(
+        SearchBar(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(10.dp),
