@@ -30,11 +30,23 @@ fun HomeNavGraph(navController: NavHostController){
 
         composable(route = BottomBarScreen.Profile.route) {
             ProfileScreen(
+                onEditProfileClick = {
+                    navController.navigate(ProfileScreen.EditProfile.route)
+                }
+
             )
+        }
+
+        composable(route = ProfileScreen.EditProfile.route){
+
         }
 
 
 
     }
 
+}
+
+sealed class ProfileScreen(val route: String) {
+    object EditProfile : ProfileScreen(route = "Edit Profile")
 }
