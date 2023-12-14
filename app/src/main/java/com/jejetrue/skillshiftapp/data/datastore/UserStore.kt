@@ -8,7 +8,6 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-
 class UserStore (private val context: Context) {
     companion object {
         private val Context.datastore: DataStore<Preferences> by preferencesDataStore("userToken")

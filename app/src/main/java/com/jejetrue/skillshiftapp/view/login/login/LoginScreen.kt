@@ -1,6 +1,5 @@
 package com.jejetrue.skillshiftapp.view.login.login
 
-import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -10,6 +9,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -32,9 +32,8 @@ import com.jejetrue.skillshiftapp.components.PasswordTextField
 import com.jejetrue.skillshiftapp.data.datastore.UserStore
 import com.jejetrue.skillshiftapp.data.payload.dataLogin
 import com.jejetrue.skillshiftapp.data.response.signin
+import com.jejetrue.skillshiftapp.data.retrofit.ExecApi
 import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 
 
 @OptIn(DelicateCoroutinesApi::class)
@@ -46,10 +45,10 @@ fun LoginScreen(
 ) {
     val context = LocalContext.current
     val store = UserStore(context)
+    val token = store.getAccessToken.collectAsState(initial = "")
+
     var username by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
-    val tokenText = store.getAccessToken.collectAsState(initial = "")
-
 
     Column(
         verticalArrangement = Arrangement.Center,
@@ -78,23 +77,23 @@ fun LoginScreen(
         )
         Spacer(modifier = Modifier.height(30.dp))
 
-        //button
+        //button login
+        var fetchLogin by remember { mutableStateOf(false) }
+        var tokenLogin by remember { mutableStateOf("") }
         FullWidthButton(
             text = "Login",
             onClick = {
-                GlobalScope.launch {
-                    try {
-                        val tokenLogin = signin(dataLogin(username, password))
-                        store.saveToken(tokenLogin)
-                    }catch (e: Exception) {
-                        Log.d("ZAW", e.message.toString())
-                    }
-                }
-        })
-
-        if ( tokenText.value !== "" ) {
-            if ( tokenText.value !== "null" ) {
+                fetchLogin = true
                 onLoginClick()
+        })
+        if (fetchLogin) {
+            ExecApi {
+                tokenLogin = signin(dataLogin(username, password))
+            }
+            LaunchedEffect(tokenLogin) {
+                if (tokenLogin !== "") {
+                    store.saveToken(token = tokenLogin)
+                }
             }
         }
 

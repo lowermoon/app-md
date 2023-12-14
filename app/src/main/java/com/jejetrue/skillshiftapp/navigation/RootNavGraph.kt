@@ -5,7 +5,6 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.jejetrue.skillshiftapp.view.SkillShiftApp
-import com.jejetrue.skillshiftapp.view.main.home.HomeScreen
 
 @Composable
 fun RootNavigationGraph(navController: NavHostController) {
@@ -14,13 +13,10 @@ fun RootNavigationGraph(navController: NavHostController) {
         route = Graph.ROOT,
         startDestination = Graph.AUTHENTICATION
     ){
-        authNavGraph(navController = navController)
-        composable(route = Graph.HOME) {
+        composable(route = Graph.AUTHENTICATION) {
             SkillShiftApp()
         }
-
     }
-
 }
 
 object Graph {
