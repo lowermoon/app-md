@@ -32,22 +32,51 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.jejetrue.skillshiftapp.R
+import com.jejetrue.skillshiftapp.data.datastore.UserStore
+import com.jejetrue.skillshiftapp.data.response.DataProfileResponse
+import com.jejetrue.skillshiftapp.data.response.getProfile
+import com.jejetrue.skillshiftapp.data.retrofit.ExecApi
+import com.jejetrue.skillshiftapp.ui.components.LoadingDialog
 import com.jejetrue.skillshiftapp.ui.theme.SkillShiftAppTheme
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProfileScreen(){
+    val context = LocalContext.current
+    val store = UserStore(context)
+    val token = store.getAccessToken.collectAsState(initial = "")
+    var fetched by remember{ mutableStateOf(false) }
+    var response by remember {
+        mutableStateOf<DataProfileResponse?>(null)
+    }
+    if ( response == null ) {
+        LoadingDialog()
+        ExecApi {
+            response = getProfile(token.value)
+        }
+        LaunchedEffect(response) {
+            fetched = true
+        }
+    }
+
     Scaffold (
         topBar = {
             CenterAlignedTopAppBar(
@@ -61,69 +90,69 @@ fun ProfileScreen(){
                         }
                     ) {
                         Icon(imageVector = Icons.Default.ManageAccounts, contentDescription ="" )
-
                     }
                 }
             )
             
         }
     ){contentPadding ->
-        Column(
-            modifier = Modifier
-                .padding(contentPadding)
-                .fillMaxWidth(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-
-            ) {
-            Spacer(modifier = Modifier.height(20.dp))
-            ImageProfile()
-            Spacer(modifier = Modifier.height(15.dp))
-
-
-            UserName()
-            Email()
-            Role()
-
-            Spacer(modifier = Modifier.height(20.dp))
-            Box(modifier = Modifier.background(Color.LightGray))
-            Box(
+        if ( fetched ) {
+            Column(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(20.dp)
-                    .height(200.dp)
-                    .background(
-                        Color.LightGray,
-                        shape = RoundedCornerShape(16.dp)
-                    ),
-            ){
-                Column(modifier = Modifier.padding(8.dp)) {
-                    DataStatik()
-                    FaceID()
-                    NonaktifAkun()
-                    KeluarAkun()
+                    .padding(contentPadding)
+                    .fillMaxWidth(),
+                horizontalAlignment = Alignment.CenterHorizontally,
 
+                ) {
+                Spacer(modifier = Modifier.height(20.dp))
+                ImageProfile()
+                Spacer(modifier = Modifier.height(15.dp))
+
+
+                UserName(response?.name.toString())
+                Email(response?.email.toString())
+                Role(response?.role.toString())
+
+                Spacer(modifier = Modifier.height(20.dp))
+                Box(modifier = Modifier.background(Color.LightGray))
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(20.dp)
+                        .height(200.dp)
+                        .background(
+                            Color.LightGray,
+                            shape = RoundedCornerShape(16.dp)
+                        ),
+                ){
+                    Column(modifier = Modifier.padding(8.dp)) {
+                        DataStatik()
+                        FaceID()
+                        NonaktifAkun()
+                        KeluarAkun()
+
+                    }
                 }
             }
         }
-
     }
 
 }
 
 @Composable
-fun UserName() {
-    Text(text = "@jihaanjj",)
+fun UserName(username: String) {
+    Text(text = username,)
 }
 
 @Composable
-fun Email() {
-    Text(text = "Jihaan Jasmine Jahroo")
+fun Email(email: String) {
+    Text(text = email)
 }
 
 @Composable
 fun ImageProfile() {
     Image(
-        painter = painterResource(R.drawable.ic_profile),
+        painter = painterResource(R.drawable.dummyphoto),
         contentDescription = "photo profile",
         contentScale = ContentScale.Crop,
         modifier = Modifier
@@ -138,13 +167,13 @@ fun ImageProfile() {
 }
 
 @Composable
-fun Role() {
+fun Role(role: String) {
     Box(
         modifier = Modifier
             .background(Color.LightGray)
     ){
         Text(
-            text = "freelance",
+            text = role,
         )
     }
 }

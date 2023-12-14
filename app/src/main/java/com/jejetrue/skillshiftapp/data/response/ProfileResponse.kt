@@ -24,7 +24,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import coil.compose.AsyncImage
 import com.google.gson.annotations.SerializedName
 import com.jejetrue.skillshiftapp.data.datastore.UserStore
 import com.jejetrue.skillshiftapp.data.retrofit.ApiConfig
@@ -36,17 +35,35 @@ import java.io.ByteArrayOutputStream
 
 data class ProfileResponse(
 	@field:SerializedName("data")
-	val data: DataResponse? = null,
+	val data: DataProfileResponse? = null,
 	@field:SerializedName("message")
 	val message: String? = null,
 	@field:SerializedName("status")
 	val status: String? = null
 )
 
-data class DataResponse(
+data class DataProfileResponse(
 	@field:SerializedName("imageUrl")
-	val imageUrl: String? = null
+	val imageUrl: String? = null,
+	@field:SerializedName("name")
+	val name: String? = null,
+	@field:SerializedName("nationalId")
+	val nationalId: String? = null,
+	@field:SerializedName("email")
+	val email: String? = null,
+	@field:SerializedName("telephoneNumber")
+	val telephoneNumber: String? = null,
+	@field:SerializedName("role")
+	val role: String? = null,
 )
+
+
+fun getProfile(token: String): DataProfileResponse? {
+	val service = ApiConfig.getApiService()
+	val response = service.getProfile("saveData=$token").execute()
+	Log.d("ZAW", response.body().toString())
+	return response.body()
+}
 
 data class File(
 	val file: String
@@ -102,7 +119,7 @@ fun ExampleSetProfile() {
 			.fillMaxWidth(),
 		contentAlignment = Alignment.Center
 	) {
-		AsyncImage(model = imageUri, contentDescription = "lorem")
+//		AsyncImage(model = imageUri, contentDescription = "lorem")
 		Column {
 			Button(
 				onClick = {

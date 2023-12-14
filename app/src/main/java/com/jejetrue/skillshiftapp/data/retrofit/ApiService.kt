@@ -2,13 +2,13 @@ package com.jejetrue.skillshiftapp.data.retrofit
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import com.jejetrue.skillshiftapp.data.response.DataProfileResponse
 import com.jejetrue.skillshiftapp.data.response.LoginResponse
 import com.jejetrue.skillshiftapp.data.response.ProfileResponse
 import com.jejetrue.skillshiftapp.data.response.RegisterResponse
 import com.jejetrue.skillshiftapp.data.response.VerifyResponse
 import com.jejetrue.skillshiftapp.ui.components.LoadingDialog
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import okhttp3.MultipartBody
@@ -42,7 +42,7 @@ interface ApiService {
     @GET("profile")
     fun getProfile(
         @Header("Cookie") token: String
-    ): Call<ProfileResponse>
+    ): Call<DataProfileResponse>
 
     @POST("profile/uploadphoto")
     @Multipart
@@ -52,7 +52,6 @@ interface ApiService {
     ): Call<ProfileResponse>
 }
 
-@OptIn(DelicateCoroutinesApi::class)
 @Composable
 fun ExecApi(
     action: () -> Unit
