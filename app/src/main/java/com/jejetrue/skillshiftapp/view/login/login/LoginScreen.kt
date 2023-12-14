@@ -82,7 +82,7 @@ fun LoginScreen(
         var fetchLogin by remember { mutableStateOf(false) }
         var tokenLogin by remember { mutableStateOf("") }
         var error by remember { mutableStateOf(false) }
-        var errorMessage by remember { mutableStateOf("Username/Password Salah !") }
+        val errorMessage by remember { mutableStateOf("Username/Password Salah !") }
         FullWidthButton(
             text = "Login",
             onClick = {

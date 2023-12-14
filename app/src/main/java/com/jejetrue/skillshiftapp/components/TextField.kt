@@ -1,6 +1,5 @@
 package com.jejetrue.skillshiftapp.components
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -38,10 +37,10 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import com.jejetrue.skillshiftapp.data.payload.dataVerif
 import com.jejetrue.skillshiftapp.data.response.VerifAccount
+import com.jejetrue.skillshiftapp.data.retrofit.ExecApi
+import com.jejetrue.skillshiftapp.ui.components.ErrorDialog
 import com.jejetrue.skillshiftapp.ui.theme.Rose600
 import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 
 //Text Field untuk input data
 @Composable
@@ -169,7 +168,7 @@ fun OtpTextField(
         mutableStateOf("")
     }
     var status by remember { mutableStateOf("") }
-
+    var fetchVerify by remember { mutableStateOf(false) }
     BasicTextField(
         value = otpCode,
         onValueChange = { newValue ->
@@ -214,24 +213,32 @@ fun OtpTextField(
 
 
     Button(onClick = {
-        GlobalScope.launch {
-            try {
-                status = VerifAccount(
-                    data = dataVerif(email, token, otpCode),
-                    token = token
-                )
-            }catch ( e: Exception ){
-                Log.d("ZAW", e.message.toString())
-            }
-        }
+        fetchVerify = true
     }) {
         Text(text = "SUBMIT")
     }
 
-
-    if ( status == "success" ) {
-        navigation()
+    var fetchDone by remember { mutableStateOf(false) }
+    if ( fetchVerify ) {
+        ExecApi {
+            status = VerifAccount(
+                data = dataVerif(email, token, otpCode),
+                token = token
+            )
+            fetchVerify = false
+            fetchDone = true
+        }
     }
+
+    if ( status == "sucess" ) {
+        navigation()
+    }else {
+        if ( fetchDone ) {
+            ErrorDialog(message = "${status} : your verification Code does not match !")
+        }
+    }
+
+
 }
 
 

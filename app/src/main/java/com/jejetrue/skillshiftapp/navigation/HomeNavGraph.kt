@@ -25,11 +25,12 @@ fun HomeNavGraph(navController: NavHostController){
     val context = LocalContext.current
     val store = UserStore(context)
     val tokenText = store.getAccessToken.collectAsState(initial = "")
+    val RouteHome = if (tokenText.value == "" || tokenText.value == "null") AuthScreen.Login.route else BottomBarScreen.Home.route
 
     NavHost(
         navController = navController,
         route = Graph.HOME,
-        startDestination = if (tokenText.value == "" || tokenText.value == "null") AuthScreen.Login.route else BottomBarScreen.Home.route
+        startDestination = RouteHome
     ){
         composable(route = BottomBarScreen.Home.route){
             HomeScreen()
@@ -52,7 +53,11 @@ fun HomeNavGraph(navController: NavHostController){
             LoginScreen(
                 onLoginClick = {
                     navController.popBackStack()
-                    navController.navigate(Graph.HOME)
+                    navController.navigate(Graph.HOME){
+                        popUpTo(Graph.HOME){
+                            inclusive = true
+                        }
+                    }
                 },
                 onSignUpClick = {
                     navController.navigate(AuthScreen.SignUp.route)
@@ -76,8 +81,7 @@ fun HomeNavGraph(navController: NavHostController){
         composable(route = AuthScreen.OtpVerify.route){
             OtpVerify(onClick = {
                 navController.navigate(AuthScreen.NewPass.route)
-            }
-            )
+            })
         }
 
         composable(route = AuthScreen.NewPass.route){
@@ -113,7 +117,11 @@ fun HomeNavGraph(navController: NavHostController){
                 email = email,
                 tokenRegis = token,
                 onClick = {
-                    navController.navigate((AuthScreen.Login.route))
+                    navController.navigate((AuthScreen.Login.route)){
+                        popUpTo(AuthScreen.Login.route) {
+                            inclusive = true
+                        }
+                    }
                 }
             )
         }
