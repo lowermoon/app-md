@@ -31,7 +31,6 @@ fun SkillShiftApp(navController: NavHostController = rememberNavController()) {
         bottomBar = { BottomBar(navController = navController) }
     ) {it
         HomeNavGraph(navController = navController)
-
     }
 }
 

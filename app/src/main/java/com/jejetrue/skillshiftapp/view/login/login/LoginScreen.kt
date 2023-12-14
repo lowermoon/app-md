@@ -1,6 +1,5 @@
 package com.jejetrue.skillshiftapp.view.login.login
 
-import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -11,7 +10,6 @@ import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -22,6 +20,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.jejetrue.skillshiftapp.R
 import com.jejetrue.skillshiftapp.components.ClickableLogin
 import com.jejetrue.skillshiftapp.components.DividerTextComponent
@@ -42,11 +41,11 @@ import kotlinx.coroutines.DelicateCoroutinesApi
 fun LoginScreen(
     onLoginClick: () -> Unit,
     onSignUpClick: () -> Unit,
-    onForgotClick: () -> Unit
+    onForgotClick: () -> Unit,
+    navController: NavController
 ) {
     val context = LocalContext.current
     val store = UserStore(context)
-    val tokenText = store.getAccessToken.collectAsState(initial = "user_token")
     var username by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
 
@@ -83,6 +82,7 @@ fun LoginScreen(
             text = "Login",
             onClick = {
                 fetchLogin = true
+                onLoginClick()
         })
         if (fetchLogin) {
             var tokenLogin: String? = null
@@ -93,14 +93,12 @@ fun LoginScreen(
                 if (tokenLogin !== null) {
                     store.saveToken(token = tokenLogin.toString())
                 }
-                Log.d("ZAW", tokenLogin.toString())
             }
         }
-        if ( tokenText.value !== "null" ) {
-            if ( tokenText.value !== "" ) {
-                onLoginClick()
-            }
-        }
+//        if ( tokenText.value !== "" ) {
+//            Log.d("ZAW", tokenText.value.toString())
+//            navController.navigate(Graph.HOME)
+//        }
 
         Spacer(modifier = Modifier.height(20.dp))
         DividerTextComponent()
