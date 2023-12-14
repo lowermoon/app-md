@@ -33,6 +33,7 @@ import com.jejetrue.skillshiftapp.data.datastore.UserStore
 import com.jejetrue.skillshiftapp.data.payload.dataLogin
 import com.jejetrue.skillshiftapp.data.response.signin
 import com.jejetrue.skillshiftapp.data.retrofit.ExecApi
+import com.jejetrue.skillshiftapp.ui.components.ErrorDialog
 import kotlinx.coroutines.DelicateCoroutinesApi
 
 
@@ -80,21 +81,30 @@ fun LoginScreen(
         //button login
         var fetchLogin by remember { mutableStateOf(false) }
         var tokenLogin by remember { mutableStateOf("") }
+        var error by remember { mutableStateOf(false) }
+        var errorMessage by remember { mutableStateOf("Username/Password Salah !") }
         FullWidthButton(
             text = "Login",
             onClick = {
                 fetchLogin = true
-                onLoginClick()
         })
         if (fetchLogin) {
             ExecApi {
-                tokenLogin = signin(dataLogin(username, password))
+                val ress = signin(dataLogin(username, password))
+                tokenLogin = ress?.token.toString()
+                if ( ress?.token == null ) {
+                    error = true
+                }
             }
             LaunchedEffect(tokenLogin) {
                 if (tokenLogin !== "") {
                     store.saveToken(token = tokenLogin)
+                    onLoginClick()
                 }
             }
+        }
+        if ( error ) {
+            ErrorDialog(message = errorMessage)
         }
 
         Spacer(modifier = Modifier.height(20.dp))

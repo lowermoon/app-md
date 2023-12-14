@@ -1,12 +1,15 @@
 package com.jejetrue.skillshiftapp.data.retrofit
 
-import android.util.Log
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import com.jejetrue.skillshiftapp.data.response.LoginResponse
 import com.jejetrue.skillshiftapp.data.response.ProfileResponse
 import com.jejetrue.skillshiftapp.data.response.RegisterResponse
 import com.jejetrue.skillshiftapp.data.response.VerifyResponse
+import com.jejetrue.skillshiftapp.ui.components.LoadingDialog
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -50,14 +53,14 @@ interface ApiService {
 }
 
 @OptIn(DelicateCoroutinesApi::class)
+@Composable
 fun ExecApi(
     action: () -> Unit
 ) {
-    GlobalScope.launch {
-        try {
+    LoadingDialog()
+    LaunchedEffect(true) {
+        CoroutineScope(Dispatchers.Default).launch {
             action()
-        }catch (e: Exception){
-            Log.d("ZAW", "Error : ${e.message}")
         }
     }
 }

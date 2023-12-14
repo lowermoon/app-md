@@ -1,5 +1,6 @@
 package com.jejetrue.skillshiftapp.data.response
 
+import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
 import com.jejetrue.skillshiftapp.data.payload.dataLogin
@@ -24,14 +25,20 @@ data class LoginResponse(
     val username: String? = null,
 
     @field:SerializedName("token")
-    val token: String? = null
+    val token: String? = null,
+
 )
 
-fun signin(dataLogin: dataLogin): String {
-    val service = ApiConfig.getApiService()
-    val payload = Gson().toJson(dataLogin)
-    val requestBody = payload.toRequestBody("application/json".toMediaTypeOrNull())
-    val response = service.login(requestBody).execute()
-    val token = response.body()?.token
-    return token.toString()
+
+fun signin(dataLogin: dataLogin): LoginResponse? {
+    return try {
+        val service = ApiConfig.getApiService()
+        val payload = Gson().toJson(dataLogin)
+        val requestBody = payload.toRequestBody("application/json".toMediaTypeOrNull())
+        val response = service.login(requestBody).execute()
+        response.body()
+    }catch (e: Exception) {
+        Log.d("ZAW", e.message.toString())
+        LoginResponse()
+    }
 }

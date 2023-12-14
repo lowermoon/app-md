@@ -24,12 +24,12 @@ import com.jejetrue.skillshiftapp.view.register.signup.SignupScreen
 fun HomeNavGraph(navController: NavHostController){
     val context = LocalContext.current
     val store = UserStore(context)
-    val tokenText = store.getAccessToken.collectAsState(initial = "user_token")
+    val tokenText = store.getAccessToken.collectAsState(initial = "")
 
     NavHost(
         navController = navController,
         route = Graph.HOME,
-        startDestination = if (tokenText.value !== "") BottomBarScreen.Home.route else AuthScreen.Login.route
+        startDestination = if (tokenText.value == "" || tokenText.value == "null") AuthScreen.Login.route else BottomBarScreen.Home.route
     ){
         composable(route = BottomBarScreen.Home.route){
             HomeScreen()
