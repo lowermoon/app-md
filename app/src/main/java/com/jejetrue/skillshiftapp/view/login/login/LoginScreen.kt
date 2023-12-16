@@ -90,9 +90,10 @@ fun LoginScreen(
         })
         if (fetchLogin) {
             ExecApi {
+                error = false
                 val ress = signin(dataLogin(username, password))
-                tokenLogin = ress?.token.toString()
-                if ( ress?.token == null ) {
+                tokenLogin = ress?.result?.token.toString()
+                if ( ress == null ) {
                     error = true
                 }
             }
@@ -106,7 +107,6 @@ fun LoginScreen(
         if ( error ) {
             ErrorDialog(message = errorMessage)
         }
-
         Spacer(modifier = Modifier.height(20.dp))
         DividerTextComponent()
         ClickableLogin(tryingToLogin = false,onTextSelected = {

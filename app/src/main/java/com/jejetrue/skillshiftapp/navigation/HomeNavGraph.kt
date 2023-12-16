@@ -45,6 +45,10 @@ fun HomeNavGraph(navController: NavHostController){
 
         composable(route = BottomBarScreen.Profile.route) {
             ProfileScreen(
+                onEditProfileClick = {
+                    navController.navigate(ProfileSetting.EditProfile.route)
+
+                }
             )
         }
 

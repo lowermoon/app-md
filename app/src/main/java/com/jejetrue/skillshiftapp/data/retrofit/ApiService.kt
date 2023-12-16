@@ -28,7 +28,7 @@ interface ApiService {
         @Body body: RequestBody
     ) : Call<LoginResponse>
 
-    @POST("register")
+    @POST("verifyFreelancer")
     fun register(
         @Body body: RequestBody
     ) : Call<RegisterResponse>

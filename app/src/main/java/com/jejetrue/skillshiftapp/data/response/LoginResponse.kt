@@ -8,7 +8,18 @@ import com.jejetrue.skillshiftapp.data.retrofit.ApiConfig
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody.Companion.toRequestBody
 
+
 data class LoginResponse(
+    @field:SerializedName("status")
+    val status: String? = null,
+
+    @field:SerializedName("message")
+    val message: String? = null,
+
+    @field:SerializedName("result")
+    val result: LoginResponseResult? = null,
+)
+data class LoginResponseResult(
     @field:SerializedName("role")
     val role: String? = null,
 
@@ -26,7 +37,6 @@ data class LoginResponse(
 
     @field:SerializedName("token")
     val token: String? = null,
-
 )
 
 

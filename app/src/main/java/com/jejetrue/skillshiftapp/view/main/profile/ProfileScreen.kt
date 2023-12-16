@@ -3,10 +3,8 @@
 package com.jejetrue.skillshiftapp.view.main.profile
 
 import android.annotation.SuppressLint
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -31,6 +29,8 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -42,6 +42,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -54,12 +55,16 @@ import com.jejetrue.skillshiftapp.data.response.DataProfileResponse
 import com.jejetrue.skillshiftapp.data.response.getProfile
 import com.jejetrue.skillshiftapp.data.retrofit.ExecApi
 import com.jejetrue.skillshiftapp.ui.components.LoadingDialog
+import com.jejetrue.skillshiftapp.ui.theme.DarkBlue2
+import com.jejetrue.skillshiftapp.ui.theme.DarkBlueBG
 import com.jejetrue.skillshiftapp.ui.theme.SkillShiftAppTheme
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ProfileScreen(){
+fun ProfileScreen(
+    onEditProfileClick: () -> Unit
+){
     val context = LocalContext.current
     val store = UserStore(context)
     val token = store.getAccessToken.collectAsState(initial = "")
@@ -67,6 +72,7 @@ fun ProfileScreen(){
     var response by remember {
         mutableStateOf<DataProfileResponse?>(null)
     }
+    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
     if ( response == null ) {
         LoadingDialog()
         ExecApi {
@@ -78,18 +84,23 @@ fun ProfileScreen(){
     }
 
     Scaffold (
+        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
             CenterAlignedTopAppBar(
                 title = { 
-                    Text(text = "Profile", maxLines = 1, overflow = TextOverflow.Ellipsis)
+                    Text(text = "Profile", maxLines = 1, overflow = TextOverflow.Ellipsis, color = Color.White)
                 },
+                colors = TopAppBarDefaults.mediumTopAppBarColors(containerColor = DarkBlueBG),
+
                 actions = {
                     IconButton(
                         onClick = {
+                            onEditProfileClick()
 
                         }
                     ) {
-                        Icon(imageVector = Icons.Default.ManageAccounts, contentDescription ="" )
+                        Icon(imageVector = Icons.Default.ManageAccounts, contentDescription ="", tint = Color.White)
+
                     }
                 }
             )
@@ -156,24 +167,23 @@ fun ImageProfile() {
         contentDescription = "photo profile",
         contentScale = ContentScale.Crop,
         modifier = Modifier
-            .size(150.dp)
-            .border(
-                BorderStroke(4.dp, Color.Red),
-                CircleShape
-            )
-            .padding(4.dp)
-            .clip(CircleShape)
-        )
+            .size(100.dp)
+            .clip(CircleShape))
 }
 
 @Composable
 fun Role(role: String) {
     Box(
         modifier = Modifier
-            .background(Color.LightGray)
+            .background(
+                color = DarkBlue2,
+                shape = RoundedCornerShape(30.dp)
+            ),
     ){
         Text(
             text = role,
+            Modifier.padding(8.dp),
+            color = Color.White
         )
     }
 }
@@ -181,9 +191,9 @@ fun Role(role: String) {
 @Composable
 fun FaceID() {
     TextButton(onClick = { /*TODO*/ }) {
-        Icon(imageVector = Icons.Rounded.TagFaces, contentDescription ="" )
+        Icon(imageVector = Icons.Rounded.TagFaces, contentDescription ="", tint = Color.White )
         Spacer(Modifier.size(ButtonDefaults.IconSpacing))
-        Text(text = "Verifikasi identifikasi wajah")
+        Text(text = "Verifikasi identifikasi wajah", color = Color.White)
         Spacer(modifier = Modifier.width(10.dp))
     }
 }
@@ -191,9 +201,9 @@ fun FaceID() {
 @Composable
 fun NonaktifAkun() {
     TextButton( onClick = { /*TODO*/ }) {
-        Icon(imageVector = Icons.Default.DoNotDisturbOn, contentDescription ="" )
+        Icon(imageVector = Icons.Default.DoNotDisturbOn, contentDescription ="" , tint = Color.Red)
         Spacer(Modifier.size(ButtonDefaults.IconSpacing))
-        Text(text = "Nonaktifkan Akun")
+        Text(text = "Nonaktifkan Akun", color = Color.Red)
         Spacer(modifier = Modifier.width(10.dp))
     }
 }
@@ -201,9 +211,9 @@ fun NonaktifAkun() {
 @Composable
 fun KeluarAkun() {
     TextButton( onClick = { /*TODO*/ }) {
-        Icon(imageVector = Icons.Default.Logout, contentDescription ="" )
+        Icon(imageVector = Icons.Default.Logout, contentDescription ="", tint = Color.Red )
         Spacer(Modifier.size(ButtonDefaults.IconSpacing))
-        Text(text = "Keluar dari akun ini")
+        Text(text = "Keluar dari akun ini", color = Color.Red)
         Spacer(modifier = Modifier.width(10.dp))
     }
 }
@@ -211,9 +221,9 @@ fun KeluarAkun() {
 @Composable
 fun DataStatik() {
     TextButton( onClick = { /*TODO*/ }) {
-        Icon(imageVector = Icons.Outlined.StackedBarChart, contentDescription ="" )
+        Icon(imageVector = Icons.Outlined.StackedBarChart, contentDescription ="", tint = Color.White )
         Spacer(Modifier.size(ButtonDefaults.IconSpacing))
-        Text(text = "Data statistik anda")
+        Text(text = "Data statistik anda", color = Color.White)
         Spacer(modifier = Modifier.width(10.dp))
     }
     
@@ -229,7 +239,11 @@ fun DataStatik() {
 @Composable
 fun ProfilePreview() {
     SkillShiftAppTheme {
-        ProfileScreen ()
+        ProfileScreen (
+            onEditProfileClick = {
+
+            }
+        )
     }
 
 }
