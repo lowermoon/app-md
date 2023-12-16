@@ -2,6 +2,10 @@ package com.jejetrue.skillshiftapp.data.retrofit
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import com.jejetrue.skillshiftapp.data.response.DataProfileResponse
 import com.jejetrue.skillshiftapp.data.response.LoginResponse
 import com.jejetrue.skillshiftapp.data.response.ProfileResponse
@@ -56,10 +60,14 @@ interface ApiService {
 fun ExecApi(
     action: () -> Unit
 ) {
-    LoadingDialog()
+    var loading by remember { mutableStateOf(true) }
+    if ( loading ) {
+        LoadingDialog()
+    }
     LaunchedEffect(true) {
         CoroutineScope(Dispatchers.Default).launch {
             action()
+            loading = false
         }
     }
 }

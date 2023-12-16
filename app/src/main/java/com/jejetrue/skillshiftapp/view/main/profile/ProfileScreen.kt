@@ -3,6 +3,7 @@
 package com.jejetrue.skillshiftapp.view.main.profile
 
 import android.annotation.SuppressLint
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -32,7 +33,6 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -54,7 +54,6 @@ import com.jejetrue.skillshiftapp.data.datastore.UserStore
 import com.jejetrue.skillshiftapp.data.response.DataProfileResponse
 import com.jejetrue.skillshiftapp.data.response.getProfile
 import com.jejetrue.skillshiftapp.data.retrofit.ExecApi
-import com.jejetrue.skillshiftapp.ui.components.LoadingDialog
 import com.jejetrue.skillshiftapp.ui.theme.DarkBlue2
 import com.jejetrue.skillshiftapp.ui.theme.DarkBlueBG
 import com.jejetrue.skillshiftapp.ui.theme.SkillShiftAppTheme
@@ -68,18 +67,16 @@ fun ProfileScreen(
     val context = LocalContext.current
     val store = UserStore(context)
     val token = store.getAccessToken.collectAsState(initial = "")
-    var fetched by remember{ mutableStateOf(false) }
+    Log.d("ZAW", token.value)
+    var loading by remember{ mutableStateOf(true) }
     var response by remember {
         mutableStateOf<DataProfileResponse?>(null)
     }
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
-    if ( response == null ) {
-        LoadingDialog()
+    if ( token.value !== "" ) {
         ExecApi {
             response = getProfile(token.value)
-        }
-        LaunchedEffect(response) {
-            fetched = true
+            loading = false
         }
     }
 
@@ -107,7 +104,7 @@ fun ProfileScreen(
             
         }
     ){contentPadding ->
-        if ( fetched ) {
+        if ( !loading && response !== null ) {
             Column(
                 modifier = Modifier
                     .padding(contentPadding)
@@ -145,6 +142,8 @@ fun ProfileScreen(
                     }
                 }
             }
+        }
+        else {
         }
     }
 
