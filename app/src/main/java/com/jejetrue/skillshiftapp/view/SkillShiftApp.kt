@@ -1,6 +1,5 @@
 package com.jejetrue.skillshiftapp.view
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.BottomNavigation
@@ -10,10 +9,10 @@ import androidx.compose.material.Icon
 import androidx.compose.material.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination
@@ -47,6 +46,7 @@ fun BottomBar(navController: NavHostController) {
     val bottomBarDestination = screens.any { it.route == currentDestination?.route }
     if (bottomBarDestination) {
         BottomNavigation(
+            backgroundColor = MaterialTheme.colorScheme.onSecondary,
             modifier = Modifier
                 .graphicsLayer {
                     shape = RoundedCornerShape(
@@ -55,13 +55,6 @@ fun BottomBar(navController: NavHostController) {
                     )
                     clip = true
                 }
-                .background(
-                    color = MaterialTheme.colorScheme.primary,
-                    shape = RoundedCornerShape(
-                        topStart = 10.dp,
-                        topEnd = 10.dp
-                    )
-                )
         ) {
             screens.forEach { screen ->
                 AddItem(
@@ -81,13 +74,11 @@ fun RowScope.AddItem(
     navController: NavHostController
 ) {
     BottomNavigationItem(
-        label = {
-            Text(text = screen.title)
-        },
         icon = {
             Icon(
                 imageVector = screen.icon,
-                contentDescription = "Navigation Icon"
+                contentDescription = "Navigation Icon",
+                tint = Color.White
             )
         },
         selected = currentDestination?.hierarchy?.any {

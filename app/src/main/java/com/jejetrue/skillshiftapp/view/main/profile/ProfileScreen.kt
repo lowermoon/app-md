@@ -3,9 +3,9 @@
 package com.jejetrue.skillshiftapp.view.main.profile
 
 import android.annotation.SuppressLint
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -27,6 +27,7 @@ import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -46,16 +47,14 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.jejetrue.skillshiftapp.R
 import com.jejetrue.skillshiftapp.data.datastore.UserStore
 import com.jejetrue.skillshiftapp.data.response.DataProfileResponse
 import com.jejetrue.skillshiftapp.data.response.getProfile
 import com.jejetrue.skillshiftapp.data.retrofit.ExecApi
-import com.jejetrue.skillshiftapp.ui.theme.DarkBlue2
-import com.jejetrue.skillshiftapp.ui.theme.DarkBlueBG
 import com.jejetrue.skillshiftapp.ui.theme.SkillShiftAppTheme
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
@@ -67,7 +66,6 @@ fun ProfileScreen(
     val context = LocalContext.current
     val store = UserStore(context)
     val token = store.getAccessToken.collectAsState(initial = "")
-    Log.d("ZAW", token.value)
     var loading by remember{ mutableStateOf(true) }
     var response by remember {
         mutableStateOf<DataProfileResponse?>(null)
@@ -84,21 +82,11 @@ fun ProfileScreen(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
             CenterAlignedTopAppBar(
-                title = { 
-                    Text(text = "Profile", maxLines = 1, overflow = TextOverflow.Ellipsis, color = Color.White)
+                title = {
+//                    Text(text = "Profile", maxLines = 1, overflow = TextOverflow.Ellipsis, color = Color.White)
                 },
-                colors = TopAppBarDefaults.mediumTopAppBarColors(containerColor = DarkBlueBG),
-
                 actions = {
-                    IconButton(
-                        onClick = {
-                            onEditProfileClick()
-
-                        }
-                    ) {
-                        Icon(imageVector = Icons.Default.ManageAccounts, contentDescription ="", tint = Color.White)
-
-                    }
+                    SetProfileButton(onEditProfileClick)
                 }
             )
             
@@ -112,46 +100,79 @@ fun ProfileScreen(
                 horizontalAlignment = Alignment.CenterHorizontally,
 
                 ) {
-                Spacer(modifier = Modifier.height(20.dp))
-                ImageProfile()
-                Spacer(modifier = Modifier.height(15.dp))
+                Column(modifier = Modifier.padding(vertical = 20.dp)) {
+                    ImageProfile()
+                }
 
-
-                UserName(response?.name.toString())
+                UserName("@${response?.name.toString()}")
                 Email(response?.email.toString())
                 Role(response?.role.toString())
 
-                Spacer(modifier = Modifier.height(20.dp))
-                Box(modifier = Modifier.background(Color.LightGray))
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(20.dp)
-                        .height(200.dp)
-                        .background(
-                            Color.LightGray,
-                            shape = RoundedCornerShape(16.dp)
-                        ),
-                ){
-                    Column(modifier = Modifier.padding(8.dp)) {
-                        DataStatik()
-                        FaceID()
-                        NonaktifAkun()
-                        KeluarAkun()
-
+                Column( modifier = Modifier.padding(horizontal = 50.dp) ) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(200.dp)
+                            .padding(vertical = 20.dp)
+                            .clip(RoundedCornerShape(16.dp))
+                            .background(color = MaterialTheme.colorScheme.onSecondary),
+                    ){
+                        Column(modifier = Modifier.padding(vertical = 8.dp, horizontal = 15.dp)) {
+                            DataStatik()
+                            FaceID()
+                            NonaktifAkun()
+                            KeluarAkun()
+                        }
                     }
                 }
             }
-        }
-        else {
         }
     }
 
 }
 
+@Preview(showBackground = true)
+@Composable
+fun PreviewSetProfileButton(){
+    SetProfileButton {
+
+    }
+}
+
+@Composable
+fun SetProfileButton(
+    onEditProfileClick: () -> Unit
+) {
+    IconButton(
+        onClick = {
+            onEditProfileClick()
+        },
+        modifier = Modifier
+            .padding(end = 20.dp)
+            .clip(RoundedCornerShape(50))
+            .background(color = MaterialTheme.colorScheme.onSecondary)
+    ) {
+        Column(
+            modifier = Modifier
+                .size(24.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            Icon(
+                imageVector = Icons.Default.ManageAccounts,
+                contentDescription ="",
+                tint = Color.White
+            )
+        }
+    }
+}
+
 @Composable
 fun UserName(username: String) {
-    Text(text = username,)
+    Text(
+        text = username,
+        fontSize = 10.sp
+    )
 }
 
 @Composable
@@ -175,14 +196,15 @@ fun Role(role: String) {
     Box(
         modifier = Modifier
             .background(
-                color = DarkBlue2,
+                color = MaterialTheme.colorScheme.onSecondary,
                 shape = RoundedCornerShape(30.dp)
             ),
     ){
         Text(
             text = role,
-            Modifier.padding(8.dp),
-            color = Color.White
+            color = MaterialTheme.colorScheme.error,
+            fontSize = 10.sp,
+            modifier = Modifier.padding(horizontal = 10.dp),
         )
     }
 }
@@ -234,7 +256,7 @@ fun DataStatik() {
 
 
 
-@Preview(showBackground = true)
+@Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun ProfilePreview() {
     SkillShiftAppTheme {
