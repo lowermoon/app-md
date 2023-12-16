@@ -1,7 +1,9 @@
 package com.jejetrue.skillshiftapp.view.main.profile.editprofile
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -9,8 +11,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material3.CenterAlignedTopAppBar
@@ -31,11 +36,15 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.jejetrue.skillshiftapp.R
 import com.jejetrue.skillshiftapp.ui.theme.DarkBlueBG
 import com.jejetrue.skillshiftapp.ui.theme.SkillShiftAppTheme
 import com.jejetrue.skillshiftapp.ui.theme.TextFieldColor
@@ -62,6 +71,7 @@ fun EditProfile(
                 colors = TopAppBarDefaults.centerAlignedTopAppBarColors(containerColor = DarkBlueBG),
 
 
+                //kembali ke halaman sebelum nya
                 navigationIcon = {
                     IconButton(
                         onClick = {
@@ -87,6 +97,8 @@ fun EditProfile(
 
                 ) {
                 Spacer(modifier = Modifier.height(20.dp))
+                //foto
+                ProfileImage()
 
                 Spacer(modifier = Modifier.height(15.dp))
 
@@ -94,21 +106,20 @@ fun EditProfile(
                 Spacer(modifier = Modifier.height(20.dp))
 
                 Column(modifier = Modifier.padding(20.dp)) {
+                    //form
                     InputData()
 
                     Spacer(modifier = Modifier.height(20.dp))
-                    ElevatedButton(
-                        onClick = {  }
-                    )
-                    {
-                        Icon(imageVector = Icons.Default.CheckCircle, contentDescription = "", tint = Color.Green )
-                        Text(text = "Submit", color = Color.Green )
 
-                    }
+                }
 
-
-
-
+                //tombol
+                ElevatedButton(
+                    onClick = {  }
+                )
+                {
+                    Icon(imageVector = Icons.Default.CheckCircle, contentDescription = "", tint = Color.Green )
+                    Text(text = "Submit", color = Color.Green )
 
                 }
 
@@ -121,8 +132,18 @@ fun EditProfile(
 
 
 @Composable
-fun EditImageProfile() {
-    
+fun ProfileImage(
+
+) {
+    Image(
+        painter = painterResource(R.drawable.dummyphoto),
+        contentDescription = "photo profile",
+        contentScale = ContentScale.Crop,
+        modifier = Modifier
+            .size(100.dp)
+            .clip(CircleShape)
+            .clickable {  }
+    )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
