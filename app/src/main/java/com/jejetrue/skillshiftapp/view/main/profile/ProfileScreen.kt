@@ -66,15 +66,17 @@ fun ProfileScreen(
     val context = LocalContext.current
     val store = UserStore(context)
     val token = store.getAccessToken.collectAsState(initial = "")
-    var loading by remember{ mutableStateOf(true) }
+    var loading by remember { mutableStateOf(true) }
     var response by remember {
         mutableStateOf<DataProfileResponse?>(null)
     }
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
     if ( token.value !== "" ) {
-        ExecApi {
-            response = getProfile(token.value)
-            loading = false
+        if ( response == null ) {
+            ExecApi {
+                response = getProfile(token.value)
+                loading = false
+            }
         }
     }
 
