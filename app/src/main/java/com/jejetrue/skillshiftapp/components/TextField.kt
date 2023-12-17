@@ -45,29 +45,27 @@ import kotlinx.coroutines.DelicateCoroutinesApi
 //Text Field untuk input data
 @Composable
 fun NormalTextField(
+    modifier: Modifier = Modifier,
     labelValue : String,
     painterResource : Painter,
     onValueChange: (String) -> Unit = {},
-    input: String = "") {
-    var text by remember {
-        mutableStateOf("")
-    }
+    input: String = ""
+) {
     OutlinedTextField(
+        modifier = modifier,
         value = input,
         //onValueChange = { text = it },
         onValueChange = onValueChange,
         label = { Text(labelValue) },
         shape = RoundedCornerShape(35.dp),
         colors = OutlinedTextFieldDefaults.colors(
-            focusedBorderColor = Rose600,
-            focusedLabelColor = Rose600,
-            unfocusedBorderColor = Color.Gray,
-            unfocusedLabelColor = Color.Gray,
+            focusedBorderColor = MaterialTheme.colorScheme.inversePrimary,
+            focusedLabelColor = MaterialTheme.colorScheme.inversePrimary,
+            unfocusedBorderColor = MaterialTheme.colorScheme.primary,
+            unfocusedLabelColor = MaterialTheme.colorScheme.primary,
         ),
         keyboardOptions = KeyboardOptions.Default,
         leadingIcon = { Icon(painter = painterResource, contentDescription = "") }
-
-
     )
 
 }

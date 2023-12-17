@@ -17,7 +17,7 @@ import com.jejetrue.skillshiftapp.view.main.BottomBarScreen
 import com.jejetrue.skillshiftapp.view.main.ProjectScreen
 import com.jejetrue.skillshiftapp.view.main.home.HomeScreen
 import com.jejetrue.skillshiftapp.view.main.profile.ProfileScreen
-import com.jejetrue.skillshiftapp.view.main.profile.editprofile.EditImageProfile
+import com.jejetrue.skillshiftapp.view.main.profile.editprofile.EditProfile
 import com.jejetrue.skillshiftapp.view.register.otp.VerifyAccount
 import com.jejetrue.skillshiftapp.view.register.signup.SignupScreen
 
@@ -55,7 +55,9 @@ fun HomeNavGraph(navController: NavHostController){
         composable(
             route = ProfileSetting.EditProfile.route,
         ) {
-            EditImageProfile()
+            EditProfile {
+                navController.navigate(BottomBarScreen.Profile.route)
+            }
         }
 
         //LOGIN
