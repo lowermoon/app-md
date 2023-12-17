@@ -10,6 +10,7 @@ import com.jejetrue.skillshiftapp.data.response.DataProfileResponse
 import com.jejetrue.skillshiftapp.data.response.LoginResponse
 import com.jejetrue.skillshiftapp.data.response.ProfileResponse
 import com.jejetrue.skillshiftapp.data.response.RegisterResponse
+import com.jejetrue.skillshiftapp.data.response.SetProfileResponse
 import com.jejetrue.skillshiftapp.data.response.VerifyResponse
 import com.jejetrue.skillshiftapp.ui.components.LoadingDialog
 import kotlinx.coroutines.CoroutineScope
@@ -54,6 +55,12 @@ interface ApiService {
         @Header("Cookie") token: String,
         @Part image: MultipartBody.Part
     ): Call<ProfileResponse>
+
+    @POST("profile/edit")
+    fun setProfile(
+        @Header("Cookie") token: String,
+        @Body body: RequestBody
+    ): Call<SetProfileResponse>
 }
 
 @Composable

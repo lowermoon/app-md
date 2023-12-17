@@ -24,8 +24,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
 import com.jejetrue.skillshiftapp.data.datastore.UserStore
+import com.jejetrue.skillshiftapp.data.payload.ProfileDetail
 import com.jejetrue.skillshiftapp.data.retrofit.ApiConfig
 import com.jejetrue.skillshiftapp.data.retrofit.ExecApi
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -49,12 +51,21 @@ data class DataProfileResponse(
 	val name: String? = null,
 	@field:SerializedName("nationalId")
 	val nationalId: String? = null,
+	@field:SerializedName("username")
+	val username: String? = null,
 	@field:SerializedName("email")
 	val email: String? = null,
 	@field:SerializedName("telephoneNumber")
 	val telephoneNumber: String? = null,
 	@field:SerializedName("role")
 	val role: String? = null,
+)
+
+data class SetProfileResponse(
+	@field:SerializedName("status")
+	val status: String? = null,
+	@field:SerializedName("message")
+	val message: String? = null,
 )
 
 
@@ -80,6 +91,14 @@ fun setProfileImage(image: Bitmap, token: String): ProfileResponse? {
 	)
 	Log.d("ZAW", requestBody.toString())
 	val response = service.chengeProfileImage("verifyToken=$token", requestBody).execute()
+	return response.body()
+}
+
+fun setProfileDetail(dataProfile: ProfileDetail, token: String): SetProfileResponse? {
+	val service = ApiConfig.getApiService()
+	val payload = Gson().toJson(dataProfile)
+	val requestBody = payload.toRequestBody("application/json".toMediaTypeOrNull())
+	val response = service.setProfile("verifyToken=$token" ,requestBody).execute()
 	return response.body()
 }
 

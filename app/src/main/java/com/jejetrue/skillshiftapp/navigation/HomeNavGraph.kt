@@ -44,6 +44,7 @@ fun HomeNavGraph(navController: NavHostController){
             )
         }
 
+
         // Profile
         composable(route = BottomBarScreen.Profile.route) {
             ProfileScreen(
@@ -109,7 +110,6 @@ fun HomeNavGraph(navController: NavHostController){
             SignupScreen(
                 onSignUpClick = { email, token ->
                     navController.navigate(AuthScreen.VerifyAccount.createRoute(email, token))
-
                 },
                 onLoginClick = {
                     navController.navigate(AuthScreen.Login.route)

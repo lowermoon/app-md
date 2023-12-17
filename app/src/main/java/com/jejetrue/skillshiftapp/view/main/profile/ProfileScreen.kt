@@ -55,7 +55,6 @@ import com.jejetrue.skillshiftapp.data.datastore.UserStore
 import com.jejetrue.skillshiftapp.data.response.DataProfileResponse
 import com.jejetrue.skillshiftapp.data.response.getProfile
 import com.jejetrue.skillshiftapp.data.retrofit.ExecApi
-import com.jejetrue.skillshiftapp.ui.theme.SkillShiftAppTheme
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
@@ -136,9 +135,9 @@ fun ProfileScreen(
 @Preview(showBackground = true)
 @Composable
 fun PreviewSetProfileButton(){
-    SetProfileButton {
-
-    }
+//    SetProfileButton {
+//
+//    }
 }
 
 @Composable
@@ -261,12 +260,12 @@ fun DataStatik() {
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun ProfilePreview() {
-    SkillShiftAppTheme {
-        ProfileScreen (
-            onEditProfileClick = {
-
-            }
-        )
-    }
+//    SkillShiftAppTheme {
+//        ProfileScreen (
+//            onEditProfileClick = {
+//
+//            }
+//        )
+//    }
 
 }
