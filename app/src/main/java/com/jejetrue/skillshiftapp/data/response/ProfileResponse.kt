@@ -71,7 +71,7 @@ data class SetProfileResponse(
 
 fun getProfile(token: String): DataProfileResponse? {
 	val service = ApiConfig.getApiService()
-	val response = service.getProfile("saveData=$token").execute()
+	val response = service.getProfile("verifyToken=$token").execute()
 	Log.d("ZAW", response.body().toString())
 	return response.body()
 }
