@@ -21,4 +21,10 @@ class UserStore (private val context: Context) {
             it[USER_TOKEN_KEY] = token
         }
     }
+
+    suspend fun removeToken() {
+        context.datastore.edit {
+            it[USER_TOKEN_KEY] = ""
+        }
+    }
 }

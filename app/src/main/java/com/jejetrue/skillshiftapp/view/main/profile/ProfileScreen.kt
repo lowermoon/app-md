@@ -58,7 +58,8 @@ import com.jejetrue.skillshiftapp.data.retrofit.ExecApi
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProfileScreen(
-    onEditProfileClick: () -> Unit
+    onEditProfileClick: () -> Unit,
+    onLogout: @Composable () -> Unit
 ){
     val context = LocalContext.current
     val store = UserStore(context)
@@ -104,23 +105,28 @@ fun ProfileScreen(
                 }
 
                 UserName("@${response?.name.toString()}")
-                Email(response?.email.toString())
-                Role(response?.role.toString())
+                Spacer(modifier = Modifier.height(7.dp))
 
+                Email(response?.email.toString())
+                Spacer(modifier = Modifier.height(7.dp))
+
+                Role(response?.role.toString())
+                Spacer(modifier = Modifier.height(7.dp))
+
+                Spacer(modifier = Modifier.height(20.dp))
                 Column( modifier = Modifier.padding(horizontal = 50.dp) ) {
-                    Box(
+                    Column(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(200.dp)
-                            .padding(vertical = 20.dp)
                             .clip(RoundedCornerShape(16.dp))
-                            .background(color = MaterialTheme.colorScheme.onSecondary),
+                            .background(color = MaterialTheme.colorScheme.onSecondary)
+                            .padding(vertical = 20.dp, horizontal = 15.dp)
                     ){
-                        Column(modifier = Modifier.padding(vertical = 8.dp, horizontal = 15.dp)) {
-                            DataStatik()
-                            FaceID()
-                            NonaktifAkun()
-                            KeluarAkun()
+                        DataStatik()
+                        FaceID()
+                        NonaktifAkun()
+                        KeluarAkun{
+                            onLogout()
                         }
                     }
                 }
@@ -236,12 +242,20 @@ fun NonaktifAkun() {
 }
 
 @Composable
-fun KeluarAkun() {
-    TextButton( onClick = { /*TODO*/ }) {
+fun KeluarAkun(
+    onLogout: @Composable () -> Unit
+) {
+    var onLogoutClick by remember { mutableStateOf(false) }
+    TextButton( onClick = {
+        onLogoutClick = true
+    }) {
         Icon(imageVector = Icons.Default.Logout, contentDescription ="", tint = Color.Red )
         Spacer(Modifier.size(ButtonDefaults.IconSpacing))
         Text(text = "Keluar dari akun ini", color = Color.Red)
         Spacer(modifier = Modifier.width(10.dp))
+    }
+    if ( onLogoutClick ) {
+        onLogout()
     }
 }
 

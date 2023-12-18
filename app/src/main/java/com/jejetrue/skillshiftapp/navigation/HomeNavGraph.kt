@@ -9,6 +9,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.jejetrue.skillshiftapp.data.datastore.UserStore
+import com.jejetrue.skillshiftapp.data.repository.removeToken
 import com.jejetrue.skillshiftapp.view.login.emailverify.EmailVerify
 import com.jejetrue.skillshiftapp.view.login.login.LoginScreen
 import com.jejetrue.skillshiftapp.view.login.newpass.NewPassword
@@ -26,7 +27,7 @@ fun HomeNavGraph(navController: NavHostController){
     val context = LocalContext.current
     val store = UserStore(context)
     val tokenText = store.getAccessToken.collectAsState(initial = "")
-    val RouteHome = if (tokenText.value == "" || tokenText.value == "null") AuthScreen.Login.route else BottomBarScreen.Home.route
+    var RouteHome = if (tokenText.value == "" || tokenText.value == "null") AuthScreen.Login.route else BottomBarScreen.Home.route
 
     NavHost(
         navController = navController,
@@ -50,6 +51,15 @@ fun HomeNavGraph(navController: NavHostController){
             ProfileScreen(
                 onEditProfileClick = {
                     navController.navigate(ProfileSetting.EditProfile.route)
+                },
+                onLogout = {
+                    removeToken()
+                    navController.navigate(AuthScreen.Login.route){
+                        popUpTo(AuthScreen.Login.route){
+                            inclusive = true
+                            RouteHome = AuthScreen.Login.route
+                        }
+                    }
                 }
             )
         }
