@@ -59,6 +59,8 @@ data class DataProfileResponse(
 	val telephoneNumber: String? = null,
 	@field:SerializedName("role")
 	val role: String? = null,
+	@field:SerializedName("profile")
+	val profile: String? = null,
 )
 
 data class SetProfileResponse(
@@ -72,7 +74,6 @@ data class SetProfileResponse(
 fun getProfile(token: String): DataProfileResponse? {
 	val service = ApiConfig.getApiService()
 	val response = service.getProfile("verifyToken=$token").execute()
-	Log.d("ZAW", response.body().toString())
 	return response.body()
 }
 

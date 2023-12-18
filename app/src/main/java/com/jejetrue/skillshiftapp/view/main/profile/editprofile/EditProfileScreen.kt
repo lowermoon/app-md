@@ -75,15 +75,15 @@ fun EditProfile(
     var telephoneNumber by remember { mutableStateOf("") }
     var nationalId by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
+    var imageUri by remember { mutableStateOf<Uri?>(null) }
 
     var oldfullName by remember { mutableStateOf("") }
     var oldemail by remember { mutableStateOf("") }
     var oldtelephoneNumber by remember { mutableStateOf("") }
     var oldnationalId by remember { mutableStateOf("") }
+    var oldimage by remember { mutableStateOf("") }
 
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
-    var imageUri by remember { mutableStateOf<Uri?>(null) }
-    val imageDefault = "https://a.ppy.sh/29533906?1649425228.jpeg"
     var sendData by remember { mutableStateOf(false) }
     var passwordNone by remember { mutableStateOf(false) }
     val context = LocalContext.current
@@ -143,14 +143,17 @@ fun EditProfile(
 
                     Spacer(modifier = Modifier.height(20.dp))
 
-                    //foto
-                    ProfileImage(onClick = {
-                        galleryLauncher.launch("image/*")
-                    }, imageUri = imageDefault, imageModel = imageUri)
                     oldfullName = oldProfile?.name.toString()
                     oldemail = oldProfile?.email.toString()
                     oldtelephoneNumber = oldProfile?.telephoneNumber.toString()
                     oldnationalId = oldProfile?.nationalId.toString()
+                    oldimage = oldProfile?.profile.toString()
+
+                    //foto
+                    ProfileImage(onClick = {
+                        galleryLauncher.launch("image/*")
+                    }, imageUri = oldimage, imageModel = imageUri)
+
 
                     //form
                     Column(modifier = Modifier.padding(20.dp)) {

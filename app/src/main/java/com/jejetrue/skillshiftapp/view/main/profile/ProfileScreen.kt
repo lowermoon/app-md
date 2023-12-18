@@ -3,7 +3,6 @@
 package com.jejetrue.skillshiftapp.view.main.profile
 
 import android.annotation.SuppressLint
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -46,11 +45,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.jejetrue.skillshiftapp.R
+import coil.compose.AsyncImage
 import com.jejetrue.skillshiftapp.data.datastore.UserStore
 import com.jejetrue.skillshiftapp.data.response.DataProfileResponse
 import com.jejetrue.skillshiftapp.data.response.getProfile
@@ -102,7 +100,7 @@ fun ProfileScreen(
 
                 ) {
                 Column(modifier = Modifier.padding(vertical = 20.dp)) {
-                    ImageProfile()
+                    ImageProfile(response?.profile.toString())
                 }
 
                 UserName("@${response?.name.toString()}")
@@ -182,14 +180,21 @@ fun Email(email: String) {
 }
 
 @Composable
-fun ImageProfile() {
-    Image(
-        painter = painterResource(R.drawable.dummyphoto),
+fun ImageProfile(model: String) {
+    AsyncImage(model = model,
         contentDescription = "photo profile",
         contentScale = ContentScale.Crop,
         modifier = Modifier
             .size(100.dp)
-            .clip(CircleShape))
+            .clip(CircleShape)
+    )
+//    Image(
+//        painter = painterResource(R.drawable.dummyphoto),
+//        contentDescription = "photo profile",
+//        contentScale = ContentScale.Crop,
+//        modifier = Modifier
+//            .size(100.dp)
+//            .clip(CircleShape))
 }
 
 @Composable
