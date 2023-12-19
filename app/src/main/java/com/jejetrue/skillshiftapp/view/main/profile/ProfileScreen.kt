@@ -20,6 +20,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DoNotDisturbOn
 import androidx.compose.material.icons.filled.Logout
 import androidx.compose.material.icons.filled.ManageAccounts
+import androidx.compose.material.icons.filled.VerifiedUser
 import androidx.compose.material.icons.outlined.StackedBarChart
 import androidx.compose.material.icons.rounded.TagFaces
 import androidx.compose.material3.ButtonDefaults

@@ -114,6 +114,7 @@ fun DaftarPenawaran() {
 fun ProjectItem() {
     Card(
         modifier = Modifier
+            .fillMaxWidth()
             .padding(10.dp)
             .wrapContentSize(),
         elevation = CardDefaults.cardElevation(10.dp)
@@ -122,12 +123,12 @@ fun ProjectItem() {
             modifier = Modifier.padding(15.dp)
         ) {
             //Judul project
-            Text("Mobile Legends", color = Color.White)
+            Text("Mobile Legends")
 
             Spacer(modifier = Modifier.height(20.dp))
 
             //SubJudul
-            Text(text = "teks ini berisi subjudul dari project ini", color = Color.White)
+            Text(text = "teks ini berisi subjudul dari project ini")
 
             Spacer(modifier = Modifier.height(20.dp))
 
@@ -135,11 +136,10 @@ fun ProjectItem() {
                 Icon(
                     imageVector = Icons.Default.MonetizationOn,
                     contentDescription = "",
-                    tint = Color.White,
                     modifier = Modifier.size(15.dp)
                 )
                 Spacer(Modifier.size(ButtonDefaults.IconSpacing))
-                Text(text = "Rp.100.000,00-", color = Color.White, fontSize = 9.sp)
+                Text(text = "Rp.100.000,00-", fontSize = 9.sp)
             }
         }
     }
@@ -253,6 +253,6 @@ fun ProjectAktif() {
 @Preview
 @Composable
 fun ProjectPreview2() {
-    ProjectAktif()
+    ProjectScreen()
 }
 
