@@ -55,11 +55,7 @@ import com.jejetrue.skillshiftapp.data.datastore.UserStore
 import com.jejetrue.skillshiftapp.data.response.DataProfileResponse
 import com.jejetrue.skillshiftapp.data.response.getProfile
 import com.jejetrue.skillshiftapp.data.retrofit.ExecApi
-import androidx.compose.ui.unit.sp
-import com.jejetrue.skillshiftapp.R
-import com.jejetrue.skillshiftapp.ui.theme.DarkBlue2
-import com.jejetrue.skillshiftapp.ui.theme.DarkBlueBG
-import com.jejetrue.skillshiftapp.ui.theme.SkillShiftAppTheme
+
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
@@ -129,9 +125,7 @@ fun ProfileScreen(
                             .background(color = MaterialTheme.colorScheme.onSecondary)
                             .padding(vertical = 20.dp, horizontal = 15.dp)
                     ){
-                        DataStatik()
                         FaceID()
-                        NonaktifAkun()
                         KeluarAkun{
                             onLogout()
                         }
@@ -194,11 +188,12 @@ fun FullName() {
         Icon(imageVector = Icons.Filled.VerifiedUser, contentDescription = "", tint = Color.Cyan)
 
     }
-fun Email(email: String) {
-    Text(text = email)
 }
 
 
+@Composable
+fun Email(email: String) {
+    Text(text = email)
 }
 
 @Composable
@@ -247,15 +242,6 @@ fun FaceID() {
     }
 }
 
-@Composable
-fun NonaktifAkun() {
-    TextButton( onClick = { /*TODO*/ }) {
-        Icon(imageVector = Icons.Default.DoNotDisturbOn, contentDescription ="" , tint = Color.Red)
-        Spacer(Modifier.size(ButtonDefaults.IconSpacing))
-        Text(text = "Nonaktifkan Akun", color = Color.Red)
-        Spacer(modifier = Modifier.width(10.dp))
-    }
-}
 
 @Composable
 fun KeluarAkun(
@@ -275,16 +261,7 @@ fun KeluarAkun(
     }
 }
 
-@Composable
-fun DataStatik() {
-    TextButton( onClick = { /*TODO*/ }) {
-        Icon(imageVector = Icons.Outlined.StackedBarChart, contentDescription ="", tint = Color.White )
-        Spacer(Modifier.size(ButtonDefaults.IconSpacing))
-        Text(text = "Data statistik anda", color = Color.White)
-        Spacer(modifier = Modifier.width(10.dp))
-    }
-    
-}
+
     
 
 
