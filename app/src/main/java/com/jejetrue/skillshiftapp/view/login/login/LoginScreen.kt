@@ -1,10 +1,12 @@
 package com.jejetrue.skillshiftapp.view.login.login
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.verticalScroll
@@ -19,6 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.jejetrue.skillshiftapp.R
 import com.jejetrue.skillshiftapp.components.ClickableLogin
@@ -33,6 +36,7 @@ import com.jejetrue.skillshiftapp.data.payload.dataLogin
 import com.jejetrue.skillshiftapp.data.response.signin
 import com.jejetrue.skillshiftapp.data.retrofit.ExecApi
 import com.jejetrue.skillshiftapp.ui.components.ErrorDialog
+import com.jejetrue.skillshiftapp.ui.theme.SkillShiftAppTheme
 import kotlinx.coroutines.DelicateCoroutinesApi
 
 
@@ -106,12 +110,28 @@ fun LoginScreen(
             ErrorDialog(message = errorMessage)
         }
         Spacer(modifier = Modifier.height(20.dp))
-        DividerTextComponent()
+
+        Box(modifier = Modifier.padding(25.dp)) {
+            DividerTextComponent()
+
+        }
+
         ClickableLogin(tryingToLogin = false,onTextSelected = {
             onSignUpClick()
         })
     }
 
+}
+
+@Preview
+@Composable
+fun LoginPreview() {
+    SkillShiftAppTheme {
+        LoginScreen(onLoginClick = {  }, onSignUpClick = {  }) {
+            
+        }
+    }
+    
 }
 
 

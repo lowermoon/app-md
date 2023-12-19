@@ -38,6 +38,7 @@ import androidx.compose.ui.unit.sp
 import com.jejetrue.skillshiftapp.R
 import com.jejetrue.skillshiftapp.ui.theme.DarkBlue2
 import com.jejetrue.skillshiftapp.ui.theme.DarkBlueBG
+import com.jejetrue.skillshiftapp.view.main.ProjectItem
 
 @Composable
 fun ProjectScreen(){
@@ -51,7 +52,8 @@ fun ProjectScreen(){
             Spacer(modifier = Modifier.height(10.dp))
             DaftarPenawaran()
             Spacer(modifier = Modifier.height(10.dp))
-            //LazyColumn
+
+            ////item project di daftar penawaran(Lazycolumn), disini jika di klik maka akan ke halaman info project
             ProjectItem()
 
             //jika ada project maka menampilkan list(LazyColumn)
@@ -104,51 +106,8 @@ fun DaftarPenawaran() {
     }
 }
 
-//item project di daftar penawaran(Lazycolumn), disini jika di klik maka akan ke halaman info project
-@Composable
-fun ProjectItem() {
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(10.dp)
-            .wrapContentSize(),
-        elevation = CardDefaults.cardElevation(10.dp)
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(15.dp)
-        ) {
-            //Judul project
-            Text("Mobile Legends", fontWeight = FontWeight.Bold )
-            Spacer(modifier = Modifier.height(8.dp))
 
-            //kategori
-            Row(horizontalArrangement = Arrangement.spacedBy(5.dp)) {
-                KategoriProject("Games")
-                KategoriProject("mobile legends")
 
-            }
-
-            Spacer(modifier = Modifier.height(20.dp))
-
-            //SubJudul
-            Text(text = "teks ini berisi subjudul dari project ini")
-
-            Spacer(modifier = Modifier.height(20.dp))
-
-            Row {
-                Icon(
-                    imageVector = Icons.Default.MonetizationOn,
-                    contentDescription = "",
-                    modifier = Modifier.size(15.dp)
-                )
-                Spacer(Modifier.size(ButtonDefaults.IconSpacing))
-                Text(text = "Rp.100.000,00-", fontSize = 9.sp)
-            }
-        }
-    }
-}
 
 
 //ketika ada project yang diambil maka akan menapilkan ini

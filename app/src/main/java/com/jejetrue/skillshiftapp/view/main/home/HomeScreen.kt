@@ -18,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.jejetrue.skillshiftapp.ui.theme.SkillShiftAppTheme
+import com.jejetrue.skillshiftapp.view.main.ProjectItem
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -47,8 +48,17 @@ fun HomeScreen() {
 
         }
 
+        ProjectItem()
+
     }
 }
+
+@Composable
+fun SearchBarProject() {
+    
+}
+
+
 
 
 @Preview
