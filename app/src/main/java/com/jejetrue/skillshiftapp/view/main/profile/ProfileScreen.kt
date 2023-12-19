@@ -7,6 +7,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -18,7 +19,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DoNotDisturbOn
-import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.Logout
 import androidx.compose.material.icons.filled.ManageAccounts
 import androidx.compose.material.icons.filled.VerifiedUser
@@ -45,6 +45,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.jejetrue.skillshiftapp.R
 import com.jejetrue.skillshiftapp.ui.theme.DarkBlue2
 import com.jejetrue.skillshiftapp.ui.theme.DarkBlueBG
@@ -112,16 +113,13 @@ fun ProfileScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(20.dp)
-                        .height(200.dp)
                         .background(
                             color = DarkBlue2,
                             shape = RoundedCornerShape(16.dp)
                         ),
                 ){
                     Column(modifier = Modifier.padding(8.dp)) {
-                        DataStatik()
                         FaceID()
-                        NonaktifAkun()
                         KeluarAkun()
 
                     }
@@ -137,13 +135,17 @@ fun ProfileScreen(
 
 @Composable
 fun UserName() {
-    Text(text = "@jihaanjj", color = Color.White)
+    Text(text = "@jihaanjj", color = Color.White, fontSize = 10.sp)
 }
 
 @Composable
 fun FullName() {
-    Text(text = "Jihaan Jasmine Jahroo", color = Color.White)
-    Icon(imageVector = Icons.Filled.VerifiedUser, contentDescription = "", tint = Color.Cyan)
+    Row {
+        Text(text = "Jihaan Jasmine Jahroo", color = Color.White)
+        Icon(imageVector = Icons.Filled.VerifiedUser, contentDescription = "", tint = Color.Cyan)
+
+    }
+
 
 }
 
@@ -170,7 +172,8 @@ fun Role() {
         Text(
             text = "freelance",
             Modifier.padding(8.dp),
-            color = Color.White
+            color = Color.White,
+            fontSize = 8.sp
         )
     }
 }

@@ -14,7 +14,7 @@ import com.jejetrue.skillshiftapp.view.login.login.LoginScreen
 import com.jejetrue.skillshiftapp.view.login.newpass.NewPassword
 import com.jejetrue.skillshiftapp.view.login.otp.OtpVerify
 import com.jejetrue.skillshiftapp.view.main.BottomBarScreen
-import com.jejetrue.skillshiftapp.view.main.ProjectScreen
+import com.jejetrue.skillshiftapp.view.main.project.ProjectScreen
 import com.jejetrue.skillshiftapp.view.main.home.HomeScreen
 import com.jejetrue.skillshiftapp.view.main.profile.ProfileScreen
 import com.jejetrue.skillshiftapp.view.register.otp.VerifyAccount
@@ -37,8 +37,7 @@ fun HomeNavGraph(navController: NavHostController){
 
         composable(route = BottomBarScreen.Project.route){
             ProjectScreen(
-                name = BottomBarScreen.Project.route,
-                onClick = {}
+
             )
         }
 

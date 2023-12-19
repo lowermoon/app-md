@@ -20,3 +20,5 @@ val DarkBlueBG = Color(0xFF292E3B)
 val TextFieldColor = Color(0xFF404553)
 
 val Yellow1 = Color(0xFFFFD700)
+
+val BorderBlue = Color(0xFF414654)
