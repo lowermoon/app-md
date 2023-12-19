@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Cancel
@@ -22,6 +23,8 @@ import androidx.compose.material.icons.filled.MonetizationOn
 import androidx.compose.material.icons.filled.PersonPin
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -109,13 +112,12 @@ fun DaftarPenawaran() {
 //item project di daftar penawaran(Lazycolumn), disini jika di klik maka akan ke halaman info project
 @Composable
 fun ProjectItem() {
-    Box(modifier = Modifier
-        .fillMaxWidth()
-        .background(
-            color = DarkBlueBG,
-            shape = RoundedCornerShape(8.dp)
-        ),
-    ){
+    Card(
+        modifier = Modifier
+            .padding(10.dp)
+            .wrapContentSize(),
+        elevation = CardDefaults.cardElevation(10.dp)
+    ) {
         Column(
             modifier = Modifier.padding(15.dp)
         ) {
@@ -130,26 +132,30 @@ fun ProjectItem() {
             Spacer(modifier = Modifier.height(20.dp))
 
             Row {
-                Icon(imageVector = Icons.Default.MonetizationOn, contentDescription = "", tint = Color.White, modifier = Modifier.size(15.dp))
+                Icon(
+                    imageVector = Icons.Default.MonetizationOn,
+                    contentDescription = "",
+                    tint = Color.White,
+                    modifier = Modifier.size(15.dp)
+                )
                 Spacer(Modifier.size(ButtonDefaults.IconSpacing))
                 Text(text = "Rp.100.000,00-", color = Color.White, fontSize = 9.sp)
             }
         }
     }
-    
 }
 
 
 //ketika ada project yang diambil maka akan menapilkan ini
 @Composable
 fun ProjectAktif() {
-    Box (modifier = Modifier
-        .fillMaxWidth()
-        .background(
-            color = DarkBlueBG,
-            shape = RoundedCornerShape(8.dp)
-        ),
-    ){
+    Card(
+        modifier = Modifier
+            .padding(10.dp)
+            .wrapContentSize(),
+        elevation = CardDefaults.cardElevation(10.dp)
+
+    ) {
         Column(modifier = Modifier.padding(15.dp)) {
             //judul
             Text(text = "Mobile Legends")
@@ -239,8 +245,6 @@ fun ProjectAktif() {
             }
         }
     }
-
-    
 }
 
 
@@ -249,6 +253,6 @@ fun ProjectAktif() {
 @Preview
 @Composable
 fun ProjectPreview2() {
-    ProjectScreen()
+    ProjectAktif()
 }
 
