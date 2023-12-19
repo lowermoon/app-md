@@ -2,6 +2,7 @@ package com.jejetrue.skillshiftapp.view.main.project
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -32,6 +33,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -90,9 +92,18 @@ fun InfoProjectScreen() {
                         //disini akan menampilkan info dan juga dibawah ada tombol pembatalan
 
                         JudulProyek()
-                        Spacer(modifier = Modifier.height(10.dp))
-                        SubJudulProyek()
+                        Spacer(modifier = Modifier.height(8.dp))
+
+                        //kategori
+                        Row(horizontalArrangement = Arrangement.spacedBy(5.dp)) {
+                            KategoriProject("Games")
+                            KategoriProject("mobile legends")
+
+                        }
+
                         Spacer(modifier = Modifier.height(15.dp))
+                        SubJudulProyek()
+                        Spacer(modifier = Modifier.height(20.dp))
                         Deskripsi()
                         Spacer(modifier = Modifier.height(8.dp))
                         ImageProject()
@@ -115,7 +126,26 @@ fun InfoProjectScreen() {
 
 @Composable
 fun JudulProyek() {
-    Text(text = "Mobile Legends")
+    Text(text = "Mobile Legends", fontWeight = FontWeight.Bold)
+}
+
+@Composable
+fun KategoriProject(text: String) {
+    Box(
+        modifier = Modifier
+            .background(
+                color = DarkBlue2,
+                shape = RoundedCornerShape(30.dp)
+            ),
+    ) {
+        Text(
+            text = text,
+            Modifier.padding(8.dp),
+            color = Color.White,
+            fontSize = 8.sp
+        )
+    }
+    
 }
 
 @Composable

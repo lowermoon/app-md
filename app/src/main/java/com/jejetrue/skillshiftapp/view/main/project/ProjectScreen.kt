@@ -2,6 +2,7 @@ package com.jejetrue.skillshiftapp.view.main.project
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -30,6 +31,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -118,7 +120,15 @@ fun ProjectItem() {
                 .padding(15.dp)
         ) {
             //Judul project
-            Text("Mobile Legends")
+            Text("Mobile Legends", fontWeight = FontWeight.Bold )
+            Spacer(modifier = Modifier.height(8.dp))
+
+            //kategori
+            Row(horizontalArrangement = Arrangement.spacedBy(5.dp)) {
+                KategoriProject("Games")
+                KategoriProject("mobile legends")
+
+            }
 
             Spacer(modifier = Modifier.height(20.dp))
 
@@ -152,9 +162,20 @@ fun ProjectAktif() {
         elevation = CardDefaults.cardElevation(10.dp)
 
     ) {
-        Column(modifier = Modifier.fillMaxWidth().padding(15.dp)) {
+        Column(modifier = Modifier
+            .fillMaxWidth()
+            .padding(15.dp)) {
             //judul
-            Text(text = "Mobile Legends")
+            Text(text = "Mobile Legends", fontWeight = FontWeight.Bold)
+
+
+            //kategori
+            Row(horizontalArrangement = Arrangement.spacedBy(5.dp)) {
+                KategoriProject("Games")
+                KategoriProject("mobile legends")
+
+            }
+
 
             Spacer(modifier = Modifier.height(8.dp))
 
@@ -242,6 +263,8 @@ fun ProjectAktif() {
         }
     }
 }
+
+
 
 
 
