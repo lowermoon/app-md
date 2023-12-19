@@ -113,7 +113,9 @@ fun ProjectItem() {
         elevation = CardDefaults.cardElevation(10.dp)
     ) {
         Column(
-            modifier = Modifier.padding(15.dp)
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(15.dp)
         ) {
             //Judul project
             Text("Mobile Legends")
@@ -144,12 +146,13 @@ fun ProjectItem() {
 fun ProjectAktif() {
     Card(
         modifier = Modifier
+            .fillMaxWidth()
             .padding(10.dp)
             .wrapContentSize(),
         elevation = CardDefaults.cardElevation(10.dp)
 
     ) {
-        Column(modifier = Modifier.padding(15.dp)) {
+        Column(modifier = Modifier.fillMaxWidth().padding(15.dp)) {
             //judul
             Text(text = "Mobile Legends")
 
