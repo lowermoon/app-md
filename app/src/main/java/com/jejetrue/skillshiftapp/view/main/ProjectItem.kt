@@ -24,11 +24,14 @@ import androidx.compose.ui.unit.sp
 import com.jejetrue.skillshiftapp.view.main.project.KategoriProject
 
 @Composable
-fun ProjectItem() {
+fun ProjectItem(
+    title: String,
+    subTitle: String,
+
+) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(10.dp)
             .wrapContentSize(),
         elevation = CardDefaults.cardElevation(10.dp)
     ) {
@@ -38,7 +41,7 @@ fun ProjectItem() {
                 .padding(15.dp)
         ) {
             //Judul project
-            Text("Mobile Legends", fontWeight = FontWeight.Bold )
+            Text(title, fontWeight = FontWeight.Bold )
             Spacer(modifier = Modifier.height(8.dp))
 
             //kategori
@@ -51,7 +54,7 @@ fun ProjectItem() {
             Spacer(modifier = Modifier.height(20.dp))
 
             //SubJudul
-            Text(text = "teks ini berisi subjudul dari project ini")
+            Text(text = subTitle)
 
             Spacer(modifier = Modifier.height(20.dp))
 
