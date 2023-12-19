@@ -85,4 +85,6 @@ dependencies {
     implementation("androidx.datastore:datastore-preferences-rxjava3:1.0.0")
 
     implementation("androidx.compose.material:material:1.5.4")
+
+    implementation("androidx.core:core-splashscreen:1.0.1")
 }
