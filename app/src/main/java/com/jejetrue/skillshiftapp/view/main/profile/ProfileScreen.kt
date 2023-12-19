@@ -3,13 +3,12 @@
 package com.jejetrue.skillshiftapp.view.main.profile
 
 import android.annotation.SuppressLint
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -21,7 +20,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DoNotDisturbOn
 import androidx.compose.material.icons.filled.Logout
 import androidx.compose.material.icons.filled.ManageAccounts
-import androidx.compose.material.icons.filled.VerifiedUser
 import androidx.compose.material.icons.outlined.StackedBarChart
 import androidx.compose.material.icons.rounded.TagFaces
 import androidx.compose.material3.ButtonDefaults
@@ -29,22 +27,33 @@ import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
+import com.jejetrue.skillshiftapp.data.datastore.UserStore
+import com.jejetrue.skillshiftapp.data.response.DataProfileResponse
+import com.jejetrue.skillshiftapp.data.response.getProfile
+import com.jejetrue.skillshiftapp.data.retrofit.ExecApi
 import androidx.compose.ui.unit.sp
 import com.jejetrue.skillshiftapp.R
 import com.jejetrue.skillshiftapp.ui.theme.DarkBlue2
@@ -55,42 +64,41 @@ import com.jejetrue.skillshiftapp.ui.theme.SkillShiftAppTheme
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProfileScreen(
-    onEditProfileClick: () -> Unit
+    onEditProfileClick: () -> Unit,
+    onLogout: @Composable () -> Unit
 ){
+    val context = LocalContext.current
+    val store = UserStore(context)
+    val token = store.getAccessToken.collectAsState(initial = "")
+    var loading by remember { mutableStateOf(true) }
+    var response by remember {
+        mutableStateOf<DataProfileResponse?>(null)
+    }
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
+    if ( token.value !== "" ) {
+        if ( response == null ) {
+            ExecApi {
+                response = getProfile(token.value)
+                loading = false
+            }
+        }
+    }
 
     Scaffold (
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
             CenterAlignedTopAppBar(
-                title = { 
-                    Text(text = "Profile", maxLines = 1, overflow = TextOverflow.Ellipsis, color = Color.White)
+                title = {
+//                    Text(text = "Profile", maxLines = 1, overflow = TextOverflow.Ellipsis, color = Color.White)
                 },
-                colors = TopAppBarDefaults.mediumTopAppBarColors(containerColor = DarkBlueBG),
-
-
-                //Icon untuk ke Halaman Edit Profile
                 actions = {
-                    IconButton(
-                        onClick = {
-                            onEditProfileClick()
-
-                        }
-                    ) {
-                        Icon(imageVector = Icons.Default.ManageAccounts, contentDescription ="", tint = Color.White)
-
-                    }
-                },
-
+                    SetProfileButton(onEditProfileClick)
+                }
             )
             
         }
     ){contentPadding ->
-        Box(
-            modifier = Modifier
-                .background(DarkBlueBG)
-                .fillMaxSize()
-        ) {
+        if ( !loading && response !== null ) {
             Column(
                 modifier = Modifier
                     .padding(contentPadding)
@@ -98,44 +106,84 @@ fun ProfileScreen(
                 horizontalAlignment = Alignment.CenterHorizontally,
 
                 ) {
+                Column(modifier = Modifier.padding(vertical = 20.dp)) {
+                    ImageProfile(response?.profile.toString())
+                }
+
+                UserName("@${response?.name.toString()}")
+                Spacer(modifier = Modifier.height(7.dp))
+
+                Email(response?.email.toString())
+                Spacer(modifier = Modifier.height(7.dp))
+
+                Role(response?.role.toString())
+                Spacer(modifier = Modifier.height(7.dp))
+
                 Spacer(modifier = Modifier.height(20.dp))
-                ImageProfile()
-                Spacer(modifier = Modifier.height(15.dp))
-
-
-                UserName()
-                FullName()
-                Role()
-
-                Spacer(modifier = Modifier.height(20.dp))
-
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(20.dp)
-                        .background(
-                            color = DarkBlue2,
-                            shape = RoundedCornerShape(16.dp)
-                        ),
-                ){
-                    Column(modifier = Modifier.padding(8.dp)) {
+                Column( modifier = Modifier.padding(horizontal = 50.dp) ) {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clip(RoundedCornerShape(16.dp))
+                            .background(color = MaterialTheme.colorScheme.onSecondary)
+                            .padding(vertical = 20.dp, horizontal = 15.dp)
+                    ){
+                        DataStatik()
                         FaceID()
-                        KeluarAkun()
-
+                        NonaktifAkun()
+                        KeluarAkun{
+                            onLogout()
+                        }
                     }
                 }
             }
-
         }
-
-
     }
 
 }
 
+@Preview(showBackground = true)
 @Composable
-fun UserName() {
-    Text(text = "@jihaanjj", color = Color.White, fontSize = 10.sp)
+fun PreviewSetProfileButton(){
+//    SetProfileButton {
+//
+//    }
+}
+
+@Composable
+fun SetProfileButton(
+    onEditProfileClick: () -> Unit
+) {
+    IconButton(
+        onClick = {
+            onEditProfileClick()
+        },
+        modifier = Modifier
+            .padding(end = 20.dp)
+            .clip(RoundedCornerShape(50))
+            .background(color = MaterialTheme.colorScheme.onSecondary)
+    ) {
+        Column(
+            modifier = Modifier
+                .size(24.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            Icon(
+                imageVector = Icons.Default.ManageAccounts,
+                contentDescription ="",
+                tint = Color.White
+            )
+        }
+    }
+}
+
+@Composable
+fun UserName(username: String) {
+    Text(
+        text = username,
+        fontSize = 10.sp
+    )
 }
 
 @Composable
@@ -145,35 +193,45 @@ fun FullName() {
         Icon(imageVector = Icons.Filled.VerifiedUser, contentDescription = "", tint = Color.Cyan)
 
     }
+fun Email(email: String) {
+    Text(text = email)
+}
 
 
 }
 
 @Composable
-fun ImageProfile() {
-    Image(
-        painter = painterResource(R.drawable.dummyphoto),
+fun ImageProfile(model: String) {
+    AsyncImage(model = model,
         contentDescription = "photo profile",
         contentScale = ContentScale.Crop,
         modifier = Modifier
             .size(100.dp)
-            .clip(CircleShape))
+            .clip(CircleShape)
+    )
+//    Image(
+//        painter = painterResource(R.drawable.dummyphoto),
+//        contentDescription = "photo profile",
+//        contentScale = ContentScale.Crop,
+//        modifier = Modifier
+//            .size(100.dp)
+//            .clip(CircleShape))
 }
 
 @Composable
-fun Role() {
+fun Role(role: String) {
     Box(
         modifier = Modifier
             .background(
-                color = DarkBlue2,
+                color = MaterialTheme.colorScheme.onSecondary,
                 shape = RoundedCornerShape(30.dp)
             ),
     ){
         Text(
-            text = "freelance",
-            Modifier.padding(8.dp),
-            color = Color.White,
-            fontSize = 8.sp
+            text = role,
+            color = MaterialTheme.colorScheme.error,
+            fontSize = 10.sp,
+            modifier = Modifier.padding(horizontal = 10.dp),
         )
     }
 }
@@ -199,12 +257,20 @@ fun NonaktifAkun() {
 }
 
 @Composable
-fun KeluarAkun() {
-    TextButton( onClick = { /*TODO*/ }) {
+fun KeluarAkun(
+    onLogout: @Composable () -> Unit
+) {
+    var onLogoutClick by remember { mutableStateOf(false) }
+    TextButton( onClick = {
+        onLogoutClick = true
+    }) {
         Icon(imageVector = Icons.Default.Logout, contentDescription ="", tint = Color.Red )
         Spacer(Modifier.size(ButtonDefaults.IconSpacing))
         Text(text = "Keluar dari akun ini", color = Color.Red)
         Spacer(modifier = Modifier.width(10.dp))
+    }
+    if ( onLogoutClick ) {
+        onLogout()
     }
 }
 
@@ -225,15 +291,15 @@ fun DataStatik() {
 
 
 
-@Preview(showBackground = true)
+@Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun ProfilePreview() {
-    SkillShiftAppTheme {
-        ProfileScreen (
-            onEditProfileClick = {
-
-            }
-        )
-    }
+//    SkillShiftAppTheme {
+//        ProfileScreen (
+//            onEditProfileClick = {
+//
+//            }
+//        )
+//    }
 
 }

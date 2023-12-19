@@ -9,6 +9,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.jejetrue.skillshiftapp.data.datastore.UserStore
+import com.jejetrue.skillshiftapp.data.repository.removeToken
 import com.jejetrue.skillshiftapp.view.login.emailverify.EmailVerify
 import com.jejetrue.skillshiftapp.view.login.login.LoginScreen
 import com.jejetrue.skillshiftapp.view.login.newpass.NewPassword
@@ -17,6 +18,7 @@ import com.jejetrue.skillshiftapp.view.main.BottomBarScreen
 import com.jejetrue.skillshiftapp.view.main.project.ProjectScreen
 import com.jejetrue.skillshiftapp.view.main.home.HomeScreen
 import com.jejetrue.skillshiftapp.view.main.profile.ProfileScreen
+import com.jejetrue.skillshiftapp.view.main.profile.editprofile.EditProfile
 import com.jejetrue.skillshiftapp.view.register.otp.VerifyAccount
 import com.jejetrue.skillshiftapp.view.register.signup.SignupScreen
 
@@ -24,12 +26,13 @@ import com.jejetrue.skillshiftapp.view.register.signup.SignupScreen
 fun HomeNavGraph(navController: NavHostController){
     val context = LocalContext.current
     val store = UserStore(context)
-    val tokenText = store.getAccessToken.collectAsState(initial = "user_token")
+    val tokenText = store.getAccessToken.collectAsState(initial = "")
+    var RouteHome = if (tokenText.value == "" || tokenText.value == "null") AuthScreen.Login.route else BottomBarScreen.Home.route
 
     NavHost(
         navController = navController,
         route = Graph.HOME,
-        startDestination = if (tokenText.value !== "") BottomBarScreen.Home.route else AuthScreen.Login.route
+        startDestination = RouteHome
     ){
         composable(route = BottomBarScreen.Home.route){
             HomeScreen()
@@ -41,13 +44,30 @@ fun HomeNavGraph(navController: NavHostController){
             )
         }
 
+
+        // Profile
         composable(route = BottomBarScreen.Profile.route) {
             ProfileScreen(
                 onEditProfileClick = {
                     navController.navigate(ProfileSetting.EditProfile.route)
-
+                },
+                onLogout = {
+                    removeToken()
+                    navController.navigate(AuthScreen.Login.route){
+                        popUpTo(AuthScreen.Login.route){
+                            inclusive = true
+                            RouteHome = AuthScreen.Login.route
+                        }
+                    }
                 }
             )
+        }
+        composable(
+            route = ProfileSetting.EditProfile.route,
+        ) {
+            EditProfile {
+                navController.navigate(BottomBarScreen.Profile.route)
+            }
         }
 
         //LOGIN
@@ -55,15 +75,18 @@ fun HomeNavGraph(navController: NavHostController){
             LoginScreen(
                 onLoginClick = {
                     navController.popBackStack()
-                    navController.navigate(Graph.HOME)
+                    navController.navigate(Graph.HOME){
+                        popUpTo(Graph.HOME){
+                            inclusive = true
+                        }
+                    }
                 },
                 onSignUpClick = {
                     navController.navigate(AuthScreen.SignUp.route)
                 },
                 onForgotClick = {
                     navController.navigate(AuthScreen.Forgot.route)
-                },
-                navController = navController
+                }
             )
         }
 
@@ -80,8 +103,7 @@ fun HomeNavGraph(navController: NavHostController){
         composable(route = AuthScreen.OtpVerify.route){
             OtpVerify(onClick = {
                 navController.navigate(AuthScreen.NewPass.route)
-            }
-            )
+            })
         }
 
         composable(route = AuthScreen.NewPass.route){
@@ -97,7 +119,6 @@ fun HomeNavGraph(navController: NavHostController){
             SignupScreen(
                 onSignUpClick = { email, token ->
                     navController.navigate(AuthScreen.VerifyAccount.createRoute(email, token))
-
                 },
                 onLoginClick = {
                     navController.navigate(AuthScreen.Login.route)
@@ -117,7 +138,11 @@ fun HomeNavGraph(navController: NavHostController){
                 email = email,
                 tokenRegis = token,
                 onClick = {
-                    navController.navigate((AuthScreen.Login.route))
+                    navController.navigate((AuthScreen.Login.route)){
+                        popUpTo(AuthScreen.Login.route) {
+                            inclusive = true
+                        }
+                    }
                 }
             )
         }

@@ -6,10 +6,11 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -18,17 +19,20 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
+import com.jejetrue.skillshiftapp.R
+import com.jejetrue.skillshiftapp.ui.theme.Rose600
 
 @Composable
 fun LoadingDialog() {
     Dialog(
         onDismissRequest = {
-
         }
     ) {
         DialogContainer(
@@ -43,20 +47,26 @@ fun LoadingDialog() {
 }
 
 @Composable
-fun ErrorDialog(message: String){
+fun ErrorDialog(message: String, onClose: () -> Unit = {}){
     var close by remember { mutableStateOf(false) }
     if ( !close ) {
         Dialog(
-            onDismissRequest = {}
+            onDismissRequest = { }
         ) {
             DialogContainer(
                 title = "Error",
                 content = {
-                    Text(text = message)
+                    Text(
+                        text = message,
+                        textAlign = TextAlign.Center
+                    )
                 }
             )
-            Button(onClick = { close = true }) {
-                Text(text = "Close")
+            TextButton(onClick = {
+                close = true
+                onClose()
+            }) {
+                Icon(painter = painterResource(id = R.drawable.baseline_close_24), contentDescription = "close", tint = Rose600)
             }
         }
     }
@@ -69,7 +79,7 @@ fun DialogContainer(title: String, content: @Composable () -> Unit) {
         modifier = Modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(10.dp))
-            .background(MaterialTheme.colorScheme.primary)
+            .background(MaterialTheme.colorScheme.background)
             .padding(24.dp)
     ) {
         Text(
@@ -86,5 +96,6 @@ fun DialogContainer(title: String, content: @Composable () -> Unit) {
 @Composable
 @Preview(showSystemUi = true, showBackground = true)
 fun PreViewDialog() {
-    LoadingDialog()
+//    LoadingDialog()
+    ErrorDialog(message = "Lorem ipsum")
 }

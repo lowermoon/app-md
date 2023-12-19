@@ -30,8 +30,7 @@ fun NavGraphBuilder.authNavGraph(navController: NavHostController) {
                 },
                 onForgotClick = {
                     navController.navigate(AuthScreen.Forgot.route)
-                },
-                navController = navController
+                }
             )
         }
 

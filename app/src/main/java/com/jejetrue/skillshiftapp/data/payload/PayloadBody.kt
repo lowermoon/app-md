@@ -19,3 +19,11 @@ data class dataVerif(
     var saveData: String,
     var userVerificationCode: String
 )
+
+data class ProfileDetail(
+    val fullName: String? = null,
+    val email: String? = null,
+    val telephoneNumber: String? = null,
+    val nationalId: String? = null,
+    val password: String? = null,
+)

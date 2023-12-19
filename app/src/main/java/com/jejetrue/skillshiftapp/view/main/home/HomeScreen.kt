@@ -22,7 +22,7 @@ import com.jejetrue.skillshiftapp.ui.theme.SkillShiftAppTheme
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen() {
-    Column() {
+    Column {
         var text by remember { mutableStateOf("") }
         var active by remember { mutableStateOf(false) }
 
