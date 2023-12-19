@@ -100,10 +100,15 @@ fun ProjectKosong() {
 
 @Composable
 fun DaftarPenawaran() {
-    Column {
-        Text(text = "Daftar Penawaran Anda")
-        Text(text = "1/10", fontSize = 10.sp)
+    Row {
+        Icon(painter = painterResource(id = R.drawable.ic_offering), contentDescription = "")
+        Spacer(Modifier.size(ButtonDefaults.IconSpacing))
+        Column {
+            Text(text = "Daftar Penawaran Anda")
+            Text(text = "1/10", fontSize = 10.sp)
+        }
     }
+
 }
 
 
