@@ -42,7 +42,6 @@ data class ProjectData(
 	val projectDesc: String? = null
 )
 
-
 fun getAllProject(token: String): ProjectResponse? {
 	val service = ApiConfig.getApiService()
 	val response = service.getAllProject("verifyToken=$token").execute()

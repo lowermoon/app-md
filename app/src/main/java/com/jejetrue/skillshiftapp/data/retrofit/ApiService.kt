@@ -13,6 +13,7 @@ import com.jejetrue.skillshiftapp.data.response.RegisterResponse
 import com.jejetrue.skillshiftapp.data.response.SetProfileResponse
 import com.jejetrue.skillshiftapp.data.response.VerifyResponse
 import com.jejetrue.skillshiftapp.data.response.project.ProjectById
+import com.jejetrue.skillshiftapp.data.response.project.ProjectOfferResponse
 import com.jejetrue.skillshiftapp.data.response.project.ProjectResponse
 import com.jejetrue.skillshiftapp.ui.components.LoadingDialog
 import kotlinx.coroutines.CoroutineScope
@@ -75,6 +76,12 @@ interface ApiService {
         @Header("Cookie") token: String,
         @Query("project_id") id: String
     ): Call<ProjectById>
+
+    @GET("getOfferFreelance")
+    fun getOfferProject(
+        @Header("Cookie") token: String,
+
+    ): Call<ProjectOfferResponse>
 }
 
 @Composable

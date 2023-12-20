@@ -13,8 +13,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Cancel
@@ -43,21 +41,20 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.jejetrue.skillshiftapp.R
 import com.jejetrue.skillshiftapp.data.repository.getToken
-import com.jejetrue.skillshiftapp.data.response.project.ProjectData
-import com.jejetrue.skillshiftapp.data.response.project.getAllProject
+import com.jejetrue.skillshiftapp.data.response.project.FindOfferItem
+import com.jejetrue.skillshiftapp.data.response.project.getAllOffer
 import com.jejetrue.skillshiftapp.data.retrofit.ExecApi
 import com.jejetrue.skillshiftapp.ui.theme.DarkBlue2
 import com.jejetrue.skillshiftapp.ui.theme.DarkBlueBG
-import com.jejetrue.skillshiftapp.view.main.ProjectItem
 
 @Composable
 fun ProjectScreen(){
     val token = getToken()
-    var items by remember { mutableStateOf<List<ProjectData?>?>(null) }
+    var items by remember { mutableStateOf<List<FindOfferItem?>?>(null) }
     var fetched by remember { mutableStateOf(false) }
     ExecApi {
-        val response = getAllProject(token)
-        items = response?.result?.project
+        val response = getAllOffer(token)
+        items = response?.result?.findOffer
         fetched = true
     }
 
@@ -67,24 +64,27 @@ fun ProjectScreen(){
         if ( fetched ) {
             Column(modifier = Modifier.padding(15.dp)) {
                 //jika project kosong maka akan menapilkan di bawah ini
-                ProjectKosong()
-                Spacer(modifier = Modifier.height(10.dp))
-                DaftarPenawaran()
-                Spacer(modifier = Modifier.height(10.dp))
+                if (items == null) {
+                    ProjectKosong()
+                    Spacer(modifier = Modifier.height(10.dp))
+                }else {
+                    DaftarPenawaran()
+                    Spacer(modifier = Modifier.height(10.dp))
 
-                ////item project di daftar penawaran(Lazycolumn), disini jika di klik maka akan ke halaman info project
-                LazyColumn {
-                    items(items?: emptyList()){
-                        ProjectItem(
-                            title = it?.projectName.toString(),
-                            subTitle = it?.projectDesc.toString()
-                        )
-                        Spacer(modifier = Modifier.height(10.dp))
-                    }
+                    ////item project di daftar penawaran(Lazycolumn), disini jika di klik maka akan ke halaman info project
+    //                LazyColumn {
+    //                    items(items?: emptyList()){
+    //                        ProjectItem(
+    //                            title = it?.projectName.toString(),
+    //                            subTitle = it?.projectDesc.toString()
+    //                        )
+    //                        Spacer(modifier = Modifier.height(10.dp))
+    //                    }
+    //                }
+
                 }
-
                 //jika ada project maka menampilkan list(LazyColumn)
-                //ProjectAktif()
+//                ProjectAktif()
             }
         }
     }
@@ -149,14 +149,14 @@ fun ProjectAktif() {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(10.dp)
             .wrapContentSize(),
         elevation = CardDefaults.cardElevation(10.dp)
 
     ) {
         Column(modifier = Modifier
             .fillMaxWidth()
-            .padding(15.dp)) {
+            .padding(15.dp)
+        ) {
             //judul
             Text(text = "Mobile Legends", fontWeight = FontWeight.Bold)
 
