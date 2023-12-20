@@ -79,7 +79,9 @@ fun ProjectScreen(){
                 Spacer(modifier = Modifier.height(10.dp))
 
                 ////item project di daftar penawaran(Lazycolumn), disini jika di klik maka akan ke halaman info project
-                LazyColumn{
+                LazyColumn(
+                    userScrollEnabled = true
+                ){
                     items(items?: emptyList()){
                         ProjectItem(
                             title = it?.projectName.toString(),
