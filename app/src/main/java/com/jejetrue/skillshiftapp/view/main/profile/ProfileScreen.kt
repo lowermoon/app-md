@@ -47,10 +47,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import com.jejetrue.skillshiftapp.R
 import com.jejetrue.skillshiftapp.data.datastore.UserStore
 import com.jejetrue.skillshiftapp.data.response.DataProfileResponse
 import com.jejetrue.skillshiftapp.data.response.getProfile
@@ -235,7 +237,7 @@ fun Role(role: String) {
 @Composable
 fun FaceID() {
     TextButton(onClick = { /*TODO*/ }) {
-        Icon(imageVector = Icons.Rounded.TagFaces, contentDescription ="", tint = Color.White )
+        Icon(painter = painterResource(id = R.drawable.scan_face), contentDescription ="", tint = Color.White )
         Spacer(Modifier.size(ButtonDefaults.IconSpacing))
         Text(text = "Verifikasi identifikasi wajah", color = Color.White)
         Spacer(modifier = Modifier.width(10.dp))

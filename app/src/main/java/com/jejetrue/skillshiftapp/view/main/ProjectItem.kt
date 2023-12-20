@@ -56,17 +56,7 @@ fun ProjectItem(
             //SubJudul
             Text(text = subTitle)
 
-            Spacer(modifier = Modifier.height(20.dp))
 
-            Row {
-                Icon(
-                    imageVector = Icons.Default.MonetizationOn,
-                    contentDescription = "",
-                    modifier = Modifier.size(15.dp)
-                )
-                Spacer(Modifier.size(ButtonDefaults.IconSpacing))
-                Text(text = "Rp.100.000,00-", fontSize = 9.sp)
-            }
         }
     }
 
