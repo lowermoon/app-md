@@ -21,6 +21,7 @@ import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
@@ -41,8 +42,11 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.jejetrue.skillshiftapp.R
+import com.jejetrue.skillshiftapp.data.repository.getToken
+import com.jejetrue.skillshiftapp.data.response.project.ProjectByIdResponse
+import com.jejetrue.skillshiftapp.data.response.project.getProjectById
+import com.jejetrue.skillshiftapp.data.retrofit.ExecApi
 import com.jejetrue.skillshiftapp.ui.theme.SkillShiftAppTheme
-import com.jejetrue.skillshiftapp.ui.theme.SoftBlue
 import com.jejetrue.skillshiftapp.view.main.project.Deskripsi
 import com.jejetrue.skillshiftapp.view.main.project.ImageProject
 import com.jejetrue.skillshiftapp.view.main.project.JudulProyek
@@ -52,8 +56,16 @@ import com.jejetrue.skillshiftapp.view.main.project.SubJudulProyek
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun InfoTawaran() {
+fun InfoTawaran(
+    id: String,
+    backToHome: () -> Unit
+) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
+    val token = getToken()
+    var item by remember { mutableStateOf<ProjectByIdResponse?>(null) }
+    ExecApi {
+        item = getProjectById(token, id)?.result?.project
+    }
 
     Scaffold(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
@@ -66,7 +78,7 @@ fun InfoTawaran() {
                         overflow = TextOverflow.Ellipsis
                     ) },
                 navigationIcon = {
-                    IconButton(onClick = { /* do something */ }) {
+                    IconButton(onClick = { backToHome() }) {
                         Icon(
                             imageVector = Icons.Filled.ArrowBack,
                             contentDescription = "Localized description"
@@ -96,42 +108,41 @@ fun InfoTawaran() {
                     .fillMaxWidth()
                     .padding(10.dp)
                     .background(
-                        color = SoftBlue,
+                        color = MaterialTheme.colorScheme.onPrimary,
                         shape = RoundedCornerShape(8.dp)
                     )
                 ) {
+                    if ( item !== null ) {
 
-                    Column(modifier = Modifier.padding(15.dp)) {
+                        Column(modifier = Modifier.padding(15.dp)) {
 
-                        //Info Project di Daftar Penawaran Anda -> jika diklik salah satu item, maka akan langsung ke halaman ini
-                        //disini akan menampilkan info dan juga dibawah ada tombol pembatalan
+                            //Info Project di Daftar Penawaran Anda -> jika diklik salah satu item, maka akan langsung ke halaman ini
+                            //disini akan menampilkan info dan juga dibawah ada tombol pembatalan
 
-                        JudulProyek()
-                        Spacer(modifier = Modifier.height(8.dp))
+                            JudulProyek(item?.projectName.toString())
+                            Spacer(modifier = Modifier.height(8.dp))
 
-                        //kategori
-                        Row(horizontalArrangement = Arrangement.spacedBy(5.dp)) {
-                            KategoriProject("Games")
-                            KategoriProject("mobile legends")
+                            //kategori
+                            Row(horizontalArrangement = Arrangement.spacedBy(5.dp)) {
+                                KategoriProject("Games")
+                                KategoriProject("mobile legends")
+                            }
 
-                        }
+                            Spacer(modifier = Modifier.height(15.dp))
+                            SubJudulProyek()
+                            Spacer(modifier = Modifier.height(20.dp))
+                            Deskripsi(item?.projectDesc.toString())
+                            Spacer(modifier = Modifier.height(8.dp))
+                            ImageProject()
+                            Spacer(modifier = Modifier.height(10.dp))
+                            Keterangan()
+                            Spacer(modifier = Modifier.height(8.dp))
 
-                        Spacer(modifier = Modifier.height(15.dp))
-                        SubJudulProyek()
-                        Spacer(modifier = Modifier.height(20.dp))
-                        Deskripsi()
-                        Spacer(modifier = Modifier.height(8.dp))
-                        ImageProject()
-                        Spacer(modifier = Modifier.height(10.dp))
-                        Keterangan()
-                        Spacer(modifier = Modifier.height(8.dp))
-
-                        Button(onClick = { isSheetOpen = true }) {
-                            Icon(painter = painterResource(id = R.drawable.ic_offering), contentDescription = "")
-                            Spacer(Modifier.size(ButtonDefaults.IconSpacing))
-                            Text(text = "Tawarkan")
-
-
+                            Button(onClick = { isSheetOpen = true }) {
+                                Icon(painter = painterResource(id = R.drawable.ic_offering), contentDescription = "")
+                                Spacer(Modifier.size(ButtonDefaults.IconSpacing))
+                                Text(text = "Tawarkan")
+                            }
                         }
                     }
                 }
@@ -164,7 +175,9 @@ fun InputUang() {
         value = text ,
         onValueChange ={text = it},
         label = { Text(text = "Jumlah Uang")},
-        modifier = Modifier.fillMaxWidth().padding(10.dp),shape = RoundedCornerShape(8.dp)
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(10.dp),shape = RoundedCornerShape(8.dp)
     )
     
 }
@@ -187,7 +200,7 @@ fun TextArea() {
 @Composable
 fun InfoTaawaranpreview() {
     SkillShiftAppTheme {
-        InfoTawaran()
+        InfoTawaran("", {})
     }
 
 }

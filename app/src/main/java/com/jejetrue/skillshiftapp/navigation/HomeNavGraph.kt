@@ -1,47 +1,74 @@
 package com.jejetrue.skillshiftapp.navigation
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import com.jejetrue.skillshiftapp.data.datastore.UserStore
+import com.jejetrue.skillshiftapp.data.repository.getToken
 import com.jejetrue.skillshiftapp.data.repository.removeToken
 import com.jejetrue.skillshiftapp.view.login.emailverify.EmailVerify
 import com.jejetrue.skillshiftapp.view.login.login.LoginScreen
 import com.jejetrue.skillshiftapp.view.login.newpass.NewPassword
 import com.jejetrue.skillshiftapp.view.login.otp.OtpVerify
 import com.jejetrue.skillshiftapp.view.main.BottomBarScreen
-import com.jejetrue.skillshiftapp.view.main.project.ProjectScreen
 import com.jejetrue.skillshiftapp.view.main.home.HomeScreen
+import com.jejetrue.skillshiftapp.view.main.home.InfoTawaran
 import com.jejetrue.skillshiftapp.view.main.profile.ProfileScreen
 import com.jejetrue.skillshiftapp.view.main.profile.editprofile.EditProfile
+import com.jejetrue.skillshiftapp.view.main.project.ProjectScreen
 import com.jejetrue.skillshiftapp.view.register.otp.VerifyAccount
 import com.jejetrue.skillshiftapp.view.register.signup.SignupScreen
 
+
+sealed class PrjectGraph(
+    val route: String
+) {
+    object DetailProject: PrjectGraph("detail/{id}") {
+        fun createRoute( id: String ) = "detail/${id}"
+    }
+}
+
 @Composable
 fun HomeNavGraph(navController: NavHostController){
-    val context = LocalContext.current
-    val store = UserStore(context)
-    val tokenText = store.getAccessToken.collectAsState(initial = "")
-    var RouteHome = if (tokenText.value == "" || tokenText.value == "null") AuthScreen.Login.route else BottomBarScreen.Home.route
+    val tokenText = getToken()
+    var RouteHome = if (tokenText == "" || tokenText == "null") AuthScreen.Login.route else BottomBarScreen.Home.route
 
     NavHost(
         navController = navController,
         route = Graph.HOME,
         startDestination = RouteHome
     ){
+        // Home Screen
         composable(route = BottomBarScreen.Home.route){
-            HomeScreen()
+            HomeScreen(
+                navigateToDetail = {
+                    navController.navigate(PrjectGraph.DetailProject.createRoute(it))
+                }
+            )
+        }
+        composable( // Detail Project
+            route = PrjectGraph.DetailProject.route,
+            arguments = listOf(navArgument("id"){
+                type = NavType.StringType
+            })
+        ) {
+            val id = it.arguments?.getString("id")?: ""
+            InfoTawaran(
+                id = id,
+                backToHome = {
+                    navController.navigate(BottomBarScreen.Home.route){
+                        popUpTo(BottomBarScreen.Home.route) {
+                            inclusive = true
+                        }
+                    }
+                }
+            )
         }
 
         composable(route = BottomBarScreen.Project.route){
-            ProjectScreen(
-
-            )
+            ProjectScreen()
         }
 
 
@@ -147,5 +174,4 @@ fun HomeNavGraph(navController: NavHostController){
             )
         }
     }
-
 }

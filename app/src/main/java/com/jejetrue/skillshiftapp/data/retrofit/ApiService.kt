@@ -12,6 +12,7 @@ import com.jejetrue.skillshiftapp.data.response.ProfileResponse
 import com.jejetrue.skillshiftapp.data.response.RegisterResponse
 import com.jejetrue.skillshiftapp.data.response.SetProfileResponse
 import com.jejetrue.skillshiftapp.data.response.VerifyResponse
+import com.jejetrue.skillshiftapp.data.response.project.ProjectById
 import com.jejetrue.skillshiftapp.data.response.project.ProjectResponse
 import com.jejetrue.skillshiftapp.ui.components.LoadingDialog
 import kotlinx.coroutines.CoroutineScope
@@ -26,6 +27,7 @@ import retrofit2.http.Header
 import retrofit2.http.Multipart
 import retrofit2.http.POST
 import retrofit2.http.Part
+import retrofit2.http.Query
 
 interface ApiService {
 
@@ -63,10 +65,16 @@ interface ApiService {
         @Body body: RequestBody
     ): Call<SetProfileResponse>
 
-    @GET("allProject")
+    @GET("allProject") // Project Home Screen
     fun getAllProject(
         @Header("Cookie") token: String
     ): Call<ProjectResponse>
+
+    @GET("project")
+    fun getProjectByIdApi(
+        @Header("Cookie") token: String,
+        @Query("project_id") id: String
+    ): Call<ProjectById>
 }
 
 @Composable

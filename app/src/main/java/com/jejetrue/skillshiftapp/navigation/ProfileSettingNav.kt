@@ -1,6 +1,6 @@
 package com.jejetrue.skillshiftapp.navigation
 
-sealed class ProfileSetting(val route: String) {
+sealed class ProfileSetting {
     object EditProfile : AuthScreen(route = "EditProfile")
 
 }

@@ -61,7 +61,7 @@ fun ProjectScreen(){
         fetched = true
     }
 
-    Box(
+    Column(
         modifier = Modifier.fillMaxSize(),
     ) {
         if ( fetched ) {
@@ -73,9 +73,7 @@ fun ProjectScreen(){
                 Spacer(modifier = Modifier.height(10.dp))
 
                 ////item project di daftar penawaran(Lazycolumn), disini jika di klik maka akan ke halaman info project
-                LazyColumn(
-                    userScrollEnabled = true
-                ){
+                LazyColumn {
                     items(items?: emptyList()){
                         ProjectItem(
                             title = it?.projectName.toString(),
