@@ -2,6 +2,7 @@ package com.jejetrue.skillshiftapp.view.main.project
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -11,7 +12,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Cancel
@@ -74,7 +77,7 @@ fun InfoProjectScreen() {
     ) {innerPadiing ->
         Box {
             Column (
-                modifier = Modifier.padding(innerPadiing)
+                modifier = Modifier.padding(innerPadiing).verticalScroll(rememberScrollState())
             ){
 
                 Box(modifier = Modifier
@@ -107,9 +110,12 @@ fun InfoProjectScreen() {
                         Deskripsi()
                         Spacer(modifier = Modifier.height(8.dp))
                         ImageProject()
-                        Spacer(modifier = Modifier.height(10.dp))
+                        Spacer(modifier = Modifier.height(15.dp))
                         Keterangan()
-                        Spacer(modifier = Modifier.height(8.dp))
+                        Spacer(modifier = Modifier.height(15.dp))
+                        Penawaran()
+
+                        Spacer(modifier = Modifier.height(20.dp))
                         ButtonCancel()
 
 
@@ -207,14 +213,6 @@ fun Keterangan() {
         Spacer(modifier = Modifier.height(8.dp))
 
         Row {
-            Icon(imageVector = Icons.Default.MonetizationOn, contentDescription = "", modifier = Modifier.size(15.dp))
-            Spacer(Modifier.size(ButtonDefaults.IconSpacing))
-            Text(text = "Rp.100.000,00-", fontSize = 9.sp)
-        }
-
-        Spacer(modifier = Modifier.height(8.dp))
-
-        Row {
             Icon(imageVector = Icons.Default.PersonPin, contentDescription = "", modifier = Modifier.size(15.dp))
             Spacer(Modifier.size(ButtonDefaults.IconSpacing))
             Text(text = "dibuat oleh ZiyadZk", fontSize = 9.sp)
@@ -222,6 +220,44 @@ fun Keterangan() {
     }
 }
 
+
+@Composable
+fun Penawaran() {
+    Column {
+        Box(
+            modifier = Modifier
+                .background(
+                    color = DarkBlue2,
+                    shape = RoundedCornerShape(30.dp)
+                ),
+        ) {
+            Text(
+                text = "Penawaran",
+                Modifier.padding(8.dp),
+                color = Color.White,
+                fontSize = 8.sp
+            )
+
+        }
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        Row {
+            Icon(imageVector = Icons.Default.MonetizationOn, contentDescription = "", modifier = Modifier.size(15.dp))
+            Spacer(Modifier.size(ButtonDefaults.IconSpacing))
+            Text(text = "100.000,00-", fontSize = 9.sp)
+        }
+        Spacer(modifier = Modifier.height(8.dp))
+        Text(text = "Alasan :", fontWeight = FontWeight.Bold)
+        Text(
+            text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+            fontSize = 12.sp
+        )
+
+    }
+
+    
+}
 @Composable
 fun ButtonCancel() {
     Button(onClick = {  }) {

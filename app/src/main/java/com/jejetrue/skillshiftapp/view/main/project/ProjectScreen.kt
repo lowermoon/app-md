@@ -13,7 +13,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Cancel
 import androidx.compose.material.icons.filled.Error
@@ -46,7 +48,7 @@ fun ProjectScreen(){
     Box(
         modifier = Modifier.fillMaxSize(),
     ) {
-        Column(modifier = Modifier.padding(15.dp)) {
+        Column(modifier = Modifier.padding(15.dp).verticalScroll(rememberScrollState())) {
             //jika project kosong maka akan menapilkan di bawah ini
             ProjectKosong()
             Spacer(modifier = Modifier.height(10.dp))

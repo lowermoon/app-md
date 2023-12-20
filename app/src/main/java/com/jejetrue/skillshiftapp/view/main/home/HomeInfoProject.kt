@@ -1,7 +1,6 @@
 package com.jejetrue.skillshiftapp.view.main.home
 
 import androidx.compose.runtime.Composable
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -12,27 +11,35 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.Cancel
-import androidx.compose.material.icons.filled.MonetizationOn
-import androidx.compose.material.icons.filled.PersonPin
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.material3.rememberTopAppBarState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -79,10 +86,17 @@ fun InfoTawaran() {
                 )
 
         }
-    ) {innerPadiing ->
+    ) {innerPadding ->
+        //bottomsheet
+        val sheetState = rememberModalBottomSheetState()
+        var isSheetOpen by rememberSaveable {
+            mutableStateOf(false)
+        }
         Box {
             Column (
-                modifier = Modifier.padding(innerPadiing)
+                modifier = Modifier
+                    .padding(innerPadding)
+                    .verticalScroll(rememberScrollState())
             ){
 
                 Box(modifier = Modifier
@@ -118,24 +132,62 @@ fun InfoTawaran() {
                         Spacer(modifier = Modifier.height(10.dp))
                         Keterangan()
                         Spacer(modifier = Modifier.height(8.dp))
-                        ButtonTawarkan()
+
+                        Button(onClick = { isSheetOpen = true }) {
+                            Icon(painter = painterResource(id = R.drawable.ic_offering), contentDescription = "")
+                            Spacer(Modifier.size(ButtonDefaults.IconSpacing))
+                            Text(text = "Tawarkan")
+
+
+                        }
                     }
                 }
             }
         }
+
+
+        if (isSheetOpen){
+            ModalBottomSheet(
+                sheetState = sheetState,
+                onDismissRequest = { isSheetOpen = false }
+            ) {
+                Column {
+                    InputUang()
+                    Spacer(modifier = Modifier.height(8.dp))
+                    TextArea()
+                }
+            }
+
+        }
+        
     }
     
 }
 
 @Composable
-fun ButtonTawarkan() {
-    Button(onClick = {  }) {
-        Icon(painter = painterResource(id = R.drawable.ic_offering), contentDescription = "")
-        Spacer(Modifier.size(ButtonDefaults.IconSpacing))
-        Text(text = "Tawarkan")
+fun InputUang() {
+    var text by remember { mutableStateOf("") }
+    OutlinedTextField(
+        value = text ,
+        onValueChange ={text = it},
+        label = { Text(text = "Jumlah Uang")},
+        modifier = Modifier.fillMaxWidth().padding(10.dp),shape = RoundedCornerShape(8.dp)
+    )
+    
+}
+@Composable
+fun TextArea() {
+    var text by remember { mutableStateOf("") }
+    OutlinedTextField(
+        value = text ,
+        onValueChange ={text = it},
+        label = { Text(text = "Berikan alasan")},
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(100.dp)
+            .padding(10.dp) ,shape = RoundedCornerShape(8.dp))
 
-    }
-
+    
 }
 
 @Preview
