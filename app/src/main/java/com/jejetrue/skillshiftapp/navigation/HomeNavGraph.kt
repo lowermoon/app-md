@@ -1,6 +1,11 @@
 package com.jejetrue.skillshiftapp.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -8,6 +13,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.jejetrue.skillshiftapp.data.repository.getToken
 import com.jejetrue.skillshiftapp.data.repository.removeToken
+import com.jejetrue.skillshiftapp.data.response.checkTokenRes
+import com.jejetrue.skillshiftapp.data.retrofit.ExecApi
 import com.jejetrue.skillshiftapp.view.login.emailverify.EmailVerify
 import com.jejetrue.skillshiftapp.view.login.login.LoginScreen
 import com.jejetrue.skillshiftapp.view.login.newpass.NewPassword
@@ -35,6 +42,24 @@ sealed class PrjectGraph(
 fun HomeNavGraph(navController: NavHostController){
     val tokenText = getToken()
     var RouteHome = if (tokenText == "" || tokenText == "null") AuthScreen.Login.route else BottomBarScreen.Home.route
+    var tokenChecked by remember { mutableStateOf(false) }
+    LaunchedEffect(tokenText){
+        tokenChecked = true
+    }
+    if ( tokenChecked ) {
+        ExecApi {
+            val checkToken = checkTokenRes(tokenText)
+            if (checkToken?.isValid !== null) {
+                if ( !checkToken.isValid ) {
+                    navController.navigate(AuthScreen.Login.route) {
+                        popUpTo( AuthScreen.Login.route ){
+                            inclusive = true
+                        }
+                    }
+                }
+            }
+        }
+    }
 
     NavHost(
         navController = navController,
