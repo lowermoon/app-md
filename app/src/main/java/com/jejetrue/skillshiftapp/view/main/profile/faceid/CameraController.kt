@@ -1,55 +1,21 @@
 package com.jejetrue.skillshiftapp.view.main.profile.faceid
 
 import android.net.Uri
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
-import androidx.core.content.FileProvider
 import coil.compose.rememberAsyncImagePainter
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberPermissionState
-import com.jejetrue.skillshiftapp.ComposeFileProvider
-import java.util.Objects
-
-@Composable
-fun ExampleScreenFaceId() {
-    val context = LocalContext.current
-    var hasImage by remember { mutableStateOf(false) }
-    val file = ComposeFileProvider.createImageFile(context)
-    val uri = FileProvider.getUriForFile(
-        Objects.requireNonNull(context),
-        context.packageName + ".fileprovider",
-        file
-    )
-    var capturedImageUri by remember { mutableStateOf<Uri>(Uri.EMPTY) }
-    val cameraLauncher = rememberLauncherForActivityResult(ActivityResultContracts.TakePicture()) {
-        capturedImageUri = uri
-        hasImage = true
-    }
-
-    CameraPermission {
-        cameraLauncher.launch(uri)
-    }
-    
-    if ( hasImage ) {
-        DisplayImageFromUri(imageUri = capturedImageUri)
-    }
-}
+import com.jejetrue.skillshiftapp.ui.components.DialogContainer
 
 @Composable
 fun DisplayImageFromUri(imageUri: Uri) {
@@ -73,11 +39,12 @@ fun CameraPermission(
 
     if (!cameraPermissionState.hasPermission) {
         Dialog(onDismissRequest = {}) {
-            Text(text = "Butuh ijin kamera untuk menggunakan fitur ini !")
-            Button(onClick = {
-                cameraPermissionState.launchPermissionRequest()
-            }) {
-                Text(text = "Ijinkan !")
+            DialogContainer(title = "Need Permission!", message = "Butuh ijin kamera untuk menggunakan fitur ini !") {
+                Button(onClick = {
+                    cameraPermissionState.launchPermissionRequest()
+                }) {
+                    Text(text = "CONFIRM")
+                }
             }
         }
     }else {
