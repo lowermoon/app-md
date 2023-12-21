@@ -35,32 +35,26 @@ fun newFaceIdReq(
 	token: String
 ): FaceIdResponse? {
 	val service = ApiConfig.getApiService()
-	val stream = ByteArrayOutputStream()
-	val byteArray = stream.toByteArray()
 
 	val first = convertImageToBitmap(firstImage, context)
-	first.compress(Bitmap.CompressFormat.JPEG, 80, stream)
-	val reqFirstImage = MultipartBody.Part.createFormData(
-		"file", "face_id1", byteArray.toRequestBody("image/jpeg".toMediaTypeOrNull(), 0, first!!.byteCount)
-	)
-
 	val second = convertImageToBitmap(secondImage, context)
-	second.compress(Bitmap.CompressFormat.JPEG, 80, stream)
-	val reqSecondImage = MultipartBody.Part.createFormData(
-		"file", "face_id1", byteArray.toRequestBody("image/jpeg".toMediaTypeOrNull(), 0, second!!.byteCount)
-	)
-
 	val third = convertImageToBitmap(thirdImage, context)
-	third.compress(Bitmap.CompressFormat.JPEG, 80, stream)
-	val reqThirdImage = MultipartBody.Part.createFormData(
-		"file", "face_id1", byteArray.toRequestBody("image/jpeg".toMediaTypeOrNull(), 0, third!!.byteCount)
-	)
 
 	val response = service.newfaceId(
 		token = "verifyToken=$token",
-		firstImage = reqFirstImage,
-		secondImage = reqSecondImage,
-		thirdImage = reqThirdImage
+		firstImage = getRequestQueryFace(first),
+		secondImage = getRequestQueryFace(second),
+		thirdImage = getRequestQueryFace(third)
 	).execute()
 	return response.body()
+}
+
+fun getRequestQueryFace(image: Bitmap): MultipartBody.Part {
+	// conver
+	val stream = ByteArrayOutputStream()
+	image.compress(Bitmap.CompressFormat.JPEG, 80, stream)
+	val byteArray = stream.toByteArray()
+	return MultipartBody.Part.createFormData(
+		"file", "BaharProfile", byteArray.toRequestBody("image/jpeg".toMediaTypeOrNull(), 0, byteArray.size)
+	)
 }

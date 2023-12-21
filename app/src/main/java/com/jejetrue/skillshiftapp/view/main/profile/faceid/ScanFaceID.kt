@@ -1,7 +1,6 @@
 package com.jejetrue.skillshiftapp.view.main.profile.faceid
 
 import android.net.Uri
-import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
@@ -26,7 +25,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -43,19 +41,20 @@ import com.jejetrue.skillshiftapp.R
 import com.jejetrue.skillshiftapp.data.repository.getToken
 import com.jejetrue.skillshiftapp.data.response.profile.newFaceIdReq
 import com.jejetrue.skillshiftapp.data.retrofit.ExecApi
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import java.util.Objects
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ScanFace() {
+fun ScanFace(
+    backToHome: () -> Unit
+) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
     val context = LocalContext.current
+    var startVerify by remember { mutableStateOf(false) }
     var lastImage by remember { mutableStateOf(false) }
     var sendToBe by remember { mutableStateOf(false) }
     val token = getToken()
+    CameraPermission {}
 
     // First Image
     var firstImage by remember { mutableStateOf<Uri>(Uri.EMPTY) }
@@ -99,16 +98,14 @@ fun ScanFace() {
             CenterAlignedTopAppBar(
                 title = {},
                 navigationIcon = {
-                    IconButton(onClick = { /* do something */ }) {
+                    IconButton(onClick = { backToHome() }) {
                         Icon(
                             imageVector = Icons.Filled.ArrowBack,
                             contentDescription = "Localized description"
                         )
                     }
                 },
-
                 scrollBehavior = scrollBehavior,
-
             )
         }
     ){innerPadding ->
@@ -120,67 +117,76 @@ fun ScanFace() {
                 .padding(innerPadding)
                 .verticalScroll(rememberScrollState())
         ) {
-            if ( firstImage == Uri.EMPTY ) {
+            if ( !startVerify ) {
                 Image(painter = painterResource(id = R.drawable.scan_face_big), contentDescription ="" ,)
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(text = "Akun Anda belum terverifikasi")
                 Spacer(modifier = Modifier.height(8.dp))
+                Column {
+                    Button(onClick = {
+                        startVerify = true
+                    }) {
+                        Text(text = "Mulai Verifikasi Wajah")
+                    }
+                }
             }
-            Box {
-                if ( thirdImage != Uri.EMPTY ) {
-                    DisplayImageFromUri(thirdImage)
+            if ( startVerify ) {
+                Box {
+                    if ( thirdImage != Uri.EMPTY ) {
+                        DisplayImageFromUri(thirdImage)
+                    }
+                    if ( secondImage != Uri.EMPTY ) {
+                        DisplayImageFromUri(secondImage)
+                    }
+                    if ( firstImage != Uri.EMPTY ) {
+                        DisplayImageFromUri(firstImage)
+                    }
                 }
-                if ( secondImage != Uri.EMPTY ) {
-                    DisplayImageFromUri(secondImage)
-                }
-                if ( firstImage != Uri.EMPTY ) {
-                    var fetchData by remember { mutableStateOf(false) }
-                    LaunchedEffect(firstImage) {
-                        CoroutineScope(Dispatchers.Default).launch {
-                            fetchData = true
+                Column(
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ){
+                    Box {
+
+                        if ( thirdImage == Uri.EMPTY ) {
+                            Button(onClick = {
+                                thirdCameraLauncher.launch(thirdUri)
+                                lastImage = true
+                            }) {
+                                Text(text = "Mulai Verifikasi Wajah 3")
+                            }
                         }
-                    }
-                    if ( fetchData ) {
-                        DisplayImageFromUri(firstUri)
-                    }
-                }
-            }
+                        if ( secondImage == Uri.EMPTY ) {
+                            Button(onClick = {
+                                secondCameraLauncher.launch(secondUri)
+                            }) {
+                                Text(text = "Mulai Verifikasi Wajah 2")
+                            }
+                        }
+                        if ( firstImage == Uri.EMPTY ) {
+                            Button(onClick = {
+                                firstCameraLauncher.launch(firstUri)
+                            }) {
+                                Text(text = "Mulai Verifikasi Wajah 1")
+                            }
+                        }
+                        if ( lastImage ) {
+                            if ( thirdImage != Uri.EMPTY ) {
+                                Button(onClick = {
+                                    sendToBe = true
+                                }) {
+                                    Text(text = "Selesai")
+                                }
+                            }
+                        }
 
-            Column{
-                if ( firstImage == Uri.EMPTY ) {
-                    Button(onClick = {
-                        firstCameraLauncher.launch(firstImage)
-                    }) {
-                        Text(text = "Mulai Verifikasi Wajah 1")
-                    }
-                }
-                if ( secondImage == Uri.EMPTY ) {
-                    Button(onClick = {
-                        secondCameraLauncher.launch(secondUri)
-                    }) {
-                        Text(text = "Mulai Verifikasi Wajah 2")
-                    }
-                }
-                if ( thirdImage == Uri.EMPTY ) {
-                    Button(onClick = {
-                        thirdCameraLauncher.launch(thirdImage)
-                        lastImage = true
-                    }) {
-                        Text(text = "Mulai Verifikasi Wajah 3")
-                    }
-                }
-
-                if ( lastImage ) {
-                    Button(onClick = {
-                        sendToBe = true
-                    }) {
-                        Text(text = "Selesai...")
                     }
                 }
             }
         }
     }
 
+    var success by remember { mutableStateOf(false) }
     if ( sendToBe ) {
         ExecApi {
             val response = newFaceIdReq(
@@ -190,7 +196,12 @@ fun ScanFace() {
                 token = token,
                 context = context
             )
-            Log.d("ZAW", response.toString())
+            if ( response?.message?.get(0)?.status == "success" ) {
+                success = true
+            }
         }
+    }
+    if ( success ) {
+        backToHome()
     }
 }

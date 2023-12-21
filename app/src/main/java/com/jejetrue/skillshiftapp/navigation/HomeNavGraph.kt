@@ -48,7 +48,6 @@ fun HomeNavGraph(navController: NavHostController){
                     navController.navigate(PrjectGraph.DetailProject.createRoute(it))
                 }
             )
-            //ExampleScreenFaceId()
         }
         composable( // Detail Project
             route = PrjectGraph.DetailProject.route,
@@ -104,7 +103,13 @@ fun HomeNavGraph(navController: NavHostController){
         composable(
             route = ProfileSetting.FaceID.route
         ){
-            ScanFace()
+            ScanFace {
+                navController.navigate(BottomBarScreen.Home.route){
+                    popUpTo(BottomBarScreen.Home.route) {
+                        inclusive = true
+                    }
+                }
+            }
         }
 
         //LOGIN
