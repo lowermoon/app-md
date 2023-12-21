@@ -4,7 +4,8 @@ import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -13,8 +14,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.core.content.FileProvider
 import coil.compose.rememberAsyncImagePainter
@@ -33,9 +36,7 @@ fun ExampleScreenFaceId() {
         context.packageName + ".fileprovider",
         file
     )
-    var capturedImageUri by remember {
-        mutableStateOf<Uri>(Uri.EMPTY)
-    }
+    var capturedImageUri by remember { mutableStateOf<Uri>(Uri.EMPTY) }
     val cameraLauncher = rememberLauncherForActivityResult(ActivityResultContracts.TakePicture()) {
         capturedImageUri = uri
         hasImage = true
@@ -53,11 +54,12 @@ fun ExampleScreenFaceId() {
 @Composable
 fun DisplayImageFromUri(imageUri: Uri) {
     val painter = rememberAsyncImagePainter(model = imageUri)
-
     Image(
         painter = painter,
-        contentDescription = null, // Deskripsi konten gambar
-        modifier = Modifier.fillMaxSize(),
+        contentDescription = null,
+        modifier = Modifier
+            .size(180.dp)
+            .clip(RoundedCornerShape(14.dp)),
         contentScale = ContentScale.Crop
     )
 }

@@ -13,10 +13,10 @@ import com.jejetrue.skillshiftapp.view.login.login.LoginScreen
 import com.jejetrue.skillshiftapp.view.login.newpass.NewPassword
 import com.jejetrue.skillshiftapp.view.login.otp.OtpVerify
 import com.jejetrue.skillshiftapp.view.main.BottomBarScreen
+import com.jejetrue.skillshiftapp.view.main.home.HomeScreen
 import com.jejetrue.skillshiftapp.view.main.home.InfoTawaran
 import com.jejetrue.skillshiftapp.view.main.profile.ProfileScreen
 import com.jejetrue.skillshiftapp.view.main.profile.editprofile.EditProfile
-import com.jejetrue.skillshiftapp.view.main.profile.faceid.ExampleScreenFaceId
 import com.jejetrue.skillshiftapp.view.main.profile.faceid.ScanFace
 import com.jejetrue.skillshiftapp.view.main.project.ProjectScreen
 import com.jejetrue.skillshiftapp.view.register.otp.VerifyAccount
@@ -43,12 +43,12 @@ fun HomeNavGraph(navController: NavHostController){
     ){
         // Home Screen
         composable(route = BottomBarScreen.Home.route){
-//            HomeScreen(
-//                navigateToDetail = {
-//                    navController.navigate(PrjectGraph.DetailProject.createRoute(it))
-//                }
-//            )
-            ExampleScreenFaceId()
+            HomeScreen(
+                navigateToDetail = {
+                    navController.navigate(PrjectGraph.DetailProject.createRoute(it))
+                }
+            )
+            //ExampleScreenFaceId()
         }
         composable( // Detail Project
             route = PrjectGraph.DetailProject.route,
