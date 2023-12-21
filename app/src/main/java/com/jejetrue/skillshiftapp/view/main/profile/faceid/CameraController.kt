@@ -14,7 +14,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import coil.compose.rememberAsyncImagePainter
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
-import com.google.accompanist.permissions.rememberPermissionState
+import com.google.accompanist.permissions.PermissionState
 import com.jejetrue.skillshiftapp.ui.components.DialogContainer
 
 @Composable
@@ -33,10 +33,9 @@ fun DisplayImageFromUri(imageUri: Uri) {
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun CameraPermission(
-    onPermessionSuccess: () -> Unit
+    cameraPermissionState: PermissionState,
+    onPermessionSuccess: () -> Unit = {}
 ) {
-    val cameraPermissionState = rememberPermissionState(android.Manifest.permission.CAMERA)
-
     if (!cameraPermissionState.hasPermission) {
         Dialog(onDismissRequest = {}) {
             DialogContainer(title = "Need Permission!", message = "Butuh ijin kamera untuk menggunakan fitur ini !") {
