@@ -17,12 +17,9 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.DoNotDisturbOn
 import androidx.compose.material.icons.filled.Logout
 import androidx.compose.material.icons.filled.ManageAccounts
 import androidx.compose.material.icons.filled.VerifiedUser
-import androidx.compose.material.icons.outlined.StackedBarChart
-import androidx.compose.material.icons.rounded.TagFaces
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -64,7 +61,8 @@ import com.jejetrue.skillshiftapp.data.retrofit.ExecApi
 @Composable
 fun ProfileScreen(
     onEditProfileClick: () -> Unit,
-    onLogout: @Composable () -> Unit
+    onLogout: @Composable () -> Unit,
+    onFaceIdClicked: () -> Unit = {}
 ){
     val context = LocalContext.current
     val store = UserStore(context)
@@ -127,7 +125,9 @@ fun ProfileScreen(
                             .background(color = MaterialTheme.colorScheme.onSecondary)
                             .padding(vertical = 20.dp, horizontal = 15.dp)
                     ){
-                        FaceID()
+                        FaceID(
+                            onFaceIdClicked = { onFaceIdClicked() }
+                        )
                         KeluarAkun{
                             onLogout()
                         }
@@ -207,13 +207,6 @@ fun ImageProfile(model: String) {
             .size(100.dp)
             .clip(CircleShape)
     )
-//    Image(
-//        painter = painterResource(R.drawable.dummyphoto),
-//        contentDescription = "photo profile",
-//        contentScale = ContentScale.Crop,
-//        modifier = Modifier
-//            .size(100.dp)
-//            .clip(CircleShape))
 }
 
 @Composable
@@ -235,8 +228,10 @@ fun Role(role: String) {
 }
 
 @Composable
-fun FaceID() {
-    TextButton(onClick = { /*TODO*/ }) {
+fun FaceID(
+    onFaceIdClicked: () -> Unit = {}
+) {
+    TextButton(onClick = { onFaceIdClicked() }) {
         Icon(painter = painterResource(id = R.drawable.scan_face), contentDescription ="", tint = Color.White )
         Spacer(Modifier.size(ButtonDefaults.IconSpacing))
         Text(text = "Verifikasi identifikasi wajah", color = Color.White)
@@ -262,11 +257,6 @@ fun KeluarAkun(
         onLogout()
     }
 }
-
-
-    
-
-
 
 
 

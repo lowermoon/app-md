@@ -12,6 +12,7 @@ import com.jejetrue.skillshiftapp.data.response.ProfileResponse
 import com.jejetrue.skillshiftapp.data.response.RegisterResponse
 import com.jejetrue.skillshiftapp.data.response.SetProfileResponse
 import com.jejetrue.skillshiftapp.data.response.VerifyResponse
+import com.jejetrue.skillshiftapp.data.response.profile.FaceIdResponse
 import com.jejetrue.skillshiftapp.data.response.project.ProjectById
 import com.jejetrue.skillshiftapp.data.response.project.ProjectOfferResponse
 import com.jejetrue.skillshiftapp.data.response.project.ProjectResponse
@@ -82,6 +83,16 @@ interface ApiService {
         @Header("Cookie") token: String,
 
     ): Call<ProjectOfferResponse>
+
+
+    @POST("profile/newfaceid")
+    @Multipart
+    fun newfaceId(
+        @Header("Cookie") token: String,
+        @Part firstImage: MultipartBody.Part,
+        @Part secondImage: MultipartBody.Part,
+        @Part thirdImage: MultipartBody.Part
+    ): Call<FaceIdResponse>
 }
 
 @Composable

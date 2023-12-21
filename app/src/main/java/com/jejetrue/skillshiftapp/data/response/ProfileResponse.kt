@@ -2,6 +2,7 @@ package com.jejetrue.skillshiftapp.data.response
 
 import android.content.Context
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.ImageDecoder
 import android.net.Uri
 import android.os.Build
@@ -34,6 +35,7 @@ import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.ByteArrayOutputStream
+import java.io.IOException
 
 data class ProfileResponse(
 	@field:SerializedName("data")
@@ -90,7 +92,6 @@ fun setProfileImage(image: Bitmap, token: String): ProfileResponse? {
 	val requestBody = MultipartBody.Part.createFormData(
 		"file", "BaharProfile", byteArray.toRequestBody("image/jpeg".toMediaTypeOrNull(), 0, byteArray.size)
 	)
-	Log.d("ZAW", requestBody.toString())
 	val response = service.chengeProfileImage("verifyToken=$token", requestBody).execute()
 	return response.body()
 }
@@ -115,6 +116,15 @@ fun convertImageToBitmap(uri: Uri, context: Context): Bitmap {
 			val source = ImageDecoder.createSource(context.contentResolver, uri)
 			ImageDecoder.decodeBitmap(source)
 		}
+	}
+}
+fun convertImageToBitmapSecond(uri: Uri, context: Context): Bitmap? {
+	return try {
+		val inputStream = context.contentResolver.openInputStream(uri)
+		BitmapFactory.decodeStream(inputStream)
+	} catch (e: IOException) {
+		e.printStackTrace()
+		null
 	}
 }
 
