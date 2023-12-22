@@ -340,6 +340,7 @@ fun InputData(
             Text(text = "Nama Lengkap", color = Color.White)
         },
         shape = RoundedCornerShape(20.dp),
+        maxLines = 1,
         colors = TextFieldDefaults.colors(
             focusedContainerColor = TextFieldColor,
             unfocusedContainerColor = TextFieldColor,
@@ -360,6 +361,7 @@ fun InputData(
             Text(text = "Email", color = Color.White)
         },
         shape = RoundedCornerShape(20.dp),
+        maxLines = 1,
         colors = TextFieldDefaults.colors(
             focusedContainerColor = TextFieldColor,
             unfocusedContainerColor = TextFieldColor,
@@ -379,6 +381,7 @@ fun InputData(
             Text(text = "Telepon", color = Color.White)
         },
         shape = RoundedCornerShape(20.dp),
+        maxLines = 1,
         colors = TextFieldDefaults.colors(
             focusedContainerColor = TextFieldColor,
             unfocusedContainerColor = TextFieldColor,
@@ -398,6 +401,7 @@ fun InputData(
             Text(text = "National ID", color = Color.White)
         },
         shape = RoundedCornerShape(20.dp),
+        maxLines = 1,
         colors = TextFieldDefaults.colors(
             focusedContainerColor = TextFieldColor,
             unfocusedContainerColor = TextFieldColor,
@@ -414,6 +418,7 @@ fun InputData(
             Text(text = "Kata sandi Baru", color = MaterialTheme.colorScheme.primary)
         },
         shape = RoundedCornerShape(20.dp),
+        maxLines = 1,
         colors = TextFieldDefaults.colors(
             focusedContainerColor = TextFieldColor,
             unfocusedContainerColor = TextFieldColor,
