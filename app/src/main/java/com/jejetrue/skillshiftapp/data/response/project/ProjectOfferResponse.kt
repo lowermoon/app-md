@@ -23,32 +23,15 @@ data class FindOfferItem(
 	@field:SerializedName("imgUrl")
 	val imgUrl: String? = null,
 
-	@field:SerializedName("createdAt")
-	val createdAt: String? = null,
-
-	@field:SerializedName("freelancerId")
-	val freelancerId: String? = null,
-
-	@field:SerializedName("project_id")
-	val projectId: String? = null,
-
-	@field:SerializedName("user_id")
-	val userId: String? = null,
-
-	@field:SerializedName("id")
-	val id: Int? = null,
-
-	@field:SerializedName("freelancerName")
-	val freelancerName: String? = null,
+	@field:SerializedName("project_name")
+	val projectName: String? = null,
 
 	@field:SerializedName("offer_price")
-	val offerPrice: Int? = null,
+	val price: String? = null,
 
 	@field:SerializedName("offer_desc")
-	val offerDesc: String? = null,
+	val desc: String? = null,
 
-	@field:SerializedName("updatedAt")
-	val updatedAt: String? = null
 )
 
 fun getAllOffer(token: String): ProjectOfferResponse? {

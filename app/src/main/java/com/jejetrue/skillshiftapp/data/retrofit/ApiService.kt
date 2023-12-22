@@ -6,6 +6,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import com.jejetrue.skillshiftapp.data.response.CheckTokenResponse
 import com.jejetrue.skillshiftapp.data.response.DataProfileResponse
 import com.jejetrue.skillshiftapp.data.response.LoginResponse
 import com.jejetrue.skillshiftapp.data.response.ProfileResponse
@@ -38,7 +39,7 @@ interface ApiService {
         @Body body: RequestBody
     ) : Call<LoginResponse>
 
-    @POST("verifyFreelancer")
+    @POST("registerFreelancer")
     fun register(
         @Body body: RequestBody
     ) : Call<RegisterResponse>
@@ -93,6 +94,11 @@ interface ApiService {
         @Part secondImage: MultipartBody.Part,
         @Part thirdImage: MultipartBody.Part
     ): Call<FaceIdResponse>
+
+    @GET("checkToken")
+    fun checkToken(
+        @Header("Cookie") token: String,
+    ): Call<CheckTokenResponse>
 }
 
 @Composable

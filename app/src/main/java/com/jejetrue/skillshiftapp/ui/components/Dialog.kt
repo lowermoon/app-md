@@ -73,7 +73,7 @@ fun ErrorDialog(message: String, onClose: () -> Unit = {}){
 }
 
 @Composable
-fun DialogContainer(title: String, content: @Composable () -> Unit) {
+fun DialogContainer(title: String, message: String = "", content: @Composable () -> Unit) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
@@ -85,9 +85,15 @@ fun DialogContainer(title: String, content: @Composable () -> Unit) {
         Text(
             text = title,
             fontSize = 20.sp,
-            fontWeight = FontWeight.Bold
+            fontWeight = FontWeight.Bold,
+            textAlign = TextAlign.Center
         )
         Spacer(modifier = Modifier.padding(12.dp))
+        Text(
+            text = message,
+            textAlign = TextAlign.Center,
+            fontSize = 15.sp,
+        )
         content()
     }
 }
