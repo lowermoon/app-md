@@ -26,8 +26,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.ui.tooling.preview.Preview
+import com.jejetrue.skillshiftapp.components.FullWidthButton
 import com.jejetrue.skillshiftapp.data.payload.dataRegister
 import com.jejetrue.skillshiftapp.data.response.register
+import com.jejetrue.skillshiftapp.ui.theme.SkillShiftAppTheme
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -100,33 +103,50 @@ fun InputForm(
 
 
     // Action Button
+//    var data: dataRegister
+//    SideButtons(leftButtonText = "User", rightButtonText = "Freelancer", leftButtonClick = {
+//        data = dataRegister("consumer", fullName, email, username, password, confirmPasswrod)
+//        GlobalScope.launch {
+//            try {
+//                token = register(data = data)
+//                register = true
+//                Log.d("ZAW", "$token")
+//            }catch (e: Exception) {
+//                Log.e("ZAW", "Error : " + e.message.toString())
+//            }
+//        }
+//    }, rightButtonClick = {
+//        data = dataRegister("freelancer", fullName, email, username, password, confirmPasswrod)
+//        GlobalScope.launch {
+//            try {
+//                token = register(data = data)
+//                register = true
+//                Log.d("ZAW", "$token")
+//            }catch (e: Exception) {
+//                Log.e("ZAW", "Error : " + e.message.toString())
+//            }
+//        }
+//    })
+    
+    // Action Button
     var data: dataRegister
-    SideButtons(leftButtonText = "User", rightButtonText = "Freelancer", leftButtonClick = {
-        data = dataRegister("consumer", fullName, email, username, password, confirmPasswrod)
-        GlobalScope.launch {
-            try {
-                token = register(data = data)
-                register = true
-                Log.d("ZAW", "$token")
-            }catch (e: Exception) {
-                Log.e("ZAW", "Error : " + e.message.toString())
+    FullWidthButton(
+        text = "Daftar",
+        onClick = {data = dataRegister("freelancer", fullName, email, username, password, confirmPasswrod)
+            GlobalScope.launch {
+                try {
+                    token = register(data = data)
+                    register = true
+                    Log.d("ZAW", "$token")
+                }catch (e: Exception) {
+                    Log.e("ZAW", "Error : " + e.message.toString())
+                }
             }
         }
-    }, rightButtonClick = {
-        data = dataRegister("freelancer", fullName, email, username, password, confirmPasswrod)
-        GlobalScope.launch {
-            try {
-                token = register(data = data)
-                register = true
-                Log.d("ZAW", "$token")
-            }catch (e: Exception) {
-                Log.e("ZAW", "Error : " + e.message.toString())
-            }
-        }
-    })
-
+    )
     if (register) {
         onSignUpClick(email, token)
     }
-
 }
+
+

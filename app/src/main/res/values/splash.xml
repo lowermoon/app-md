@@ -3,7 +3,7 @@
     <style name="Theme.MyApp" parent="Theme.SplashScreen">
         <item name="windowSplashScreenBackground">#2D2D2D</item>
         <item name="windowSplashScreenAnimatedIcon">@drawable/logoapp</item>
-        <item name="windowSplashScreenAnimationDuration">3000</item>
+        <item name="windowSplashScreenAnimationDuration">1000</item>
         <item name="postSplashScreenTheme">@style/Theme.SkillShiftApp</item>
 
     </style>

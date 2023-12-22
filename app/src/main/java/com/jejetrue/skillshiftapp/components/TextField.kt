@@ -22,6 +22,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -41,6 +42,8 @@ import com.jejetrue.skillshiftapp.data.response.VerifAccount
 import com.jejetrue.skillshiftapp.data.retrofit.ExecApi
 import com.jejetrue.skillshiftapp.ui.components.ErrorDialog
 import com.jejetrue.skillshiftapp.ui.theme.Rose600
+import com.jejetrue.skillshiftapp.ui.theme.TextFieldColor
+import com.jejetrue.skillshiftapp.ui.theme.Yellow1
 import kotlinx.coroutines.DelicateCoroutinesApi
 
 //Text Field untuk input data
@@ -58,12 +61,13 @@ fun NormalTextField(
         //onValueChange = { text = it },
         onValueChange = onValueChange,
         label = { Text(labelValue) },
+        maxLines = 1,
         shape = RoundedCornerShape(35.dp),
-        colors = OutlinedTextFieldDefaults.colors(
-            focusedBorderColor = MaterialTheme.colorScheme.inversePrimary,
-            focusedLabelColor = MaterialTheme.colorScheme.inversePrimary,
-            unfocusedBorderColor = MaterialTheme.colorScheme.primary,
-            unfocusedLabelColor = MaterialTheme.colorScheme.primary,
+        colors = TextFieldDefaults.colors(
+            focusedContainerColor = TextFieldColor,
+            unfocusedContainerColor = TextFieldColor,
+            disabledContainerColor = TextFieldColor,
+            focusedLabelColor = Yellow1
         ),
         keyboardOptions = KeyboardOptions.Default,
         leadingIcon = { Icon(painter = painterResource, contentDescription = "") }
@@ -85,16 +89,17 @@ fun EmailTextField(
     }
     OutlinedTextField(
         shape = RoundedCornerShape(50),
-        colors = OutlinedTextFieldDefaults.colors(
-            focusedBorderColor = Rose600,
-            focusedLabelColor = Rose600,
-            unfocusedBorderColor = Color.Gray,
-            unfocusedLabelColor = Color.Gray,
-        ),
         value = input,
         //onValueChange = {email = it},
         onValueChange = onValueChange,
         label = { Text(text = labelValue) },
+        maxLines = 1,
+        colors = TextFieldDefaults.colors(
+            focusedContainerColor = TextFieldColor,
+            unfocusedContainerColor = TextFieldColor,
+            disabledContainerColor = TextFieldColor,
+            focusedLabelColor = Yellow1
+        ),
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
         leadingIcon = { Icon(painter = painterResource, contentDescription = "") }
 
@@ -121,15 +126,16 @@ fun PasswordTextField(
     OutlinedTextField(
         value = input,
         shape = RoundedCornerShape(35.dp),
-        colors = OutlinedTextFieldDefaults.colors(
-            focusedBorderColor = Rose600,
-            focusedLabelColor = Rose600,
-            unfocusedBorderColor = Color.Gray,
-            unfocusedLabelColor = Color.Gray,
-        ),
         //onValueChange = {password = it},
         onValueChange = onValueChange,
         label = { Text(text = labelValue) },
+        maxLines = 1,
+        colors = TextFieldDefaults.colors(
+            focusedContainerColor = TextFieldColor,
+            unfocusedContainerColor = TextFieldColor,
+            disabledContainerColor = TextFieldColor,
+            focusedLabelColor = Yellow1
+        ),
         keyboardOptions = KeyboardOptions(keyboardType =  KeyboardType.Password),
         leadingIcon = { Icon(painter = painterResource, contentDescription = "") },
         trailingIcon = {
