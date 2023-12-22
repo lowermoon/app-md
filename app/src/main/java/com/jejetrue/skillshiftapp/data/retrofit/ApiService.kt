@@ -6,12 +6,17 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import com.jejetrue.skillshiftapp.data.response.CheckTokenResponse
 import com.jejetrue.skillshiftapp.data.response.DataProfileResponse
 import com.jejetrue.skillshiftapp.data.response.LoginResponse
 import com.jejetrue.skillshiftapp.data.response.ProfileResponse
 import com.jejetrue.skillshiftapp.data.response.RegisterResponse
 import com.jejetrue.skillshiftapp.data.response.SetProfileResponse
 import com.jejetrue.skillshiftapp.data.response.VerifyResponse
+import com.jejetrue.skillshiftapp.data.response.profile.FaceIdResponse
+import com.jejetrue.skillshiftapp.data.response.project.ProjectById
+import com.jejetrue.skillshiftapp.data.response.project.ProjectOfferResponse
+import com.jejetrue.skillshiftapp.data.response.project.ProjectResponse
 import com.jejetrue.skillshiftapp.ui.components.LoadingDialog
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -25,6 +30,7 @@ import retrofit2.http.Header
 import retrofit2.http.Multipart
 import retrofit2.http.POST
 import retrofit2.http.Part
+import retrofit2.http.Query
 
 interface ApiService {
 
@@ -61,6 +67,38 @@ interface ApiService {
         @Header("Cookie") token: String,
         @Body body: RequestBody
     ): Call<SetProfileResponse>
+
+    @GET("allProject") // Project Home Screen
+    fun getAllProject(
+        @Header("Cookie") token: String
+    ): Call<ProjectResponse>
+
+    @GET("project")
+    fun getProjectByIdApi(
+        @Header("Cookie") token: String,
+        @Query("project_id") id: String
+    ): Call<ProjectById>
+
+    @GET("getOfferFreelance")
+    fun getOfferProject(
+        @Header("Cookie") token: String,
+
+    ): Call<ProjectOfferResponse>
+
+
+    @POST("profile/newfaceid")
+    @Multipart
+    fun newfaceId(
+        @Header("Cookie") token: String,
+        @Part firstImage: MultipartBody.Part,
+        @Part secondImage: MultipartBody.Part,
+        @Part thirdImage: MultipartBody.Part
+    ): Call<FaceIdResponse>
+
+    @GET("checkToken")
+    fun checkToken(
+        @Header("Cookie") token: String,
+    ): Call<CheckTokenResponse>
 }
 
 @Composable

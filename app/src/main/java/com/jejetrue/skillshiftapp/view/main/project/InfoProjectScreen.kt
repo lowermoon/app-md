@@ -2,7 +2,6 @@ package com.jejetrue.skillshiftapp.view.main.project
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -32,6 +31,7 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
@@ -131,8 +131,8 @@ fun InfoProjectScreen() {
 }
 
 @Composable
-fun JudulProyek() {
-    Text(text = "Mobile Legends", fontWeight = FontWeight.Bold)
+fun JudulProyek(title: String = "") {
+    Text(text = title, fontWeight = FontWeight.Bold)
 }
 
 @Composable
@@ -155,12 +155,12 @@ fun KategoriProject(text: String) {
 }
 
 @Composable
-fun SubJudulProyek() {
-    Text(text = "Teks ini untuk subjudul pada proyek ini")
+fun SubJudulProyek(subTitle: String = "Ini Sub Judul !!") {
+    Text(text = subTitle)
 }
 
 @Composable
-fun Deskripsi() {
+fun Deskripsi(desc: String = "") {
     Column {
         Box(
             modifier = Modifier
@@ -177,7 +177,7 @@ fun Deskripsi() {
             )
         }
         Spacer(modifier = Modifier.height(8.dp))
-        Text(text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.")
+        Text(desc)
     }
 }
 
@@ -187,8 +187,10 @@ fun ImageProject() {
         painter = painterResource(id = R.drawable.testing),
         contentDescription = "",
         contentScale = ContentScale.Fit,
-        modifier = Modifier.fillMaxWidth()
-        )
+        modifier = Modifier
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(10.dp))
+    )
 }
 
 @Composable

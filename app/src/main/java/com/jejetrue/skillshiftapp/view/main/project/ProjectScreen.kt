@@ -13,9 +13,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Cancel
 import androidx.compose.material.icons.filled.Error
@@ -29,6 +29,11 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
@@ -38,28 +43,60 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.jejetrue.skillshiftapp.R
+import com.jejetrue.skillshiftapp.data.repository.getToken
+import com.jejetrue.skillshiftapp.data.response.project.FindOfferItem
+import com.jejetrue.skillshiftapp.data.response.project.getAllOffer
+import com.jejetrue.skillshiftapp.data.retrofit.ExecApi
 import com.jejetrue.skillshiftapp.ui.theme.DarkBlue2
 import com.jejetrue.skillshiftapp.ui.theme.DarkBlueBG
 import com.jejetrue.skillshiftapp.view.main.ProjectItem
 
 @Composable
 fun ProjectScreen(){
+    val token = getToken()
+    var itemsRess by remember { mutableStateOf<List<FindOfferItem?>?>(null) }
+    var fetched by remember { mutableStateOf(false) }
+    var async by remember { mutableStateOf(false) }
+    LaunchedEffect(token) {
+        async = true
+    }
+    if ( async ) {
+        ExecApi {
+            val response = getAllOffer(token)
+            itemsRess = response?.result?.findOffer
+            fetched = true
+        }
+    }
 
-    Box(
+    Column(
         modifier = Modifier.fillMaxSize(),
     ) {
-        Column(modifier = Modifier.padding(15.dp).verticalScroll(rememberScrollState())) {
-            //jika project kosong maka akan menapilkan di bawah ini
-            ProjectKosong()
-            Spacer(modifier = Modifier.height(10.dp))
-            DaftarPenawaran()
-            Spacer(modifier = Modifier.height(10.dp))
+        if ( fetched ) {
+            Column(modifier = Modifier.padding(15.dp)) {
+                //jika project kosong maka akan menapilkan di bawah ini
+                if (itemsRess == null) {
+                    ProjectKosong()
+                    Spacer(modifier = Modifier.height(10.dp))
+                }else {
+                    DaftarPenawaran()
+                    Spacer(modifier = Modifier.height(10.dp))
 
-            ////item project di daftar penawaran(Lazycolumn), disini jika di klik maka akan ke halaman info project
-            ProjectItem()
+                    ////item project di daftar penawaran(Lazycolumn), disini jika di klik maka akan ke halaman info project
+                    LazyColumn {
+                        items( itemsRess?: emptyList() ) {
 
-            //jika ada project maka menampilkan list(LazyColumn)
-            //ProjectAktif()
+                            ProjectItem(
+                                title = it?.projectName.toString(),
+                                subTitle = it?.desc.toString()
+                            )
+                            Spacer(modifier = Modifier.height(10.dp))
+                        }
+                    }
+
+                }
+                //jika ada project maka menampilkan list(LazyColumn)
+//                ProjectAktif()
+            }
         }
     }
 
@@ -123,14 +160,14 @@ fun ProjectAktif() {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(10.dp)
             .wrapContentSize(),
         elevation = CardDefaults.cardElevation(10.dp)
 
     ) {
         Column(modifier = Modifier
             .fillMaxWidth()
-            .padding(15.dp)) {
+            .padding(15.dp)
+        ) {
             //judul
             Text(text = "Mobile Legends", fontWeight = FontWeight.Bold)
 
